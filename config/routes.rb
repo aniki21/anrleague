@@ -10,9 +10,13 @@ Rails.application.routes.draw do
   post '/register' => "users#create"
 
   # Profile
+  get '/profile' => "users#show"
   resources :users, only: [:show,:edit,:update] do
     
   end
+
+  # Leagues
+  resources :leagues
 
   root 'home#index'
 end
