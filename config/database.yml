@@ -1,0 +1,26 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  host: localhost
+  database: league_development
+  username: postgres
+  password: Alberto123
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: league_test
+
+production:
+  <<: *default
+  host: ec2-54-228-246-206.eu-west-1.compute.amazonaws.com
+  database: d9r80bt427iijb
+  username: lgunxmmvyzjkrv
+  password: GvIfKhT_pYRBfOcQgzRpUv1kwE
