@@ -1,0 +1,10 @@
+<h1>
+  <%= gravatar_image_tag(@user.email, :class => 'img-rounded', :gravatar => { :size => 50, :rating => "g" }) %>
+  <%= @user.display_name %>
+  <% unless @user.display_name == @user.jinteki_username %>
+    <small><%= @user.jinteki_username %></small>
+  <% end %>
+</h1>
+
+
+<p>Not sure what other profile information should go here</p>

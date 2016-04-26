@@ -45,8 +45,10 @@ group :development do
   gem 'spring'
 end
 
-# User authentication
+# User authentication and profile
 gem 'sorcery'
+gem 'gravatar_image_tag'
+
 
 # Icons and layout
 gem 'bootstrap-sass'
