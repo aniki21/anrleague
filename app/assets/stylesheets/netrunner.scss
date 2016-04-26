@@ -9,17 +9,19 @@
 }
 
 [class^="nr-"], [class*=" nr-"] {
-	font-family: 'netrunner';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+  &:before{
+    font-family: 'netrunner';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 //
@@ -28,36 +30,36 @@
 
 .nr-anarch {
 	color:orangered;
-	&:before { content: "\e605\00a0"; }
+	&:before { content: "\e605"; }
 }
 
 .nr-criminal {
-	&:before {content: "\e612\00a0"; }
+	&:before {content: "\e612"; }
 	color:royalblue;
 }
 .nr-shaper {
-  &:before { content: "\e613\00a0"; }
+  &:before { content: "\e613"; }
 	color:limegreen;
 }
 
 .nr-hb,
 .nr-haas-bioroid {
-	&:before { content: "\e602\00a0"; }
+	&:before { content: "\e602"; }
 	color:blueviolet;
 }
 
 .nr-weyland {
-	&:before { content: "\e607\00a0"; }
+	&:before { content: "\e607"; }
 	color:darkgreen;
 }
 
 .nr-jinteki {
-	&:before { content: "\e609\00a0"; }
+	&:before { content: "\e609"; }
 	color:crimson;
 }
 
 .nr-nbn {
-	&:before { content: "\e60b\00a0"; }
+	&:before { content: "\e60b"; }
 	color:darkorange;
 }
 
@@ -65,31 +67,31 @@
 // Card sets
 //
 
-.nr-Core-Set {
-	&:before { content: "\e618\00a0"; }
+.nr-core {
+	&:before { content: "\e618"; }
 }
 
-.nr-genesis-cycle {
-	&:before { content: "\e616\00a0"; }
+.nr-genesis {
+	&:before { content: "\e616"; }
 }
 
-.nr-spin-cycle {
-	&:before { content: "\e615\00a0"; }
+.nr-spin {
+	&:before { content: "\e615"; }
 }
 
 .nr-cc,.nr-creation-and-control {
-	&:before { content: "\e617\00a0"; }
+	&:before { content: "\e617"; }
 }
 
 .nr-hp,.nr-honor-and-profit {
-	&:before { content: "\e614\00a0"; }
+	&:before { content: "\e614"; }
 }
 
-.nr-lunar-cycle {
-	&:before { content: "\e619\00a0"; }
+.nr-lunar {
+	&:before { content: "\e619"; }
 }
 
 .nr-oc,.nr-order-and-chaos {
-	&:before { content: "\e61a\00a0"; }
+	&:before { content: "\e61a"; }
 }
 

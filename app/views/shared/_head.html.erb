@@ -1,21 +1,22 @@
-<header class="navbar navbar-default navbar-fixed-top">
-
+<header class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#headerMenu">
         <span class="sr-only">Collapse Navbar</span>
         <i class="fa fa-list"></i>
       </button>
-      <%= link_to "League", root_path, class: "navbar-brand" %>
+      <%= link_to '<i class="nr-spin"></i> ANR League'.html_safe, root_path, class: "navbar-brand" %>
     </div>
 
     <div class="collapse navbar-collapse" id="headerMenu">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
         <li class="dropdown">
-          <%= link_to "Dropdown", "javascript:void(0);", class:"dropdown-toggle", "data-toggle":"dropdown", role:"button" %>
+          <%= link_to 'Leagues <i class="fa fa-caret-down"></i>'.html_safe, "javascript:void(0);", class:"dropdown-toggle", "data-toggle":"dropdown", role:"button" %>
           <ul class="dropdown-menu">
-            <li><%= link_to "Leagues", leagues_path %></li>
+            <li><%= link_to "Online leagues", leagues_path(t: "online") %></li>
+            <li><%= link_to "Offline leagues", leagues_path(t:"offline") %></li>
+            <li class="divider"</li>
+            <li><%= link_to "All leagues", leagues_path %></li>
           </ul>
         </li>
       </ul>
@@ -23,7 +24,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-user"></i> <i class="fa fa-caret-down"></i>
           </a>
           <ul class="dropdown-menu">
             <% if logged_in? %>
@@ -36,14 +37,14 @@
               <%#   <% end %1> %>
               <%# <% end %1> %>
             <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>
+            <li class="divider"></li>
+            <li><%= link_to "Jack out", logout_path %></li>
             <% else %>
-              <li><%= link_to "Log in", login_path %></li>
-              <li><%= link_to "Register", register_path %></li>
+              <li><%= link_to "Log in / Register", login_path %></li>
             <% end %>
           </ul>
         </li>
       </ul>
     </div>
   </div>
-
 </header>

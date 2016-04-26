@@ -6,10 +6,18 @@ class UsersController < ApplicationController
 
   # GET /register
   def new
+    @user = User.new
   end
 
   # POST /register
   def create
+    @user = User.new(user_params)
+    if @user.save
+      flash[:success] = "Your account has been created"
+      redirect_to login_path and return
+    else
+      render action: :new and return
+    end
   end
 
   # GET /users/:id
@@ -33,6 +41,11 @@ class UsersController < ApplicationController
 
   # POST /profile
   def update
+  end
+
+  private
+  def user_params
+    params.require(:user).permit(:email,:password,:password_confirmation,:display_name,:jinteki_username)
   end
 
 end
