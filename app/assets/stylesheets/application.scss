@@ -18,15 +18,29 @@
 @import "bootstrap";
 
 body{
-  background: #FFF;
-  padding-top: 70px;
+  background: #555;
+  color:#111;
+}
+
+body,footer{
+  font-size:15px;
+  font-family:'Lora', serif;
+}
+
+header{
+  font-family:'Exo', sans-serif;
+  font-size:1.2em;
+}
+
+#body{
+  background: #FCFCFC;
+  padding:70px 0 50px;
 }
 
 footer{
-  background: #555;
   color:#FCFCFC;
   padding:50px 0;
-  margin: 50px 0 0;
+  margin:0;
   a{
     &:link,&:visited{
       color:#F9F9F9;
@@ -37,3 +51,40 @@ footer{
   }
 }
 
+// Header
+.navbar .navbar-brand{
+  color:#FFF;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus{
+  background-color:#555;
+  color:#FCFCFC;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus{
+  background-color:#555;
+  color:#FCFCFC;
+}
+
+// Footer
+footer{
+  p a{
+    text-decoration: underline;
+    &:hover,&:active{
+      color:#DDD;
+    }
+  }
+}
+
+// General text
+h1,h2,h3,h4{
+  font-family:'Exo',sans-serif;
+}
+
+// Forms
+.field_with_errors{
+  select,input,textarea{
+    border:1px solid #A94442;
+  }
+}
