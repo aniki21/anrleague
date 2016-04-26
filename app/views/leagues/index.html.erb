@@ -1,6 +1,6 @@
 <h1>LeaguesController#index</h1>
 
-<% Liga.all.each do |league| %>
+<% @leagues.each do |league| %>
   <h3><%= league.display_name %></h3>
   <code>
     <%= league.to_xml %>

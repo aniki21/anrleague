@@ -1,5 +1,16 @@
 class LeaguesController < ApplicationController
 
+  def index
+    case params[:t]
+    when "online"
+      @leagues = Liga.online
+    when "offline"
+      @leagues = Liga.offline
+    else
+      @leagues = Liga.all
+    end
+  end
+
   def show
     @league = Liga.find_by_id(params[:id])
     if @league.blank?
