@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  faction_id: 1
+  display_name: 1
+  nrdb_id: 1
+
+two:
+  faction_id: 1
+  display_name: 1
+  nrdb_id: 1

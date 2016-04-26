@@ -7,6 +7,8 @@ class Liga < ActiveRecord::Base
   has_many :liga_users
   has_many :users, through: :liga_users
   belongs_to :owner, class_name: "User"
+  has_many :seasons, foreign_key: "league_id"
+  has_many :games, through: :seasons
 
   # Validations
   validates :display_name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 50, message: "cannot be more than 50 characters" }
