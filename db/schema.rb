@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425161801) do
+ActiveRecord::Schema.define(version: 20160426203653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,9 +26,15 @@ ActiveRecord::Schema.define(version: 20160425161801) do
   create_table "ligas", force: :cascade do |t|
     t.string   "display_name"
     t.integer  "owner_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "location_type"
+    t.string   "online_location"
+    t.decimal  "latitude",        default: 0.0
+    t.decimal  "longitude",       default: 0.0
   end
+
+  add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                           null: false
@@ -41,6 +47,8 @@ ActiveRecord::Schema.define(version: 20160425161801) do
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
+    t.string   "display_name"
+    t.string   "jinteki_username"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

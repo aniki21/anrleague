@@ -1,1 +1,78 @@
-<h2>/views/leagues/_form</h2>
+<%= form_for @league, url: leagues_path, html: { class: "form-horizontal" } do |f| %>
+  <div class="form-group">
+    <%= f.label :display_name, "League name", class: "col-md-4 control-label" %>
+    <div class="col-md-8">
+      <%= f.text_field :display_name, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :location_type, "Location", class: "col-md-4 control-label" %>
+    <div class="col-md-8">
+      <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]]), {}, { id:"type-select", class: "form-control" } %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-8 col-md-offset-4">
+      <div class="location-select offline">
+        <%= text_field_tag :lookup_address, "", id: "lookup-address", class: "form-control" %>
+        <%= f.hidden_field :latitude %>
+        <%= f.hidden_field :longitude %>
+        <div id="map-picker" style="width:100%; height: 250px;"></div>
+      </div>
+      <div class="location-select online" style="display:none;">
+        <%= f.text_field :online_location, placeholder: "http://...", class: "form-control" %>
+        <small class="help-block">The URL for the site/tool that games will be played with.</small>
+      </div>
+    </div>
+  </div>
+
+  <%= f.submit "Create league", class: "btn btn-success" %>
+<% end %>
+
+<script type="text/javascript">
+var latitude = <%= @league.latitude %>;
+var longitude = <%= @league.longitude %>;
+
+var getLocation = function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position){
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude; 
+      setMapPicker();
+    });
+  } else {
+    setMapPicker();
+  }
+};
+
+var setMapPicker = function(){
+  $('#liga_latitude').val(latitude);
+  $('#liga_longitude').val(longitude);
+  $('#map-picker').locationpicker({
+    location: {
+      latitude: latitude,
+      longitude: longitude
+    },
+    radius: 50,
+    inputBinding: {
+      locationNameInput: $('#lookup-address')
+    },
+    enableAutocomplete: true,
+    onchanged: function(currentLocation, radius, isMarkerDropped) {
+      $('#liga_latitude').val(currentLocation.latitude);
+      $('#liga_longitude').val(currentLocation.longitude);
+    }
+  });
+}
+
+$(document).ready(function(){
+  getLocation();
+
+
+  $('#type-select').on('change',function(e){
+    var show = $(this).val();
+    $('.location-select').hide();
+    $('.location-select.'+show).show();
+  });
+});
+</script>

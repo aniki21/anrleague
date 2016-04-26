@@ -62,6 +62,10 @@ GEM
       multipart-post (>= 1.2, < 3)
     font-awesome-rails (4.6.1.0)
       railties (>= 3.2, < 5.1)
+    geokit (1.10.0)
+    geokit-rails (2.1.0)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     gravatar_image_tag (1.2.0)
@@ -172,6 +176,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   font-awesome-rails
+  geokit-rails
   gravatar_image_tag
   jbuilder (~> 2.0)
   jquery-rails

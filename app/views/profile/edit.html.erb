@@ -1,0 +1,45 @@
+<h1>Edit profile</h1>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Profile</h3>
+      <%= form_for @user, url: profile_path, html: { class: "form-horizontal" } do |f| %>
+        <div class="form-group">
+          <%= f.label :email, "Email address", class: "col-md-4 control-label" %>
+          <div class="col-md-8">
+            <%= f.text_field :email, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <h3>Password</h3>
+      <%= form_tag update_password_profile_path, class: "form-horizontal" do |f| %>
+        <div class="form-group">
+          <%= label_tag :current_password, "Current password", class: "control-label col-md-4" %>
+          <div class="col-md-8">
+            <%= password_field_tag :current_password, "", class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :new_password, "New password", class: "control-label col-md-4" %>
+          <div class="col-md-8">
+            <%= password_field_tag :new_password, "", class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :new_password_confirmation, "Confirm new password", class: "control-label col-md-4" %>
+          <div class="col-md-8">
+            <%= password_field_tag :new_password_confirmation, "", class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <%= submit_tag "Update password", class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
