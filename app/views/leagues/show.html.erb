@@ -2,7 +2,7 @@
   <%= @league.display_name %>
   <% if @league.offline? %><small><%= offline_league_location(@league) %></small><% end %>
 </h1>
-<%= @league.description_html.html_safe %>
+<%= (@league.description_html || "").html_safe %>
 
 <div class="row">
 

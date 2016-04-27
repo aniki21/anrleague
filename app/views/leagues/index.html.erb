@@ -5,5 +5,5 @@
     <%= link_to league.display_name, league_path(league.id,league.slug) %>
     <% if league.offline? %><small><%= offline_league_location(league) %></small><% end %>
   </h3>
-  <%= league.description_html.html_safe %>
+  <%= (league.description_html || "").html_safe %>
 <% end %>
