@@ -6,5 +6,8 @@
   <% end %>
 </h1>
 
+<% if @user.id == current_user.id %>
+  <p><%= link_to "Edit profile", edit_profile_path, class: "btn btn-default" %></p>
+<% end %>
 
 <p>Not sure what other profile information should go here</p>

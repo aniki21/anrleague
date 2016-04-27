@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  league_id: 1
+  season_id: 1
+  runner_player_id: 1
+  runner_identity_id: 1
+  runner_agenda_points: 1
+  corp_player_id: 1
+  corp_identity_id: 1
+  corp_agenda_points: 1
+  result: MyString
+
+two:
+  league_id: 1
+  season_id: 1
+  runner_player_id: 1
+  runner_identity_id: 1
+  runner_agenda_points: 1
+  corp_player_id: 1
+  corp_identity_id: 1
+  corp_agenda_points: 1
+  result: MyString

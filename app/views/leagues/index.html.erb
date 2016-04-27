@@ -1,17 +1,8 @@
 <h1>LeaguesController#index</h1>
 
-<div class="row">
-  <div class="col-md-6">
-    <h4>Runner</h4>
-    <p><span class="nr-anarch">Noise</span></p>
-    <p><span class="nr-criminal">Gabriel Santiago</span></p>
-    <p><span class="nr-shaper">Rielle 'Kit' Peddler</span></p>
-  </div>
-  <div class="col-md-6">
-    <h4>Corp</h4>
-    <p><span class="nr-hb">Haas-Bioroid: Engineering The Future</span></p>
-    <p><span class="nr-jinteki">Jinteki: Personal Evolution</span></p>
-    <p><span class="nr-nbn">NBN: Making News</span></p>
-    <p><span class="nr-weyland">Weyland Consortium: Building A Better World</span></p>
-  </div>
-</div>
+<% @leagues.each do |league| %>
+  <h3><%= league.display_name %></h3>
+  <code>
+    <%= league.to_xml %>
+  </code>
+<% end %>

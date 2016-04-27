@@ -1,22 +1,24 @@
 Rails.application.routes.draw do
 
   # Log in/out
-  get '/login' => "sessions#new", as: :login
-  post '/login' => "sessions#create"
-  get '/logout' => "sessions#destroy", as: :logout
+  get '/login', to: "sessions#new", as: :login
+  post '/login', to: "sessions#create"
+  get '/logout', to: "sessions#destroy", as: :logout
 
   # Register
-  get '/register' => "users#new", as: :register
-  post '/register' => "users#create"
+  get '/register', to: "profile#new", as: :register
+  post '/register', to: "profile#create"
 
   # Profile
-  get '/profile' => "users#show", as: :profile
-  resources :users, only: [:show,:edit,:update] do
-    
+  get '/profile', to: "profile#show", as: :profile
+  get '/profile/:id/:username', to: "profile#show"
+  resource :profile, except: [:new,:create,:show], controller: :profile do
+    post '/password', to: "profile#update_password", as: :update_password
   end
 
   # Leagues
-  resources :leagues
+  get '/leagues/:id/:slug' => 'leagues#show', as: 'league'
+  resources :leagues, except: [:show]
 
   root 'home#index'
 end

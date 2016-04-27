@@ -50,7 +50,9 @@ end
 gem 'sorcery'
 gem 'gravatar_image_tag'
 
-
 # Icons and layout
 gem 'bootstrap-sass'
 gem 'font-awesome-rails'
+
+# Geolocation
+gem 'geokit-rails'

@@ -11,10 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425161801) do
+ActiveRecord::Schema.define(version: 20160426231257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "factions", force: :cascade do |t|
+    t.string   "display_name"
+    t.string   "icon_style"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "league_id"
+    t.integer  "season_id"
+    t.integer  "runner_player_id"
+    t.integer  "runner_identity_id"
+    t.integer  "runner_agenda_points"
+    t.integer  "corp_player_id"
+    t.integer  "corp_identity_id"
+    t.integer  "corp_agenda_points"
+    t.string   "result"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.integer  "faction_id"
+    t.string   "display_name"
+    t.string   "nrdb_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "liga_users", force: :cascade do |t|
     t.integer  "user_id"
@@ -26,6 +55,19 @@ ActiveRecord::Schema.define(version: 20160425161801) do
   create_table "ligas", force: :cascade do |t|
     t.string   "display_name"
     t.integer  "owner_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "location_type"
+    t.string   "online_location"
+    t.decimal  "latitude",        default: 0.0
+    t.decimal  "longitude",       default: 0.0
+  end
+
+  add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
+
+  create_table "seasons", force: :cascade do |t|
+    t.integer  "league_id"
+    t.string   "display_name"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -41,6 +83,8 @@ ActiveRecord::Schema.define(version: 20160425161801) do
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
+    t.string   "display_name"
+    t.string   "jinteki_username"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
