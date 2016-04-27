@@ -4,9 +4,11 @@
 </h1>
 <%= (@league.description_html || "").html_safe %>
 
-<% if current_user.member_of?(@league) %>
+<% if logged_in? && current_user.member_of?(@league) %>
   <h3>My Games</h3>
   <p>Coming soon...</p>
+<% else %>
+  <p><%= link_to "Sign up to this league", "#coming-soon", class: "btn btn-success" if true %></p>
 <% end %>
 
 <div class="row">

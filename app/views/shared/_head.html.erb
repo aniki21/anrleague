@@ -33,7 +33,7 @@
               <li class="dropdown-header">Owned Leagues</li>
               <% if current_user.owned_leagues.any? %>
                 <% current_user.owned_leagues.each do |league| %>
-                  <li><%= link_to league.display_name.truncate(25), league_path(league.id,league.slug) %></li>
+                  <li><%= link_to league.display_name.truncate(25), show_league_path(league.id,league.slug) %></li>
                 <% end %>
               <% end %>
             <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>

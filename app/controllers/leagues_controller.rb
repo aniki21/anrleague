@@ -1,5 +1,6 @@
 class LeaguesController < ApplicationController
 
+  # GET /leagues
   def index
     case params[:t]
     when "online"
@@ -11,6 +12,7 @@ class LeaguesController < ApplicationController
     end
   end
 
+  # GET /leagues/:id/:slug
   def show
     @league = Liga.find_by_id(params[:id])
     if params[:slug].blank?
@@ -24,21 +26,28 @@ class LeaguesController < ApplicationController
     @season = @league.current_season
   end
 
+  # GET /leagues/:id/signup
+  def signup
+  end
+
+  # GET /leagues/new
   def new
     @league = Liga.new
   end
-
+  
+  # POST /leagues
   def create
     @league = Liga.new(liga_params)
     @league.owner_id = current_user.id
     if @league.save
       flash[:success] = "League created"
-      redirect_to league_path(@league.id,@league.display_name.parameterize) and return
+      redirect_to show_league_path(@league.id,@league.slug) and return
     else
       render json: { model: params[:liga], errors: @league.errors.full_messages } and return
     end
   end
 
+  # GET /league/:id/edit
   def edit
     @league = Liga.find_by_id(params[:id])
 
@@ -49,10 +58,11 @@ class LeaguesController < ApplicationController
 
     unless current_user.id == @league.owner_id
       flash[:error] = "You don't have permission to do that"
-      redirect_to league_path(@league.id,@league.slug)
+      redirect_to show_league_path(@league.id,@league.slug) and return
     end
   end
 
+  # POST /league/:id
   def update
     @league = Liga.find_by_id(params[:id])
 
@@ -63,15 +73,16 @@ class LeaguesController < ApplicationController
 
     unless current_user.id == @league.owner_id
       flash[:error] = "You don't have permission to do that"
-      redirect_to league_path(@league.id,@league.slug)
+      redirect_to show_league_path(@league.id,@league.slug) and return
     end
 
     if @league.update_attributes(liga_params)
       flash[:success] = "League updated"
-      redirect_to show_league_path(@league.id,@league.slug)
+      redirect_to show_league_path(@league.id,@league.slug) and return
     end
   end
 
+  # DELETE /league/:id
   def destroy
   end
 
