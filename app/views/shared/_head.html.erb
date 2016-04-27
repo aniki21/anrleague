@@ -30,15 +30,17 @@
             <% if logged_in? %>
               <li><%= link_to "Profile", profile_path %></li>
               <li class="divider"></li>
-              <li class="dropdown-header">My Leagues</li>
-              <%# <% if current_user.user_ligas.any? %1> %>
-              <%#   <% current_user.ligas.each do |league| %1> %>
-              <%#     <li><%= link_to league.display_name.truncate(25), "#" %1></li> %>
-              <%#   <% end %1> %>
-              <%# <% end %1> %>
+              <li class="dropdown-header">Owned Leagues</li>
+              <% if current_user.owned_leagues.any? %>
+                <% current_user.owned_leagues.each do |league| %>
+                  <li><%= link_to league.display_name.truncate(25), league_path(league.id,league.slug) %></li>
+                <% end %>
+              <% end %>
             <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>
+            <li class="dropdown-header">Memberships</li>
+            <li><a href="#">Coming soon</a></li>
             <li class="divider"></li>
-            <li><%= link_to "Jack out", logout_path %></li>
+            <li><%= link_to "Log out", logout_path %></li>
             <% else %>
               <li><%= link_to "Log in / Register", login_path %></li>
             <% end %>

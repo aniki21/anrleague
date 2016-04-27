@@ -64,11 +64,12 @@ footer{
 .navbar-inverse .navbar-toggle{
   color:#FCFCFC;
 }
-
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus{
-  background-color:#555;
-  color:#FCFCFC;
+.dropdown-menu > li > a{
+  font-family:'Lora', serif;
+  &:hover,&:focus{
+    background-color:#555;
+    color:#FCFCFC;
+  }
 }
 
 // Footer

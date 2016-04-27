@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :liga_users
   has_many :leagues, through: :liga_users
+  has_many :owned_leagues, -> { order(display_name: :asc) }, class_name: "Liga", foreign_key: "owner_id"
 
   # Validations
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /.+@.+\..+/, message: "must be in a valid format" }
