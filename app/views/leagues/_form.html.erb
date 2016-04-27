@@ -7,17 +7,12 @@
   </div>
   <div class="form-group">
     <%= f.label :location_type, "Location", class: "col-md-4 control-label" %>
-    <div class="col-md-8">
+    <div class="col-md-4">
       <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]]), {}, { id:"type-select", class: "form-control" } %>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-md-8 col-md-offset-4">
+    <div class="col-md-4">
       <div class="location-select offline">
         <%= text_field_tag :lookup_address, "", id: "lookup-address", class: "form-control" %>
-        <%= f.hidden_field :latitude %>
-        <%= f.hidden_field :longitude %>
-        <div id="map-picker" style="width:100%; height: 250px;"></div>
       </div>
       <div class="location-select online" style="display:none;">
         <%= f.text_field :online_location, placeholder: "http://...", class: "form-control" %>
@@ -25,8 +20,29 @@
       </div>
     </div>
   </div>
+  <div class="form-group location-select offline">
+    <div class="col-md-8 col-md-offset-4">
+      <div class="location-select offline">
+        <%= f.hidden_field :latitude %>
+        <%= f.hidden_field :longitude %>
+        <div id="map-picker" style="width:100%; height: 250px;"></div>
+      </div>
+    </div>
+  </div>
 
-  <%= f.submit "Create league", class: "btn btn-success" %>
+  <div class="form-group">
+    <%= f.label :description, "Description", class: "col-md-4 control-label" %>
+    <div class="col-md-8">
+      <%= f.text_area :description_markdown, class: "form-control", placeholder: "Provide information about day/time of offline group meetings, specific directions to location", rows: 8 %>
+      <small class="help-block">Accepts <a href="#markdown">markdown</a></small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-8 col-md-offset-4">
+      <%= f.submit "Create league", class: "btn btn-success" %>
+    </div>
+  </div>
 <% end %>
 
 <script type="text/javascript">
@@ -67,7 +83,6 @@ var setMapPicker = function(){
 
 $(document).ready(function(){
   getLocation();
-
 
   $('#type-select').on('change',function(e){
     var show = $(this).val();

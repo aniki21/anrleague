@@ -17,6 +17,9 @@ class Liga < ActiveRecord::Base
   scope :online, ->() { where(location_type: "online") }
   scope :offline, ->() { where(location_type: "offline") }
 
+  # Callbacks
+  before_validation :render_markdown
+
   # Methods
   def slug
     self.display_name.parameterize
@@ -33,5 +36,15 @@ class Liga < ActiveRecord::Base
   def nearby(radius=5)
     return Liga.offline.within(radius,origin:self) if self.offline?
     return []
+  end
+
+  def latlong
+    return "#{latitude},#{longitude}"
+  end
+
+
+  private
+  def render_markdown
+    self.description_html = MARKDOWN.render(self.description_markdown)
   end
 end

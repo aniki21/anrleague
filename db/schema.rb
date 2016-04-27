@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426231257) do
+ActiveRecord::Schema.define(version: 20160427130336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,12 +55,14 @@ ActiveRecord::Schema.define(version: 20160426231257) do
   create_table "ligas", force: :cascade do |t|
     t.string   "display_name"
     t.integer  "owner_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "location_type"
     t.string   "online_location"
-    t.decimal  "latitude",        default: 0.0
-    t.decimal  "longitude",       default: 0.0
+    t.decimal  "latitude",             default: 0.0
+    t.decimal  "longitude",            default: 0.0
+    t.text     "description_markdown"
+    t.text     "description_html"
   end
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree

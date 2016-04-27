@@ -56,3 +56,6 @@ gem 'font-awesome-rails'
 
 # Geolocation
 gem 'geokit-rails'
+
+# Markdown
+gem 'redcarpet'

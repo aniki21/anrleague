@@ -45,6 +45,6 @@ class LeaguesController < ApplicationController
 
   private
   def liga_params
-    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude)
+    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown)
   end
 end
