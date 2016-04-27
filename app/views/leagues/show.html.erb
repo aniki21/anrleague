@@ -1,48 +1,25 @@
 <h1>
   <%= @league.display_name %>
-  <% if @league.offline? %><small><%= offline_league_location(@league) %></small><% end %>
+  <% if @league.offline? %><small><%= @league.offline_location %></small><% end %>
 </h1>
 <%= (@league.description_html || "").html_safe %>
 
 <% if logged_in? && current_user.member_of?(@league) %>
   <h3>My Games</h3>
-  <p>Coming soon...</p>
+    <% unless @season.blank? %>
+      <%= render partial: "seasons/user_games", locals: { games: Game.for_player(current_user.id,@season.id) } %>
+    <% else %>
+      <p>No games scheduled</p>
+    <% end %>
 <% else %>
-  <p><%= link_to "Sign up to this league", "#coming-soon", class: "btn btn-success" if true %></p>
+  <p><%= link_to "Sign up to this league", signup_league_path(@league.id), class: "btn btn-success" if true %></p>
 <% end %>
 
 <div class="row">
 
   <div class="col-md-8">
     <% unless @season.blank? %>
-      <h3><%= @season.display_name %> - League table</h3>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th class="narrow text-center">#</th>
-              <th>Player</th>
-              <th class="narrow text-center"><span title="Wins" data-toggle="tooltip" data-placement="top">W</span></th>
-              <th class="narrow text-center"><span title="Losses" data-toggle="tooltip" data-placement="top">L</span></th>
-              <th class="narrow text-center"><span title="Agenda Points" data-toggle="tooltip" data-placement="top">AP</span></th>
-              <th class="narrow text-center"><span title="League Points" data-toggle="tooltip" data-placement="top">LP</span></th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr><td colspan="6" class="text-center"><em>Coming soon!</em></td></tr>
-          <% (1..5).each do |i| %>
-            <tr>
-              <td class="text-center"><%= i %></td>
-              <td><%= current_user.display_name %><%= " <small>#{current_user.jinteki_username}</small>".html_safe unless current_user.jinteki_username.blank? %></td>
-              <td class="text-center"><%= rand(1..5) %></td>
-              <td class="text-center"><%= rand(1..5) %></td>
-              <td class="text-center"><%= rand(1..45) %></td>
-              <td class="text-center"><%= rand(1..45) %></td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
+      <%= render partial: "seasons/league_table", locals: { season: @season } %>
     <% end %>
   </div>
 

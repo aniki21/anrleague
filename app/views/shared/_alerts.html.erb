@@ -1,6 +1,7 @@
 <% if flash.any? %>
   <% flash.to_hash.each do |key,msg| %>
-    <div class="alert alert-<%= alert_flash(key) %>">
+    <div class="alert alert-<%= alert_flash(key) %> alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <p><%= msg %></p>
     </div>
   <% end %>

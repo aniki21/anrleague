@@ -1,0 +1,3 @@
+<% games.each do |game| %>
+  <p><%= game.runner_player.display_name %> (<%= game.runner_identity.blank? ? "Runner" : game.runner_identity.display_name %>) -v- <%= game.corp_player.display_name %> (<%= game.corp_identity.blank? ? "Corp" : game.corp_identity.display_name %>) &mdash; <%= link_to "Enter result", "#" %></p>
+<% end %>
