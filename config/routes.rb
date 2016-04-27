@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post '/register' => "users#create"
 
   # Profile
-  get '/profile' => "users#show"
+  get '/profile' => "users#show", as: :profile
   resources :users, only: [:show,:edit,:update] do
     
   end

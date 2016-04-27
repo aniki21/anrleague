@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
 
   # POST /login
   def create
-    redir_path = params[:path].blank? ? root_path : params[:path]
+    redir_path = params[:path].blank? ? profile_path : params[:path]
     if login(params[:email],params[:password],params[:remember_me])
       flash[:success] = "Login successful"
       redirect_to redir_path and return
@@ -15,7 +15,6 @@ class SessionsController < ApplicationController
       flash[:error] = "Unable to log in. Check your username and password and try again."
       redirect_to login_path and return
     end
-
   end
 
   # GET /logout
