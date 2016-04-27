@@ -24,7 +24,7 @@ class GamesController < ApplicationController
         flash[:error] = "You don't have permission to do that"
       end
     else
-      flash [:error] = "The requested game could not be found in the specified league"
+      flash[:error] = "The requested game could not be found in the specified league"
     end
   end
 
