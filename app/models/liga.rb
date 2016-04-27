@@ -19,6 +19,7 @@ class Liga < ActiveRecord::Base
 
   # Callbacks
   before_validation :render_markdown
+  before_validation :set_offline_location, if: :offline?
 
   # Methods
   def slug
@@ -33,6 +34,11 @@ class Liga < ActiveRecord::Base
     self.location_type == "offline"
   end
 
+  def current_season
+    self.seasons.active.last || self.seasons.closed.last
+  end
+
+  # Location functions
   def nearby(radius=5)
     return Liga.offline.within(radius,origin:self) if self.offline?
     return []
@@ -46,5 +52,15 @@ class Liga < ActiveRecord::Base
   private
   def render_markdown
     self.description_html = MARKDOWN.render(self.description_markdown)
+  end
+
+  def set_offline_location
+      lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
+      loc = []
+      loc.push(lookup.city) unless lookup.city.blank?
+      loc.push(lookup.state) unless lookup.state.blank?
+      loc.push(lookup.country) unless lookup.country.blank?
+
+      self.offline_location = loc.join(", ")    
   end
 end

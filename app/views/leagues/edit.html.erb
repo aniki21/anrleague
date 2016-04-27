@@ -1,3 +1,5 @@
 <h1>LeaguesController#edit</h1>
 
-<%= render partial: "leagues/form", locals: { league: @league } %>
+<%= form_for @league, url: league_path(@league.id), html: { class: "form-horizontal" } do |f| %>
+<%= render partial: "leagues/form", locals: { f: f } %>
+<% end %>

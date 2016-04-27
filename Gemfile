@@ -59,3 +59,6 @@ gem 'geokit-rails'
 
 # Markdown
 gem 'redcarpet'
+
+# AASM
+gem 'aasm'

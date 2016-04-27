@@ -2,8 +2,8 @@
 
 <% @leagues.each do |league| %>
   <h3>
-    <%= link_to league.display_name, league_path(league.id,league.slug) %>
-    <% if league.offline? %><small><%= offline_league_location(league) %></small><% end %>
+    <%= link_to league.display_name, show_league_path(league.id,league.slug) %>
+    <% if league.offline? && !league.offline_location.blank? %><small><%= league.offline_location %></small><% end %>
   </h3>
   <%= (league.description_html || "").html_safe %>
 <% end %>

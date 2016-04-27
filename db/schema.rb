@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427130336) do
+ActiveRecord::Schema.define(version: 20160427155151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160427130336) do
     t.decimal  "longitude",            default: 0.0
     t.text     "description_markdown"
     t.text     "description_html"
+    t.string   "offline_location"
   end
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
@@ -72,7 +73,10 @@ ActiveRecord::Schema.define(version: 20160427130336) do
     t.string   "display_name"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "aasm_state"
   end
+
+  add_index "seasons", ["aasm_state"], name: "index_seasons_on_aasm_state", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                           null: false

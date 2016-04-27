@@ -13,10 +13,15 @@ class LeaguesController < ApplicationController
 
   def show
     @league = Liga.find_by_id(params[:id])
+    if params[:slug].blank?
+      redirect_to show_league_path(@league.id,@league.slug) and return
+    end
     if @league.blank?
       flash[:error] = "The requested league could not be found"
       redirect_to root_path and return
     end
+
+    @season = @league.current_season
   end
 
   def new
@@ -35,9 +40,36 @@ class LeaguesController < ApplicationController
   end
 
   def edit
+    @league = Liga.find_by_id(params[:id])
+
+    if @league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+
+    unless current_user.id == @league.owner_id
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(@league.id,@league.slug)
+    end
   end
 
   def update
+    @league = Liga.find_by_id(params[:id])
+
+    if @league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+
+    unless current_user.id == @league.owner_id
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(@league.id,@league.slug)
+    end
+
+    if @league.update_attributes(liga_params)
+      flash[:success] = "League updated"
+      redirect_to show_league_path(@league.id,@league.slug)
+    end
   end
 
   def destroy

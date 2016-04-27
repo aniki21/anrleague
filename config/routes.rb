@@ -17,8 +17,11 @@ Rails.application.routes.draw do
   end
 
   # Leagues
-  get '/leagues/:id/:slug' => 'leagues#show', as: 'league'
-  resources :leagues, except: [:show]
+  resources :leagues do
+    resources :games do
+    end
+  end
+  get '/leagues/:id/:slug', to: "leagues#show", as: :show_league
 
   root 'home#index'
 end
