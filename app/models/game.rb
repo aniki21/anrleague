@@ -20,9 +20,9 @@ class Game < ActiveRecord::Base
   scope :corp_win, ->() { where(result:[3,4]) }
 
   scope :for_player, ->(player_id,season_id) { where("runner_player_id = ? OR corp_player_id = ?",player_id, player_id) }
-  scope :player_season_wins, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result IN ('1','2')) OR (corp_player_id = ? AND result IN ('3','4'))",player_id,player_id) }
-  scope :player_season_losses, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result IN ('3','4')) OR (corp_player_id = ? AND result IN ('1','2'))",player_id,player_id) }
-  scope :player_season_draws, ->(player_id,season_id) { where(season_id: season_id).where("runner_player_id = ? OR corp_player_id = ?",player_id,player_id).draw_time }
+  scope :player_season_wins, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result_id IN (?)) OR (corp_player_id = ? AND result_id IN (?))",player_id,Result.runner_win.map(&:id),player_id,Result.corp_win.map(&:id)) }
+  scope :player_season_losses, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result_id IN (?)) OR (corp_player_id = ? AND result_id IN (?))",player_id,Result.corp_win.map(&:id),player_id,Result.runner_win.map(&:id)) }
+  scope :player_season_draws, ->(player_id,season_id) { for_player(player_id,season_id).where(result_id: Result.where(winning_side:"draw")).map(&:id) }
 
   # Valid results
   # enum result: [
