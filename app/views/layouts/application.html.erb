@@ -9,6 +9,19 @@
     <% if @require_maps %><script type="text/javascript" src='//maps.google.com/maps/api/js?libraries=places&key=<%= ENV['maps_api_key'] %>'></script><% end %>
     <link href='//fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Exo:400,600' rel='stylesheet' type='text/css'>
+
+    <!-- netrunnerdb integration -->
+    <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css",
+                            "http://netrunnerdb.com/bundles/netrunnerdbbuilder/css/icons.css"
+    %>
+    <%= javascript_include_tag "http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js",
+                               "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js",
+                               "http://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.data.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.format.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.tip.js"
+                             %>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
@@ -23,4 +36,15 @@
     
     <%= render partial: "shared/foot" %>
   </body>
+    <!-- netrunnerdb integration -->
+    <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css",
+                            "http://netrunnerdb.com/bundles/netrunnerdbbuilder/css/icons.css"
+    %>
+    <%= javascript_include_tag "http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js",
+                               "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js",
+                               "http://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.data.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.format.js",
+                               "http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.tip.js"
+                             %>
 </html>
