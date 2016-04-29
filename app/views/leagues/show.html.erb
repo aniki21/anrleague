@@ -7,7 +7,11 @@
 <% if logged_in? && current_user.member_of?(@league) %>
   <h3>My Games</h3>
     <% unless @season.blank? %>
-      <%= render partial: "seasons/user_games", locals: { games: @games } %>
+      <% if @games.any? %>
+        <%= render partial: "seasons/user_games", locals: { games: @games } %>
+      <% else %>
+        <p><em>You don't have any upcoming games</em></p>
+      <% end %>
     <% else %>
       <p>No active season</p>
     <% end %>

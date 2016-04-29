@@ -1,0 +1,31 @@
+<% model_name ||= "item" %>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Warning!
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete the specified <%= model_name %>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <%= link_to "Confirm deletion", "#", id:"modal-delete-confirmed", class: "btn btn-danger btn-ok", method: :delete %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var delete_url = '';
+$('[data-action="delete"]').on('click', function(e) {
+    var t = $(this);
+    e.preventDefault();
+    delete_url = t.attr("data-href");
+    $('#confirm-delete').modal('show');
+});
+
+$('#confirm-delete').on('show.bs.modal', function(e) {
+  $('#modal-delete-confirmed').attr("href",delete_url);
+});
+</script>

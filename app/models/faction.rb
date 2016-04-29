@@ -13,6 +13,7 @@ class Faction < ActiveRecord::Base
   scope :corp, ->() { where(side: "corp") }
 
   # Methods
+  
   private
   def set_icon_style
     self.icon_style ||= self.display_name.parameterize

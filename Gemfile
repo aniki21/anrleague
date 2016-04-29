@@ -60,5 +60,8 @@ gem 'geokit-rails'
 # Markdown
 gem 'redcarpet'
 
+# Select2
+gem "select2-rails"
+
 # AASM
 gem 'aasm'

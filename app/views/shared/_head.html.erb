@@ -39,6 +39,10 @@
             <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>
             <li class="dropdown-header">Memberships</li>
             <li><a href="#">Coming soon</a></li>
+              <% if current_user.admin? %>
+                <li class="divider"></li>
+                <li><%= link_to "Admin Panel", "#" %></li>
+              <% end %>
             <li class="divider"></li>
             <li><%= link_to "Log out", logout_path %></li>
             <% else %>

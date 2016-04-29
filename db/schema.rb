@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427190000) do
+ActiveRecord::Schema.define(version: 20160429140501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20160427190000) do
     t.integer  "corp_player_id"
     t.integer  "corp_identity_id"
     t.integer  "corp_agenda_points"
-    t.string   "result"
+    t.string   "result_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
@@ -71,6 +71,15 @@ ActiveRecord::Schema.define(version: 20160427190000) do
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
 
+  create_table "results", force: :cascade do |t|
+    t.string   "display_name"
+    t.string   "winning_side"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "results", ["winning_side"], name: "index_results_on_winning_side", using: :btree
+
   create_table "seasons", force: :cascade do |t|
     t.integer  "league_id"
     t.string   "display_name"
@@ -82,7 +91,7 @@ ActiveRecord::Schema.define(version: 20160427190000) do
   add_index "seasons", ["aasm_state"], name: "index_seasons_on_aasm_state", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                           null: false
+    t.string   "email",                                           null: false
     t.string   "crypted_password"
     t.string   "salt"
     t.datetime "created_at"
@@ -94,6 +103,7 @@ ActiveRecord::Schema.define(version: 20160427190000) do
     t.datetime "reset_password_email_sent_at"
     t.string   "display_name"
     t.string   "jinteki_username"
+    t.boolean  "admin",                           default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

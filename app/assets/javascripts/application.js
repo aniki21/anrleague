@@ -14,8 +14,13 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require select2
 //= require_tree .
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
+
+  $( ".select2" ).select2({
+    theme: "bootstrap"
+  });
 })

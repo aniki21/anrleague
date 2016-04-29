@@ -16,17 +16,8 @@ module ApplicationHelper
     end
   end
 
-  def offline_league_location(league)
-    if league.offline?
-      lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode league.latlong
-      loc = []
-      loc.push(lookup.city) unless lookup.city.blank?
-      loc.push(lookup.state) unless lookup.state.blank?
-      loc.push(lookup.country) unless lookup.country.blank?
-
-      return loc.join(", ")
-    else
-      return nil
-    end
+  def player_identity(identity,default="Unknown")
+    return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> #{identity.display_name}</a>".html_safe unless identity.blank?
+    return "<em>#{default}</em>".html_safe
   end
 end

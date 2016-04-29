@@ -21,10 +21,18 @@ Rails.application.routes.draw do
     member do
       get 'signup', to: 'leagues#signup', as: :signup
     end
+    resources :seasons do
     resources :games do
+    end
     end
   end
   get '/leagues/:id/:slug', to: "leagues#show", as: :show_league
+
+  # Admin tools
+  get '/admin' => 'admin#index'
+  namespace :admin do
+    resources :results, except: [:new,:show]
+  end
 
   root 'home#index'
 end

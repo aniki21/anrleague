@@ -1,0 +1,42 @@
+<h1>Game Results</h1>
+
+<h3>New result</h3>
+<%= render partial: "admin/results/form", locals: { result: Result.new } %>
+
+<h3>Existing results</h3>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Display name</th>
+        <th>Winning side</th>
+        <th class="narrow"><!-- edit --></th>
+        <th class="narrow"><!-- delete --></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% if @results.any? %>
+      <% @results.each do |result| %>
+        <tr>
+          <td><%= result.display_name %></td>
+          <td><%= result.winning_side.humanize %></td>
+          <td>
+            <%= link_to edit_admin_result_path(result.id) do %>
+              <i class="fa fa-edit"></i>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to '<i class="fa fa-remove"></i>'.html_safe, "javascript:void(0)", "data-action": "delete", "data-href":admin_result_path(result.id) %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="3" class="text-center"><em>No results have been created yet</em></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "Game Result" } %>

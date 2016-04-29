@@ -34,6 +34,8 @@ class ProfileController < ApplicationController
       flash[:error] = "User not found"
       redirect_to root_path and return
     end
+
+    @own_profile = @user.id == current_user.id
   end
 
   # GET /profile/edit

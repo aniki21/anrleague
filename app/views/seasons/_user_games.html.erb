@@ -1,3 +1,28 @@
-<% games.each do |game| %>
-  <p><%= game.runner_player.display_name %> (<%= game.runner_identity.blank? ? "Runner" : game.runner_identity.display_name %>) -v- <%= game.corp_player.display_name %> (<%= game.corp_identity.blank? ? "Corp" : game.corp_identity.display_name %>) &mdash; <%= link_to "Enter result", "#" %></p>
-<% end %>
+<div class="row">
+<div class="table-responsive col-md-8">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width:40%">Runner</th>
+        <th style="width:40%">Corp</th>
+        <th><!-- result --></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% games.each do |game| %>
+      <tr>
+        <td>
+          <%= game.runner_player.display_name %>
+          <small><%= player_identity(game.runner_identity,"Runner") %></small>
+        </td>
+        <td>
+          <%= game.corp_player.display_name %>
+          <small><%= player_identity(game.corp_identity,"Corp") %></small></br>
+        </td>
+        <td class="text-right"><%= link_to 'Update'.html_safe, edit_league_season_game_path(game.league_id,game.season_id,game.id), class:"btn btn-default btn-xs" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+</div>

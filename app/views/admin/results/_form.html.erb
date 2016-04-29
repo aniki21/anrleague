@@ -1,0 +1,11 @@
+<%= form_for [:admin,result], html: { class: "form-inline" } do |f| %>
+  <div class="form-group">
+    <%= f.label :display_name, class:"sr-only" %>
+    <%= f.text_field :display_name, placeholder: "Display name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :winning_side, class:"sr-only" %>
+    <%= f.select :winning_side, options_for_select([["Corporation","corp"],["Runner","runner"]]), { prompt:"Draw" }, { class: "form-control" } %>
+  </div>
+  <%= f.submit "Save", class:"btn btn-success" %>
+<% end %>

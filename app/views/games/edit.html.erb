@@ -1,0 +1,61 @@
+<h1>Update game result</h1>
+
+<%= form_for @game, url: league_season_game_path(@game.league_id,@game.season_id,@game.id), html: {  }  do |f| %>
+  <div class="row">
+    <div class="col-md-4 form-horizontal col-md-offset-2">
+      <h3><%= @game.corp_player.display_name %> <small>Corporation</small></h3>
+      <div class="form-group">
+        <%= f.label :corp_identity_id, "Identity", class: "col-md-4 control-label" %>
+        <div class="col-md-8">
+          <%= f.select :corp_identity_id, options_for_select(@corps, @game.corp_identity_id), {}, { class: "select2 form-control" } %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :corp_agenda_points, "Agenda points", class: "col-md-4 control-label" %>
+        <div class="col-md-8">
+          <div class="input-group">
+            <%= f.number_field :corp_agenda_points, min:0, max:7, class: "form-control text-right" %>
+            <span class="input-group-addon"> Agenda Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 form-horizontal">
+      <h3><%= @game.runner_player.display_name %> <small>Runner</small></h3>
+      <div class="form-group">
+        <%= f.label :runner_identity_id, "Identity", class: "col-md-4 control-label" %>
+        <div class="col-md-8">
+          <%= f.select :runner_identity_id, options_for_select(@runners, @game.runner_identity_id), {}, { class: "select2 form-control" } %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :runner_agenda_points, "Score", class: "col-md-4 control-label" %>
+        <div class="col-md-8">
+          <div class="input-group">
+            <%= f.number_field :runner_agenda_points, min:0, max:7, class: "form-control text-right" %>
+            <span class="input-group-addon"> Agenda Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 form-horizontal col-md-offset-2">
+      <div class="form-group">
+        <%= f.label :result_id, "Result", class: "control-label col-md-4" %>
+        <div class="col-md-6">
+          <%= f.select :result_id, options_for_select(@results), { prompt: "Select result" }, { class:"form-control" } %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-6 col-md-offset-4">
+          <%= f.submit "Save game", class: "btn btn-success" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

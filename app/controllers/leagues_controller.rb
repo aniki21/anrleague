@@ -25,6 +25,7 @@ class LeaguesController < ApplicationController
     end
 
     @season = @league.current_season
+    #@require_maps = true
      
     if logged_in? && !@season.blank?
       @games = Game.for_player(current_user.id,@season.id)
