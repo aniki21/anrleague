@@ -16,8 +16,15 @@ class GamesController < ApplicationController
 
     if logged_in? && current_user.member_of?(@league) && params[:all] != "true"
       @games = Game.for_player(current_user.id,@season.id)
+      @title = "My games"
     else
       @games = Game.where(season_id: @season.id)
+      @title = "All games"
+    end
+
+    if params[:filter] == "unplayed"
+      @games = @games.unplayed
+      @title += " (upcoming)"
     end
   end
 

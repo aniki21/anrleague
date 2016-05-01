@@ -1,3 +1,4 @@
 <h1><%= @league.display_name %> &ndash; <%= @season.display_name %></h1>
 
+<h3><%= @title %></h3>
 <%= render partial: "seasons/user_games", locals: { games: @games } %>

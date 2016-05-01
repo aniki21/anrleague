@@ -1,15 +1,15 @@
   <div class="form-group">
-    <%= f.label :display_name, "League name", class: "col-md-2 control-label" %>
-    <div class="col-md-6">
+    <%= f.label :display_name, "League name", class: "col-md-4 control-label" %>
+    <div class="col-md-8">
       <%= f.text_field :display_name, class: "form-control" %>
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :location_type, "Location", class: "col-md-2 control-label" %>
-    <div class="col-md-3">
+    <%= f.label :location_type, "Location", class: "col-md-4 control-label" %>
+    <div class="col-md-4">
       <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]]), {}, { id:"type-select", class: "form-control" } %>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="location-select offline">
         <%= text_field_tag :lookup_address, @league.latlong, id: "lookup-address", class: "form-control" %>
       </div>
@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="form-group location-select offline">
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-8 col-md-offset-4">
       <div class="location-select offline">
         <%= f.hidden_field :latitude %>
         <%= f.hidden_field :longitude %>
@@ -30,16 +30,16 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :description, "Description", class: "col-md-2 control-label" %>
-    <div class="col-md-6">
+    <%= f.label :description, "Description", class: "col-md-4 control-label" %>
+    <div class="col-md-8">
       <%= f.text_area :description_markdown, class: "form-control", placeholder: "Provide information about day/time of offline group meetings, specific directions to location", rows: 8 %>
       <small class="help-block">Accepts <a href="#markdown">markdown</a></small>
     </div>
   </div>
 
   <div class="form-group">
-    <div class="col-md-6 col-md-offset-2">
-      <%= f.submit "Create league", class: "btn btn-success" %>
+    <div class="col-md-8 col-md-offset-4">
+      <%= f.submit "Save", class: "btn btn-success" %>
     </div>
   </div>
 

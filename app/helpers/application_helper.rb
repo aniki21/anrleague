@@ -17,7 +17,7 @@ module ApplicationHelper
   end
 
   def player_identity(identity,default="Unknown")
-    return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> #{identity.display_name}</a>".html_safe unless identity.blank?
+    return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
     return nil
     case default
     when "Runner"
