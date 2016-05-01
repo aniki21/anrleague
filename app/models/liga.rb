@@ -23,7 +23,7 @@ class Liga < ActiveRecord::Base
 
   # Methods
   def players
-    (users + [owner]).uniq
+    User.where(id: (users + [owner]).map(&:id).uniq).order("lower(display_name) ASC")
   end
   
   def slug

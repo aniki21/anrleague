@@ -5,6 +5,7 @@
       <tr>
         <th class="narrow text-center">#</th>
         <th>Player</th>
+        <th class="narrow text-center"><span title="Played" data-toggle="tooltip" data-placement="top">P</span></th>
         <th class="narrow text-center"><span title="Wins" data-toggle="tooltip" data-placement="top">W</span></th>
         <th class="narrow text-center"><span title="Losses" data-toggle="tooltip" data-placement="top">L</span></th>
         <th class="narrow text-center"><span title="Agenda Points" data-toggle="tooltip" data-placement="top">AP</span></th>
@@ -12,15 +13,21 @@
       </tr>
     </thead>
     <tbody>
-      <% season.table.each_with_index do |row,pos| %>
+      <% last_lp = nil %>
+      <% last_pos = 1 %>
+      <% season.table.each_with_index do |row,i| %>
+        <% pos = last_lp == row[:lp] ? last_pos : i+1 %>
         <tr>
-          <td class="text-center"><%= pos + 1 %></td>
+          <td class="text-center"><%= pos %></td>
           <td><%= row[:name] %></td>
+          <td class="text-center"><%= row[:played] %></td>
           <td class="text-center"><%= row[:wins] %></td>
           <td class="text-center"><%= row[:losses] %></td>
           <td class="text-center"><%= row[:ap] %></td>
           <td class="text-center"><%= row[:lp] %></td>
         </tr>
+        <% last_lp = row[:lp] %>
+        <% last_pos = pos %>
       <% end %>
     </tbody>
   </table>

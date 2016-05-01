@@ -34,10 +34,11 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-md-6">
     <h3>Users</h3>
+    <ul>
+      <% @league.players.each do |player| %>
+        <li><%= player.display_name %></li>
+      <% end %>
+    </ul>
 </div>

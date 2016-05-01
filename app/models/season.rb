@@ -8,6 +8,9 @@ class Season < ActiveRecord::Base
   validates :display_name, presence: true
   validate :display_name_unique_for_league
 
+  # Callbacks
+  before_save :update_table, on: :create
+
   # State machine
   include AASM
   aasm do
@@ -38,7 +41,7 @@ class Season < ActiveRecord::Base
     # { player_id: { name: "name", played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0 }
     _table = {}
 
-    games.each do |game|
+    self.games.each do |game|
       runner = game.runner_player
       corp = game.corp_player
       # initialize the players' league rows
@@ -47,6 +50,8 @@ class Season < ActiveRecord::Base
 
       # result
       unless game.result_id.blank?
+        _table[:"#{runner.id}"][:played] += 1
+        _table[:"#{corp.id}"][:played] += 1
         _table[:"#{runner.id}"][:ap] += game.runner_agenda_points
         _table[:"#{corp.id}"][:ap] += game.corp_agenda_points
 
