@@ -1,0 +1,7 @@
+<h1><%= @league.display_name %> Seasons</h1>
+
+<ul>
+  <% @seasons.each do |season| %>
+    <li><%= link_to season.display_name, league_season_path(@league.id,season.id) %></li>
+  <% end %>
+</ul>

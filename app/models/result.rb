@@ -7,4 +7,15 @@ class Result < ActiveRecord::Base
   scope :draw, ->() { where(winning_side: "draw") }
 
   # Methods
+  def runner_win?
+    self.winning_side == "runner"
+  end
+
+  def corp_win?
+    self.winning_side == "corp"
+  end
+
+  def draw?
+    self.winning_side == "draw"
+  end
 end

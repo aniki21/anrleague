@@ -7,6 +7,18 @@ class GamesController < ApplicationController
       flash[:error] = "The requested league could not be found"
       redirect_to leagues_path and return
     end
+
+    @season = Season.find_by_id(params[:season_id])
+    if @season.blank?
+      flash[:error] = "The requested season could not be found"
+      redirect_to league_path(@league.id,@league.slug)
+    end
+
+    if logged_in? && current_user.member_of?(@league) && params[:all] != "true"
+      @games = Game.for_player(current_user.id,@season.id)
+    else
+      @games = Game.where(season_id: @season.id)
+    end
   end
 
   # GET /leagues/:league_id/games/:id
@@ -30,6 +42,28 @@ class GamesController < ApplicationController
       flash[:error] = "The requested game could not be found in the specified league"
       redirect_to leagues_path and return
     end
+  end
+
+  def update
+    @game = Game.where(id: params[:id], league_id: params[:league_id]).first
+    unless @game.blank?
+      if @game.update_attributes(game_params)
+        @game.season.update_table!
+        flash[:success] = "Game saved"
+        redirect_to league_path(@game.league) and return
+      else
+        flash.now[:error] = @game.errors.full_messages.to_sentence
+        render action: :edit and return
+      end
+    else
+      flash[:error] = "The requested game could not be found"
+      redirect_to league_path(@game.league) and return
+    end
+  end
+
+  private
+  def game_params
+    params.require(:game).permit(:runner_identity_id, :runner_agenda_points, :corp_identity_id, :corp_agenda_points, :result_id)
   end
 
 end

@@ -1,0 +1,15 @@
+<h1><%= @league.display_name %> &ndash; <%= @season.display_name %></h1>
+
+<% if logged_in? %>
+  <% if @league.user_can_edit?(current_user.id) %>
+    <p>Edit tools</p>
+  <% end %>
+<% else %>
+  <p>Sign up?</p>
+<% end %>
+
+<% unless @season.league_table.blank? %>
+  <code><%= @season.table %></code>
+<% else %>
+  <p>League table blank</p>
+<% end %>

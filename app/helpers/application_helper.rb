@@ -18,6 +18,25 @@ module ApplicationHelper
 
   def player_identity(identity,default="Unknown")
     return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> #{identity.display_name}</a>".html_safe unless identity.blank?
-    return "<em>#{default}</em>".html_safe
+    return nil
+    case default
+    when "Runner"
+      return "<span class=\"nr-runner\">Runner</span>".html_safe
+    when "Corp"
+      return "<span class=\"nr-corp\">Corp</span>".html_safe
+    else
+      return "<em>#{default}</em>".html_safe
+    end
+  end
+
+  def result_row(result)
+    case result
+    when "Win"
+      return "success"
+    when "Loss"
+      return "danger"
+    else
+      return ""
+    end
   end
 end

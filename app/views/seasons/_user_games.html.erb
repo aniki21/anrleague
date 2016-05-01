@@ -3,23 +3,31 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th style="width:40%">Runner</th>
-        <th style="width:40%">Corp</th>
-        <th><!-- result --></th>
+        <th>Corporation</th>
+        <th>Runner</th>
+        <th>Result</th>
       </tr>
     </thead>
     <tbody>
     <% games.each do |game| %>
-      <tr>
-        <td>
-          <%= game.runner_player.display_name %>
-          <small><%= player_identity(game.runner_identity,"Runner") %></small>
-        </td>
+      <tr<% if game.has_player?(current_user.id) %> class="<%= result_row(game.result_for_player(current_user.id)) %>"<% end %>>
         <td>
           <%= game.corp_player.display_name %>
           <small><%= player_identity(game.corp_identity,"Corp") %></small></br>
         </td>
-        <td class="text-right"><%= link_to 'Update'.html_safe, edit_league_season_game_path(game.league_id,game.season_id,game.id), class:"btn btn-default btn-xs" %></td>
+        <td>
+          <%= game.runner_player.display_name %>
+          <small><%= player_identity(game.runner_identity,"Runner") %></small>
+        </td>
+        <% if game.has_player?(current_user.id) %>
+        <td>
+          <% if game.unplayed? %>
+            <%= link_to 'Submit result'.html_safe, edit_league_season_game_path(game.league_id,game.season_id,game.id), class:"btn btn-default btn-xs" %>
+          <% else %>
+            <%= game.result_for_player(current_user.id) %>
+          <% end %>
+        </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

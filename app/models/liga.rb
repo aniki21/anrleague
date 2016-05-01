@@ -4,9 +4,9 @@ class Liga < ActiveRecord::Base
                    lng_column_name: :longitude
 
   # Associations
+  belongs_to :owner, class_name: "User"
   has_many :liga_users
   has_many :users, through: :liga_users
-  belongs_to :owner, class_name: "User"
   has_many :seasons, foreign_key: "league_id"
   has_many :games, through: :seasons
 
@@ -22,6 +22,10 @@ class Liga < ActiveRecord::Base
   before_validation :set_offline_location, if: :offline?
 
   # Methods
+  def players
+    (users + [owner]).uniq
+  end
+  
   def slug
     self.display_name.parameterize
   end
@@ -48,6 +52,23 @@ class Liga < ActiveRecord::Base
     return "#{latitude},#{longitude}"
   end
 
+  # Management
+  def user_can_edit?(user_id)
+    return user_id == owner_id
+  end
+
+  # Points
+  def points_for_win
+    return 3
+  end
+
+  def points_for_draw
+    return 1
+  end
+
+  def points_for_loss
+    return 0
+  end
 
   private
   def render_markdown

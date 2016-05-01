@@ -25,10 +25,9 @@ class LeaguesController < ApplicationController
     end
 
     @season = @league.current_season
-    #@require_maps = true
      
     if logged_in? && !@season.blank?
-      @games = Game.for_player(current_user.id,@season.id)
+      @games = Game.for_player(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
     end
   end
 
@@ -39,6 +38,7 @@ class LeaguesController < ApplicationController
   # GET /leagues/new
   def new
     @league = Liga.new
+    @require_maps = true
   end
   
   # POST /leagues
@@ -66,6 +66,7 @@ class LeaguesController < ApplicationController
       flash[:error] = "You don't have permission to do that"
       redirect_to show_league_path(@league.id,@league.slug) and return
     end
+    @require_maps = true
   end
 
   # POST /league/:id
@@ -85,6 +86,10 @@ class LeaguesController < ApplicationController
     if @league.update_attributes(liga_params)
       flash[:success] = "League updated"
       redirect_to show_league_path(@league.id,@league.slug) and return
+    else
+      @require_maps = true
+      flash.now[:error] = @league.errors.full_messages.to_sentence
+      render action: :edit
     end
   end
 

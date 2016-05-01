@@ -12,15 +12,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td colspan="6" class="text-center"><em>Coming soon!</em></td></tr>
-      <% (1..5).each do |i| %>
+      <% season.table.each_with_index do |row,pos| %>
         <tr>
-          <td class="text-center"><%= i %></td>
-          <td><%= current_user.display_name %><%= " <small>#{current_user.jinteki_username}</small>".html_safe unless current_user.jinteki_username.blank? %></td>
-          <td class="text-center"><%= rand(1..5) %></td>
-          <td class="text-center"><%= rand(1..5) %></td>
-          <td class="text-center"><%= rand(1..45) %></td>
-          <td class="text-center"><%= rand(1..45) %></td>
+          <td class="text-center"><%= pos + 1 %></td>
+          <td><%= row[:name] %></td>
+          <td class="text-center"><%= row[:wins] %></td>
+          <td class="text-center"><%= row[:losses] %></td>
+          <td class="text-center"><%= row[:ap] %></td>
+          <td class="text-center"><%= row[:lp] %></td>
         </tr>
       <% end %>
     </tbody>

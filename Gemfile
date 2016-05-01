@@ -61,7 +61,11 @@ gem 'geokit-rails'
 gem 'redcarpet'
 
 # Select2
-gem "select2-rails"
+gem 'select2-rails'
 
 # AASM
 gem 'aasm'
+
+# pagination
+gem 'will_paginate'
+gem 'will_paginate-bootstrap'
