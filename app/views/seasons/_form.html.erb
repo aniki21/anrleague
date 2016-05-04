@@ -1,0 +1,7 @@
+<%= form_for season, url: league_seasons_path(season.league.id), html: { class: "form-inline" } do |f| %>
+  <%= f.hidden_field :league_id %>
+  <div class="form-group">
+    <%= f.text_field :display_name, class: "form-control", placeholder: "Display name" %>
+  </div>
+  <%= f.submit "Save", class: "btn btn-success" %>
+<% end %>

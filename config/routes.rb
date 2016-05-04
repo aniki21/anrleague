@@ -22,8 +22,11 @@ Rails.application.routes.draw do
       get 'signup', to: 'leagues#signup', as: :signup
     end
     resources :seasons do
-    resources :games do
-    end
+      member do
+        get '/activate', to: 'seasons#activate'
+      end
+      resources :games do
+      end
     end
   end
   get '/leagues/:id/:slug', to: "leagues#show", as: :show_league

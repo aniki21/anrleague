@@ -1,15 +1,15 @@
 class Season < ActiveRecord::Base
   # Associations
   belongs_to :league, class_name: "Liga"
-  has_many :games
+  has_many :games, dependent: :destroy
 
   # Validations
   validates :league_id, presence: true
-  validates :display_name, presence: true
+  validates :display_name, presence: true, length: { maximum: 50, message: "cannot be more than 50 characters" }
   validate :display_name_unique_for_league
 
   # Callbacks
-  before_save :update_table, on: :create
+  before_validation :update_table, on: :create
 
   # State machine
   include AASM
@@ -103,6 +103,7 @@ class Season < ActiveRecord::Base
   end
 
   def close_active_seasons
-    self.league.seasons.active.each{|s| s.close! if s.may_close }
+    self.league.seasons.closed.each{|s| s.games.delete_all && s.destroy }
+    self.league.seasons.active.each{|s| s.close! if s.may_close? }
   end
 end

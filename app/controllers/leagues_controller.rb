@@ -67,6 +67,8 @@ class LeaguesController < ApplicationController
       redirect_to show_league_path(@league.id,@league.slug) and return
     end
     @require_maps = true
+    @season = Season.new(league_id: @league.id)
+    @current_season_id = @league.current_season.id rescue 0
   end
 
   # POST /league/:id

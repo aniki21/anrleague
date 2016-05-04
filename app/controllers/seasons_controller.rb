@@ -21,14 +21,13 @@ class SeasonsController < ApplicationController
 
   # POST /league/:league_id/seasons
   def create
-    @season = Season.new(league_id: params[:league_id], league_table: "[]")
-
+    @season = Season.new(season_params) 
     if @season.save
-      generate_games(@season)
+      flash[:success] = "The new season has been created"
     else
-      flash.now[:errors] = @season.errors.full_messages.to_sentence
-      render action: :new
+      flash[:error] = @season.errors.full_messages.to_sentence
     end
+    redirect_to edit_league_path(@season.league_id) and return
   end
 
   def edit
@@ -37,10 +36,39 @@ class SeasonsController < ApplicationController
   def update
   end
   
+  # DELETE /leagues/:league_id/seasons/:id
   def destroy
+    league = Liga.find_by_id(params[:league_id])
+    unless league.blank?
+      season = Season.where(league_id:params[:league_id],id:params[:id]).first
+      unless season.blank?
+        flash[:success] = "Season deleted"
+        season.destroy
+      else
+        flash[:error] = "The requested season could not be found"
+      end
+      redirect_to edit_league_path(league.id) and return
+    else
+      flash[:error] = "The requested league could not be found"
+    end
+    redirect_to leagues_path and return
   end
 
+  # GET /leagues/:league_id/seasons/:id/activate
   def activate
+    season = Season.find_by_id(params[:id])
+    unless season.blank?
+      if season.may_activate?
+        season.activate!
+        generate_games(season)
+        flash[:success] = "Season activated!"
+      else
+        flash[:error] = "Season could not be activated"
+      end
+    else
+      flash[:error] = "The requested season could not be found"
+    end
+    redirect_to edit_league_path(params[:league_id])
   end
 
   def deactivate
@@ -56,18 +84,21 @@ class SeasonsController < ApplicationController
   end
 
   def season_params
-    params.require(:season).permit(:display_name)
+    params.require(:season).permit(:display_name, :league_id)
   end
 
   def generate_games(season)
+    puts "Generating games for season #{season.id}"
     player_ids = season.players.map(&:id)
     player_ids.each do |player_id|
       opponent_ids = player_ids - [player_id]
       opponent_ids.each do |opponent_id|
         # create two games - one as runner, one as corp
-        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: player_id, corp_player_id: opponent_id)
-        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: opponent_id, corp_player_id: player_id)
+        # UNLESS ONE ALREADY EXISTS FOR THIS PLAYER!
+        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: player_id, corp_player_id: opponent_id) unless Game.where(league_id: season.league_id, season_id: season.id, runner_player_id: player_id, corp_player_id:opponent_id).any?
+        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: opponent_id, corp_player_id: player_id) unless Game.where(league_id: season.league_id, season_id: season.id, runner_player_id: opponent_id, corp_player_id: player_id).any?
       end
     end
+    season.update_table!
   end
 end

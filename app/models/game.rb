@@ -15,7 +15,7 @@ class Game < ActiveRecord::Base
   validates :corp_player_id, presence: true
 
   # Callbacks
-  before_save :set_winning_player_id if :result_id
+  before_save :set_winning_player_id, if: :result_id
 
   # Scopes
   scope :unplayed, ->() { where(result_id:nil) }

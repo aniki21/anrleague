@@ -12,25 +12,25 @@
 
 <div class="row">
   <div class="col-md-8">
-<% if logged_in? && current_user.member_of?(@league) %>
-  <h3>My Games</h3>
-    <% unless @season.blank? %>
-      <% if @games.any? %>
-        <p><%= page_entries_info(@games,model:"games") %></p>
-        <%= render partial: "seasons/user_games", locals: { games: @games } %>
-        <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
-      <% else %>
-        <p><em>You don't have any upcoming games</em></p>
-      <% end %>
-    <% else %>
-      <p>No active season</p>
-    <% end %>
-<% else %>
-  <p><%= link_to "Sign up to this league", signup_league_path(@league.id), class: "btn btn-success" if true %></p>
-<% end %>
-
     <% unless @season.blank? %>
       <%= render partial: "seasons/league_table", locals: { season: @season } %>
+    <% end %>
+
+    <% if logged_in? && current_user.member_of?(@league) %>
+      <h3>My Games</h3>
+        <% unless @season.blank? %>
+          <% if @games.any? %>
+            <p><%= page_entries_info(@games,model:"games") %></p>
+            <%= render partial: "seasons/user_games", locals: { games: @games } %>
+            <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
+          <% else %>
+            <p><em>You don't have any upcoming games</em></p>
+          <% end %>
+        <% else %>
+          <p>No active season</p>
+        <% end %>
+    <% else %>
+      <p><%= link_to "Sign up to this league", signup_league_path(@league.id), class: "btn btn-success" if true %></p>
     <% end %>
   </div>
 

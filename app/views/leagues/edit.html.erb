@@ -10,23 +10,34 @@
 
   <div class="col-md-6">
     <h3>Seasons</h3>
-    <p><%= link_to "New season", new_league_season_path(@league.id), class: "btn btn-default btn-sm" %></p>
+    <h4>New Season</h4>
+    <%= render partial: "seasons/form", locals: { season: @season } %>
+    <h4>Existing</h4>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>Name</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
         <% if @league.seasons.any? %>
           <% @league.seasons.each do |season| %>
-            <tr>
-              <td><%= season.display_name %></td>
+            <tr<% if season.id == @current_season_id %> class="success"<% end %>>
               <td>
-                <%= link_to '<i class="fa fa-edit"></i>'.html_safe, edit_league_season_path(@league.id,season.id) %>
-                <i class="fa fa-times"></i>
+                <%= season.display_name %>
+                <%= link_to "<small>Edit</small>".html_safe, edit_league_season_path(@league.id,season.id) if season.upcoming? %>
+              </td>
+              <td>
+                <%= season.aasm_state.humanize %>
+              </td>
+              <td>
+                <%= link_to "Set active", activate_league_season_path(@league.id,season.id), class: "btn btn-xs btn-default" if season.may_activate? %>
+                <%= link_to "Close", "#close", class:"btn btn-xs btn-warning" if season.may_close? %>
+                <%= link_to "Export", "#download", class:"btn btn-xs btn-info" unless season.upcoming? %>
+                <%= link_to "Delete", "javascript:void(0);", "data-href":league_season_path(@league.id,season.id), "data-action": :delete, class:"btn btn-xs btn-danger" if season.closed? %>
               </td>
             </tr>
           <% end %>
@@ -42,3 +53,5 @@
       <% end %>
     </ul>
 </div>
+
+<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season" } %>
