@@ -43,8 +43,12 @@ class Game < ActiveRecord::Base
   end
 
   def result_for_player(player_id)
-    return nil if self.result_id.blank?
+    return nil if self.result_id.blank? || ![self.runner_player_id,self.corp_player_id].include?(player_id)
     return (self.winning_player_id == player_id) ? "Win" : (self.winning_player_id.blank? ? "Draw" : "Loss")
+  end
+
+  def players
+    User.where(id: [self.corp_player_id,self.runner_player_id])
   end
 
   private

@@ -1,0 +1,35 @@
+<h1>Game Result</h1>
+
+<p>A game result has been recorded for <%= @game.league.display_name %> &ndash; <%= @game.season.display_name %>.</p>
+
+<p><strong>Result:</strong> <%= @game.result.display_name %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Corporation</th>
+      <th>Runner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><!-- players -->
+      <td>
+        <%= @game.corp_player.display_name %>
+      </td>
+      <td>
+        <%= @game.runner_player.display_name %>
+      </td>
+    </tr>
+    <tr><!-- identities -->
+      <td>
+        <%= @game.corp_identity.display_name %>
+      </td>
+        <%= @game.runner_identity.display_name %>
+      </td>
+    </tr>
+    <tr><!-- agenda points -->
+      <td><%= pluralize(@game.corp_agenda_points,"Agenda point") %></td>
+      <td><%= pluralize(@game.runner_agenda_points,"Agenda point") %></td>
+    </tr>
+  </tbody>
+</table>

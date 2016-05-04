@@ -19,6 +19,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+$header-font:'Coda', cursive;
+$body-font:'Source Sans Pro',serif;
+
 body{
   background: #555;
   color:#111;
@@ -26,11 +29,11 @@ body{
 
 body,footer{
   font-size:15px;
-  font-family:'Lora', serif;
+  font-family:$body-font;
 }
 
 header{
-  font-family:'Exo', sans-serif;
+  font-family:$header-font;
   font-size:1.2em;
 }
 
@@ -70,7 +73,7 @@ footer{
   padding:6px;
 }
 .dropdown-menu > li > a{
-  font-family:'Lora', serif;
+  font-family:$body-font;
   &:hover,&:focus{
     background-color:#555;
     color:#FCFCFC;
@@ -89,7 +92,7 @@ footer{
 
 // General text
 h1,h2,h3,h4{
-  font-family:'Exo',sans-serif;
+  font-family:$header-font;
 }
 
 // Forms
