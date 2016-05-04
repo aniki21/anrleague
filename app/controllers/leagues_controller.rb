@@ -101,8 +101,7 @@ class LeaguesController < ApplicationController
 
   # GET /leagues/search
   def search
-    q = "%#{params[:q]}%".downcase
-    @leagues = Liga.where("lower(display_name) LIKE ? OR lower(offline_location) LIKE ?",q,q)
+    @leagues = Liga.search(params[:q])
     render json: @leagues and return
   end
 

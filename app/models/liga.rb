@@ -1,38 +1,4 @@
-# require 'elasticsearch/model'
-
 class Liga < ActiveRecord::Base
-  # # Searchable
-  # include Elasticsearch::Model
-  # include Elasticsearch::Model::Callbacks
-  # settings index: {
-  #   number_of_shards: 1,
-  #   analysis: {
-  #     filter: {
-  #       liga_ngram_filter: {
-  #         type: 'ngram',
-  #         min_gram: 3,
-  #         max_gram: 10
-  #       }
-  #     },
-  #     analyzer: {
-  #       liga_index_analyzer: {
-  #         type: 'custom',
-  #         tokenizer: 'standard',
-  #         filter: ['lowercase','liga_ngram_filter']
-  #       },
-  #       liga_search_analyzer: {
-  #         type: 'custom',
-  #         tokenizer: 'standard',
-  #         filter: ['lowercase']
-  #       }
-  #     }
-  #   }
-  # } do
-  #   mapping do
-  #     indexes :display_name, index_analyzer: 'liga_index_analyzer', search_analyzer: 'liga_search_analyzer'
-  #   end
-  # end
-  
   # Allow location lookup
   acts_as_mappable lat_column_name: :latitude,
                    lng_column_name: :longitude
@@ -91,7 +57,7 @@ class Liga < ActiveRecord::Base
     return user_id == owner_id
   end
 
-  # Points
+  # Points - to be moved into db fields eventually?
   def points_for_win
     return 3
   end
@@ -116,12 +82,12 @@ class Liga < ActiveRecord::Base
   end
 
   def set_offline_location
-      lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
-      loc = []
-      loc.push(lookup.city) unless lookup.city.blank?
-      loc.push(lookup.state) unless lookup.state.blank?
-      loc.push(lookup.country) unless lookup.country.blank?
+    lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
+    loc = []
+    loc.push(lookup.city) unless lookup.city.blank?
+    loc.push(lookup.state) unless lookup.state.blank?
+    loc.push(lookup.country) unless lookup.country.blank?
 
-      self.offline_location = loc.join(", ")    
+    self.offline_location = loc.join(", ")    
   end
 end

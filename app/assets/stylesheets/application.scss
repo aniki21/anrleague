@@ -61,7 +61,6 @@ body,footer{
 // Header
 header{
   font-family:$header-font;
-  font-size:1.2em;
 }
 
 .navbar .navbar-brand{
@@ -122,17 +121,6 @@ h4{
   font-size: 1.0em;
 }
 
-a{
-  &:link,&:visited{
-    color: $link-colour;
-  }
-  &:hover,&:active{
-    color: $link-colour-alt;
-  }
-  .btn-default{
-    &:link,&:visited,&:hover,&:active{ color: $black; }
-  }
-}
 
 // Forms
 .field_with_errors{
