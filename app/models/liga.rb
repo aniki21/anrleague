@@ -1,4 +1,15 @@
+require 'elasticsearch/model'
+
 class Liga < ActiveRecord::Base
+  # Searchable
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  mapping do
+    indexes :display_name
+    indexes :offline_location
+  end
+
   # Allow location lookup
   acts_as_mappable lat_column_name: :latitude,
                    lng_column_name: :longitude

@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
   # Leagues
   resources :leagues do
+    collection do
+      get 'search', to: 'leagues#search', as: :search
+    end
     member do
       get 'signup', to: 'leagues#signup', as: :signup
     end

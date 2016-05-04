@@ -1,7 +1,9 @@
 module ApplicationHelper
   def page_title
     title = []
-    # do stuff
+    
+    title.push(@page_title) unless @page_title.blank?
+
     title.push("ANR Leagues")
 
     return title.join(" | ")
