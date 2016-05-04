@@ -1,7 +1,7 @@
 class Season < ActiveRecord::Base
   # Associations
   belongs_to :league, class_name: "Liga"
-  has_many :games
+  has_many :games, dependent: :destroy
 
   # Validations
   validates :league_id, presence: true
