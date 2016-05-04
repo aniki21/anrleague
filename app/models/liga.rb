@@ -17,13 +17,27 @@ class Liga < ActiveRecord::Base
   scope :online, ->() { where(location_type: "online") }
   scope :offline, ->() { where(location_type: "offline") }
 
+  # Privacy
+  #   Public - anyone can join, table is public
+  #   Invitational - owner can invite new players, table is visible only to members
+  #   Private - requests must be approved by owner/officers, table is visible only to members
+  scope :public, ->() { where(privacy: "public") }
+  scope :invitational, ->() { where(privacy: "invitational") }
+  scope :private, ->() { where(privacy: "private") }
+
   # Callbacks
   before_validation :render_markdown
   before_validation :set_offline_location, if: :offline?
 
   # Methods
   def players
-    User.where(id: (users + [owner]).map(&:id).uniq).order("lower(display_name) ASC")
+    approved_user_ids = (self.liga_users.map(&:user_id) + [self.owner_id]).uniq
+    return User.where(id: approved_user_ids).order("lower(display_name) ASC")
+  end
+
+  def approved_players
+    approved_user_ids = (self.liga_users.approved.map(&:user_id) + [self.owner_id]).uniq
+    return User.where(id: approved_user_ids).order("lower(display_name) ASC")
   end
   
   def slug
@@ -55,19 +69,6 @@ class Liga < ActiveRecord::Base
   # Management
   def user_can_edit?(user_id)
     return user_id == owner_id
-  end
-
-  # Points - to be moved into db fields eventually?
-  def points_for_win
-    return 3
-  end
-
-  def points_for_draw
-    return 1
-  end
-
-  def points_for_loss
-    return 0
   end
 
   # Search

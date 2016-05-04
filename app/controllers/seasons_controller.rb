@@ -88,8 +88,7 @@ class SeasonsController < ApplicationController
   end
 
   def generate_games(season)
-    puts "Generating games for season #{season.id}"
-    player_ids = season.players.map(&:id)
+    player_ids = season.approved_players.map(&:id)
     player_ids.each do |player_id|
       opponent_ids = player_ids - [player_id]
       opponent_ids.each do |opponent_id|

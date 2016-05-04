@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160501223336) do
+ActiveRecord::Schema.define(version: 20160504221808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,15 +53,19 @@ ActiveRecord::Schema.define(version: 20160501223336) do
   create_table "liga_users", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "liga_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "aasm_state"
+    t.boolean  "officer",    default: false
   end
+
+  add_index "liga_users", ["aasm_state"], name: "index_liga_users_on_aasm_state", using: :btree
 
   create_table "ligas", force: :cascade do |t|
     t.string   "display_name"
     t.integer  "owner_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "location_type"
     t.string   "online_location"
     t.decimal  "latitude",             default: 0.0
@@ -69,9 +73,14 @@ ActiveRecord::Schema.define(version: 20160501223336) do
     t.text     "description_markdown"
     t.text     "description_html"
     t.string   "offline_location"
+    t.integer  "points_for_win",       default: 3
+    t.integer  "points_for_draw",      default: 1
+    t.integer  "points_for_loss",      default: 0
+    t.string   "privacy",              default: "public"
   end
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
+  add_index "ligas", ["privacy"], name: "index_ligas_on_privacy", using: :btree
 
   create_table "results", force: :cascade do |t|
     t.string   "display_name"
