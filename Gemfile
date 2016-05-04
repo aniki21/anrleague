@@ -71,6 +71,6 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
 # Search
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
-gem 'bonsai-elasticsearch-rails'
+# gem 'elasticsearch-model'
+# gem 'elasticsearch-rails'
+# gem 'bonsai-elasticsearch-rails'

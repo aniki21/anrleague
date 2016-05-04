@@ -1,15 +1,38 @@
-require 'elasticsearch/model'
+# require 'elasticsearch/model'
 
 class Liga < ActiveRecord::Base
-  # Searchable
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
-
-  mapping do
-    indexes :display_name
-    indexes :offline_location
-  end
-
+  # # Searchable
+  # include Elasticsearch::Model
+  # include Elasticsearch::Model::Callbacks
+  # settings index: {
+  #   number_of_shards: 1,
+  #   analysis: {
+  #     filter: {
+  #       liga_ngram_filter: {
+  #         type: 'ngram',
+  #         min_gram: 3,
+  #         max_gram: 10
+  #       }
+  #     },
+  #     analyzer: {
+  #       liga_index_analyzer: {
+  #         type: 'custom',
+  #         tokenizer: 'standard',
+  #         filter: ['lowercase','liga_ngram_filter']
+  #       },
+  #       liga_search_analyzer: {
+  #         type: 'custom',
+  #         tokenizer: 'standard',
+  #         filter: ['lowercase']
+  #       }
+  #     }
+  #   }
+  # } do
+  #   mapping do
+  #     indexes :display_name, index_analyzer: 'liga_index_analyzer', search_analyzer: 'liga_search_analyzer'
+  #   end
+  # end
+  
   # Allow location lookup
   acts_as_mappable lat_column_name: :latitude,
                    lng_column_name: :longitude
@@ -79,6 +102,12 @@ class Liga < ActiveRecord::Base
 
   def points_for_loss
     return 0
+  end
+
+  # Search
+  def self.search(query)
+    q = "%#{query}%".downcase
+    self.where("lower(display_name) LIKE ? OR lower(offline_location) LIKE ?",q,q)
   end
 
   private
