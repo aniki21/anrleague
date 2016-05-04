@@ -18,10 +18,10 @@ class Liga < ActiveRecord::Base
   scope :offline, ->() { where(location_type: "offline") }
 
   # Privacy
-  #   Public - anyone can join, table is public
+  #   open - anyone can join, table is public
   #   Invitational - owner can invite new players, table is visible only to members
   #   Private - requests must be approved by owner/officers, table is visible only to members
-  scope :public, ->() { where(privacy: "public") }
+  scope :open, ->() { where(privacy: "public") }
   scope :invitational, ->() { where(privacy: "invitational") }
   scope :private, ->() { where(privacy: "private") }
 
