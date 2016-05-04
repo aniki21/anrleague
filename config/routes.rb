@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get '/register', to: "profile#new", as: :register
   post '/register', to: "profile#create"
 
+  # Password reset
+  resources :password_reset, except: [:index,:destroy]
+
   # Profile
   get '/profile', to: "profile#show", as: :profile
   get '/profile/:id/:username', to: "profile#show"
@@ -18,6 +21,9 @@ Rails.application.routes.draw do
 
   # Leagues
   resources :leagues do
+    collection do
+      get 'search', to: 'leagues#search', as: :search
+    end
     member do
       get 'signup', to: 'leagues#signup', as: :signup
     end

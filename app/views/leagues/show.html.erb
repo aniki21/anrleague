@@ -3,7 +3,7 @@
   <% if @league.offline? %><small><%= @league.offline_location %></small><% end %>
 </h1>
 
-<% if logged_in? && @league.owner_id = current_user.id %>
+<% if logged_in? && @league.owner_id == current_user.id %>
   <p><%= link_to "Edit", edit_league_path(@league.id), class:"btn btn-default btn-sm" %></p> 
 <% end %>
 

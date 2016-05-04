@@ -29,6 +29,8 @@ class LeaguesController < ApplicationController
     if logged_in? && !@season.blank?
       @games = Game.for_player(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
     end
+
+    @page_title = @league.display_name
   end
 
   # GET /leagues/:id/signup
@@ -53,7 +55,7 @@ class LeaguesController < ApplicationController
     end
   end
 
-  # GET /league/:id/edit
+  # GET /leagues/:id/edit
   def edit
     @league = Liga.find_by_id(params[:id])
 
@@ -71,7 +73,7 @@ class LeaguesController < ApplicationController
     @current_season_id = @league.current_season.id rescue 0
   end
 
-  # POST /league/:id
+  # POST /leagues/:id
   def update
     @league = Liga.find_by_id(params[:id])
 
@@ -97,6 +99,12 @@ class LeaguesController < ApplicationController
 
   # DELETE /league/:id
   def destroy
+  end
+
+  # GET /leagues/search
+  def search
+    @leagues = Liga.search(params[:q])
+    render json: @leagues and return
   end
 
   private

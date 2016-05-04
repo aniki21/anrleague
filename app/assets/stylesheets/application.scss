@@ -19,49 +19,58 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+// Fonts
+$header-font:'Coda', sans-serif;
+$body-font:'Source Serif Pro', serif;
+
+// Colours
+$black: #111;
+$white: #FCFCFC;
+$grey-lite:#9D9D9D;
+$grey-mid:#555;
+$grey-dark:#333;
+$blue:#337AB7;
+
+// Semantic colours
+$link-colour:$blue;
+$link-colour-alt: #369;
+
+$link-footer:$white;
+$link-footer-alt:$grey-lite;
+
+//
+// Styles start here
+//
+
+// Body
 body{
   background: #555;
-  color:#111;
+  color:$black;
 }
 
 body,footer{
-  font-size:15px;
-  font-family:'Lora', serif;
-}
-
-header{
-  font-family:'Exo', sans-serif;
-  font-size:1.2em;
+  font-size:16px;
+  font-family:$body-font;
 }
 
 #body{
-  background: #FCFCFC;
+  background:$white;
   padding:70px 0 50px;
 }
 
-footer{
-  color:#FCFCFC;
-  padding:50px 0;
-  margin:0;
-  a{
-    &:link,&:visited{
-      color:#F9F9F9;
-    }
-    &:hover,&:active{
-      
-    }
-  }
+// Header
+header{
+  font-family:$header-font;
 }
 
-// Header
 .navbar .navbar-brand{
-  color:#FFF;
+  color:$white;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus{
   background-color:#555;
-  color:#FCFCFC;
+  color:$white;
 }
 .navbar-inverse .navbar-toggle{
   color:#FCFCFC;
@@ -70,7 +79,7 @@ footer{
   padding:6px;
 }
 .dropdown-menu > li > a{
-  font-family:'Lora', serif;
+  font-family:$body-font;
   &:hover,&:focus{
     background-color:#555;
     color:#FCFCFC;
@@ -79,18 +88,39 @@ footer{
 
 // Footer
 footer{
-  p a{
-    text-decoration: underline;
-    &:hover,&:active{
-      color:#DDD;
+  color:$white;
+  padding:50px 0;
+  margin:0;
+  a{
+    &:link,&:visited{
+      color:$link-footer;
     }
+    &:hover,&:active{
+      color:$link-footer-alt;
+    }
+  }
+  p a{
+    text-decoration:underline;
   }
 }
 
 // General text
 h1,h2,h3,h4{
-  font-family:'Exo',sans-serif;
+  font-family:$header-font;
 }
+h1{
+  font-size: 2em;
+}
+h2{
+  font-size: 1.6em;
+}
+h3{
+  font-size: 1.2em;
+}
+h4{
+  font-size: 1.0em;
+}
+
 
 // Forms
 .field_with_errors{
@@ -106,4 +136,18 @@ h1,h2,h3,h4{
 // Table
 table.table thead tr th.narrow{
   width:45px;
+}
+
+.select2-selection__rendered{
+  font-family:$body-font;
+}
+
+.select2-container--bootstrap .select2-results__option--highlighted[aria-selected]{
+  background:$link-colour;
+}
+
+.select2-container--bootstrap.select2-container--focus .select2-selection,
+.select2-container--bootstrap.select2-container--open .select2-selection,
+.select2-container--bootstrap .select2-dropdown{
+  border-color:$link-colour;
 }

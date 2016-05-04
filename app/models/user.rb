@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
   # Associations
-  has_many :liga_users
+  has_many :liga_users, dependent: :destroy
   has_many :leagues, through: :liga_users
   has_many :owned_leagues, -> { order(display_name: :asc) }, class_name: "Liga", foreign_key: "owner_id"
 

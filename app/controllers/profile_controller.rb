@@ -11,6 +11,7 @@ class ProfileController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:success] = "Your account has been created"
+      UserMailer.confirm_register(@user).deliver_now!
       redirect_to login_path and return
     else
       render action: :new and return
@@ -55,6 +56,7 @@ class ProfileController < ApplicationController
         password_confirmation: params[:new_password_confirmation]
       }
       if current_user.save
+        UserMailer.password_updated(current_user).deliver_now!
         logout
         flash[:success] = "Your password has been updated - please log in again"
         redirect_to login_path and return
