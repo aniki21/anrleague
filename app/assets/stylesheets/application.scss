@@ -66,22 +66,26 @@ header{
 .navbar .navbar-brand{
   color:$white;
 }
+.navbar-inverse{
+  background-color:#369;
+  border-color:#036;
 
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus{
-  background-color:#555;
-  color:$white;
-}
-.navbar-inverse .navbar-toggle{
-  color:#FCFCFC;
-  background:none;
-  border:none;
-  padding:6px;
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus{
+    background-color:#036;
+    color:$white;
+  }
+  .navbar-toggle{
+    color:#FCFCFC;
+    background:none;
+    border:none;
+    padding:6px;
+  }
 }
 .dropdown-menu > li > a{
   font-family:$body-font;
   &:hover,&:focus{
-    background-color:#555;
+    background-color:#369;
     color:#FCFCFC;
   }
 }

@@ -1,5 +1,9 @@
-<h1>Leagues</h1>
-
-<% @leagues.each do |league| %>
-  <%= render partial: "leagues/short", locals: { league: league } %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h2>Leagues</h2>
+    <% @leagues.each do |league| %>
+      <%= render partial: "leagues/short", locals: { league: league } %>
+    <% end %>
+    <div class="text-center"><small><%= paginate(@leagues) %></small></div>
+  </div>
+</div>

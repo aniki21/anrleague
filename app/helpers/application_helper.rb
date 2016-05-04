@@ -4,9 +4,13 @@ module ApplicationHelper
     
     title.push(@page_title) unless @page_title.blank?
 
-    title.push("ANR Leagues")
+    title.push(SITE_NAME)
 
     return title.join(" | ")
+  end
+
+  def paginate(collection)
+    will_paginate collection, renderer: BootstrapPagination::Rails
   end
 
   def alert_flash(key)

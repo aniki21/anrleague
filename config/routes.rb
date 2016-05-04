@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       get 'search', to: 'leagues#search', as: :search
     end
     member do
-      get 'signup', to: 'leagues#signup', as: :signup
+      resources :join, controller: "liga_users", only: [:create]
     end
     resources :seasons do
       member do

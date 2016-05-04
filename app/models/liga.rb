@@ -1,4 +1,6 @@
 class Liga < ActiveRecord::Base
+  self.per_page = 20
+
   # Allow location lookup
   acts_as_mappable lat_column_name: :latitude,
                    lng_column_name: :longitude
@@ -18,12 +20,12 @@ class Liga < ActiveRecord::Base
   scope :offline, ->() { where(location_type: "offline") }
 
   # Privacy
-  #   open - anyone can join, table is public
+  #   Open - anyone can join, table is public
   #   Invitational - owner can invite new players, table is visible only to members
   #   Private - requests must be approved by owner/officers, table is visible only to members
-  scope :open, ->() { where(privacy: "public") }
+  scope :open, ->() { where(privacy: "open") }
   scope :invitational, ->() { where(privacy: "invitational") }
-  scope :private, ->() { where(privacy: "private") }
+  scope :closed, ->() { where(privacy: "closed") }
 
   # Callbacks
   before_validation :render_markdown
@@ -54,6 +56,19 @@ class Liga < ActiveRecord::Base
 
   def current_season
     self.seasons.active.last || self.seasons.closed.last
+  end
+
+  # Privacy
+  def open?
+    self.privacy == "open"
+  end
+
+  def closed?
+    self.privacy == "closed"
+  end
+
+  def invitational?
+    self.privacy == "invitational"
   end
 
   # Location functions

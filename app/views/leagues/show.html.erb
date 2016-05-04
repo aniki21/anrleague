@@ -30,7 +30,7 @@
           <p>No active season</p>
         <% end %>
     <% else %>
-      <p><%= link_to "Sign up to this league", signup_league_path(@league.id), class: "btn btn-success" if true %></p>
+      <p><%= form_tag join_index_path(@league.id) do %><%= submit_tag "Sign up to this league", class: "btn btn-success" %><% end %></p>
     <% end %>
   </div>
 

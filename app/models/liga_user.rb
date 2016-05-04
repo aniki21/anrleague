@@ -28,6 +28,6 @@ class LigaUser < ActiveRecord::Base
   # Methods
   private
   def user_unique_in_liga
-    self.errors.add(:user,"is already a member of this League") if LigaUser.where(user_id:self.user_id,liga_id:self.liga_id).where.not(id:self.id).any? || self.league.owner_id == self.user_id
+    self.errors.add(:base,"#{self.user.display_name} is already a member of #{self.league.display_name}") if LigaUser.where(user_id:self.user_id,liga_id:self.liga_id).where.not(id:self.id).any? || self.league.owner_id == self.user_id
   end
 end

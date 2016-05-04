@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
       redirect_to login_path(path: request.path) and return
     end
   end
+
+  def page
+    return (params[:page].to_i == 0) ? 1 : params[:page].to_i
+  end
 end

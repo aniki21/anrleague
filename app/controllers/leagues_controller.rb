@@ -11,6 +11,7 @@ class LeaguesController < ApplicationController
     else
       @leagues = Liga.all
     end
+    @leagues = @leagues.paginate(page:page)
   end
 
   # GET /leagues/:id/:slug
@@ -31,10 +32,6 @@ class LeaguesController < ApplicationController
     end
 
     @page_title = @league.display_name
-  end
-
-  # GET /leagues/:id/signup
-  def signup
   end
 
   # GET /leagues/new
@@ -103,12 +100,17 @@ class LeaguesController < ApplicationController
 
   # GET /leagues/search
   def search
-    @leagues = Liga.search(params[:q])
-    render json: @leagues and return
+    if params[:q].length >= 3
+      @leagues = Liga.search(params[:q]).paginate(page: page)
+      render action: :index and return
+    else
+      flash[:error] = "Search queries must be longer than three characters"
+      redirect_to :back and return
+    end
   end
 
   private
   def liga_params
-    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown)
+    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown,:privacy)
   end
 end

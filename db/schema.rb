@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 20160504221808) do
   create_table "ligas", force: :cascade do |t|
     t.string   "display_name"
     t.integer  "owner_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "location_type"
     t.string   "online_location"
     t.decimal  "latitude",             default: 0.0
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20160504221808) do
     t.integer  "points_for_win",       default: 3
     t.integer  "points_for_draw",      default: 1
     t.integer  "points_for_loss",      default: 0
-    t.string   "privacy",              default: "public"
+    t.string   "privacy",              default: "open"
   end
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
