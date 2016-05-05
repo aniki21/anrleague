@@ -29,8 +29,25 @@ class LigaUser < ActiveRecord::Base
   end
 
   # Methods
+  delegate :display_name, to: :user
+
+  def promote!
+      self.update_attribute(:officer,true) if self.may_promote?
+  end
+
+  def may_promote?
+    return self.approved? && !self.officer?
+  end
+
+  def demote!
+    self.update_attribute(:officer,false) if self.may_demote?
+  end
+  def may_demote?
+    return self.approved? && self.officer?
+  end
+  
   private
   def user_unique_in_liga
-    self.errors.add(:base,"#{self.user.display_name} is already a member of #{self.league.display_name}") if LigaUser.where(user_id:self.user_id,liga_id:self.liga_id).where.not(id:self.id).any? || self.league.owner_id == self.user_id
+    self.errors.add(:base,"#{self.user.display_name} is already a member of #{self.league.display_name}") if LigaUser.where(user_id:self.user_id,liga_id:self.liga_id).where.not(id:self.id).any? #|| self.league.owner_id == self.user_id
   end
 end

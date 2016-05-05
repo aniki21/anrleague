@@ -47,12 +47,53 @@
     </div>
 
     <h3>Users</h3>
-    <ul>
-      <% @league.players.each do |player| %>
-        <li><%= player.display_name %></li>
-      <% end %>
-    </ul>
+
+    <%= form_tag "#invite", class: "form-horizontal" do %>
+      <div class="form-group">
+        <div class="col-md-12">
+          <%= label_tag :email, "Email address", class: "sr-only" %>
+          <div class="input-group">
+            <%= text_field_tag :email, "", placeholder: "Invite by email address", class: "form-control" %>
+            <span class="input-group-btn"><%= submit_tag "Send invitation", class: "btn btn-success" %></span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Role/Status</th>
+            <th>Actions</th|>
+          </tr>
+        </thead>
+        <tbody>
+          <% @league.liga_users.order(officer: :desc).each do |player| %>
+            <tr>
+              <td><%= player.display_name %></td>
+              <td>
+                <% if player.approved? %>
+                  <%= player.officer ? "Officer" : "Member" %>
+                <% end %>
+              </td>
+              <td>
+                <% unless player.user == current_user %>
+                  <%= link_to "Accept", "#", class: "btn btn-default btn-xs" if player.may_approve? %>
+                  <%= link_to "Promote", "#", class: "btn btn-default btn-xs" if player.may_promote? %>
+                  <%= link_to "Demote", "#", class: "btn btn-default btn-xs" if player.may_demote? %>
+                  <%= link_to "Ban", "#", class: "btn btn-default btn-xs" if player.may_ban? %>
+                <% else %>
+                  <p><em>This is you</em></p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
-<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season" } %>
+<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season", additional_message: "You will be unable to view the table for this league season on #{SITE_NAME} after this - make sure you've exported the results if you want to keep records." } %>

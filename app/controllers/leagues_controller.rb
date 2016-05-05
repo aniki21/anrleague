@@ -26,9 +26,17 @@ class LeaguesController < ApplicationController
     end
 
     @season = @league.current_season
+
+    @member = false
+    @officer = false
+    @games = []
      
-    if logged_in? && !@season.blank?
-      @games = Game.for_player(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
+    if logged_in?
+      unless @season.blank?
+        @games = Game.for_player(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
+      end
+      @member = current_user.member_of?(@league)
+      @officer = current_user.liga_users.where(liga_id: @league.id, officer: true).any?
     end
 
     @page_title = @league.display_name
@@ -36,7 +44,7 @@ class LeaguesController < ApplicationController
 
   # GET /leagues/new
   def new
-    @league = Liga.new
+    @league = Liga.new(location_type:"online",privacy:"open",table_privacy:"public")
     @require_maps = true
   end
   
@@ -45,6 +53,9 @@ class LeaguesController < ApplicationController
     @league = Liga.new(liga_params)
     @league.owner_id = current_user.id
     if @league.save
+      # Add this user to the league as an officer
+      LigaUser.create(user_id:current_user.id, liga_id:@league.id, officer:true).approve!
+      
       flash[:success] = "League created"
       redirect_to show_league_path(@league.id,@league.slug) and return
     else
@@ -111,6 +122,6 @@ class LeaguesController < ApplicationController
 
   private
   def liga_params
-    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown,:privacy)
+    params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown,:privacy,:table_privacy)
   end
 end

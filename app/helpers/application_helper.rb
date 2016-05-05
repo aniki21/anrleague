@@ -22,6 +22,12 @@ module ApplicationHelper
     end
   end
 
+  def league_member(league)
+    if logged_in?
+      return '<i class="fa fa-star league_member" title="Member" data-toggle="tooltip" data-placement="right"></i>'.html_safe if current_user.leagues.include?(league)
+    end
+  end
+
   def player_identity(identity,default="Unknown")
     return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
     return nil

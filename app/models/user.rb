@@ -14,6 +14,6 @@ class User < ActiveRecord::Base
 	# Methods
 	
 	def member_of?(league)
-    return (league.owner_id == self.id || leagues.map(&:id).include?(league.id))
+    return leagues.include?(league)
   end
 end

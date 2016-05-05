@@ -1,13 +1,16 @@
 <% model_name ||= "item" %>
+<% additional_message ||= "" %>
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                Warning!
+            <div class="modal-header danger">
+                Are you sure you want to delete the specified <%= model_name %>?
             </div>
-            <div class="modal-body">
-              Are you sure you want to delete the specified <%= model_name %>?
-            </div>
+            <% unless additional_message.blank? %>
+              <div class="modal-body">
+                <p><%= additional_message %></p>
+              </div>
+            <% end %>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <%= link_to "Confirm deletion", "#", id:"modal-delete-confirmed", class: "btn btn-danger btn-ok", method: :delete %>

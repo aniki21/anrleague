@@ -47,7 +47,7 @@ class Liga < ActiveRecord::Base
   end
 
   def user_is_officer?(user)
-    self.officers.include?(user) || user.id == self.owner_id
+    self.officers.include?(user) || user.id == self.owner_id || user.admin?
   end
   
   def slug
