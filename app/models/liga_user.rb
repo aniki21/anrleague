@@ -8,6 +8,9 @@ class LigaUser < ActiveRecord::Base
   validates :liga_id, presence: true
   validate :user_unique_in_liga
 
+  # Scopes
+  scope :officers, ->() { where(officer: true) }
+
   # States
   include AASM
   aasm do

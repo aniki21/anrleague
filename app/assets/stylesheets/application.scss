@@ -55,7 +55,7 @@ body,footer{
 
 #body{
   background:$white;
-  padding:70px 0 50px;
+  padding:0 0 50px;
 }
 
 // Header
@@ -68,7 +68,8 @@ header{
 }
 .navbar-inverse{
   background-color:#369;
-  border-color:#036;
+  border-color:#2E557C;
+  margin-bottom:0;
 
   .navbar-nav > li > a:hover,
   .navbar-nav > li > a:focus{

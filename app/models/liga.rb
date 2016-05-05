@@ -41,6 +41,14 @@ class Liga < ActiveRecord::Base
     approved_user_ids = (self.liga_users.approved.map(&:user_id) + [self.owner_id]).uniq
     return User.where(id: approved_user_ids).order("lower(display_name) ASC")
   end
+
+  def officers
+    self.liga_users.officers
+  end
+
+  def user_is_officer?(user)
+    self.officers.include?(user) || user.id == self.owner_id
+  end
   
   def slug
     self.display_name.parameterize
