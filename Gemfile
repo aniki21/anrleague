@@ -74,3 +74,5 @@ gem 'will_paginate-bootstrap'
 # gem 'elasticsearch-model'
 # gem 'elasticsearch-rails'
 # gem 'bonsai-elasticsearch-rails'
+
+gem 'airbrake'
