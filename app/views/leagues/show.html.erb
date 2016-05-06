@@ -1,43 +1,49 @@
 <h1>
   <%= @league.display_name %>
-  <% if @league.offline? %><small><%= @league.offline_location %></small><% end %>
+  <%= league_member(@league) %>  
+  <small><% if @league.offline? %><%= @league.offline_location %><% elsif @league.online? %><%= link_to "Online", @league.online_location, target:"_blank" %><% else %>No location specified<% end %></small>
 </h1>
 
-<% if logged_in? && @league.owner_id == current_user.id %>
-  <p><%= link_to "Edit", edit_league_path(@league.id), class:"btn btn-default btn-sm" %></p> 
+<% if @officer %>
+  <p><%= link_to "Manage", edit_league_path(@league.id), class:"btn btn-default btn-sm" %></p> 
+<% end %>
+
+<% unless @member %>
+  <% unless @league.invitational? %>
+    <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag "Join this league", class: "btn btn-success" %><% end %></p>
+  <% else %>
+    <p>This league is invitation-only</p>
+  <% end %>
 <% end %>
 
 
-<%= (@league.description_html || "").html_safe %>
-
 <div class="row">
   <div class="col-md-8">
-    <% unless @season.blank? %>
-      <%= render partial: "seasons/league_table", locals: { season: @season } %>
-    <% end %>
+
+    <%= render partial: "seasons/league_table", locals: { season: @season } if !@season.blank? && ( @league.table_privacy == "public" || @member ) %>
 
     <% if logged_in? && current_user.member_of?(@league) %>
       <h3>My Games</h3>
-        <% unless @season.blank? %>
-          <% if @games.any? %>
-            <p><%= page_entries_info(@games,model:"games") %></p>
-            <%= render partial: "seasons/user_games", locals: { games: @games } %>
-            <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
-          <% else %>
-            <p><em>You don't have any upcoming games</em></p>
-          <% end %>
+      <% unless @season.blank? %>
+        <% if @games.any? %>
+          <p><%= page_entries_info(@games,model:"games") %></p>
+          <%= render partial: "seasons/user_games", locals: { games: @games } %>
+          <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
         <% else %>
-          <p>No active season</p>
+          <p><em>You don't have any upcoming games</em></p>
         <% end %>
-    <% else %>
-      <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag "Sign up to this league", class: "btn btn-success" %><% end %></p>
+      <% else %>
+        <p>No active season</p>
+      <% end %>
     <% end %>
   </div>
 
   <div class="col-md-4">
+    <h3>About</h3> 
+    <%= (@league.description_html.blank? ? "<em>No description has been provided.</em>" : @league.description_html).html_safe %>
     <h3>Where we play</h3>
     <% if @league.offline? %>
-      <iframe width="100%" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=<%= ENV["maps_api_key"] %>&q=<%= @league.latlong %>" allowfullscreen></iframe>
+      <iframe class="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=<%= ENV["maps_api_key"] %>&q=<%= @league.latlong %>" allowfullscreen></iframe>
     <% end %>
     <% if @league.online? %>
       <%= link_to @league.online_location, @league.online_location, target:"_blank" %>

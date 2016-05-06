@@ -87,17 +87,4 @@ class SeasonsController < ApplicationController
     params.require(:season).permit(:display_name, :league_id)
   end
 
-  def generate_games(season)
-    player_ids = season.approved_players.map(&:id)
-    player_ids.each do |player_id|
-      opponent_ids = player_ids - [player_id]
-      opponent_ids.each do |opponent_id|
-        # create two games - one as runner, one as corp
-        # UNLESS ONE ALREADY EXISTS FOR THIS PLAYER!
-        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: player_id, corp_player_id: opponent_id) unless Game.where(league_id: season.league_id, season_id: season.id, runner_player_id: player_id, corp_player_id:opponent_id).any?
-        Game.create(league_id: season.league_id, season_id: season.id, runner_player_id: opponent_id, corp_player_id: player_id) unless Game.where(league_id: season.league_id, season_id: season.id, runner_player_id: opponent_id, corp_player_id: player_id).any?
-      end
-    end
-    season.update_table!
-  end
 end

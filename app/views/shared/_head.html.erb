@@ -52,7 +52,7 @@
               <% end %>
               <% if current_user.admin? %>
                 <li class="divider"></li>
-                <li><%= link_to "Admin Panel", "#" %></li>
+                <li><%= link_to "Admin Panel", admin_path %></li>
               <% end %>
             <li class="divider"></li>
             <li><%= link_to "Log out", logout_path(path: request.path) %></li>

@@ -50,6 +50,13 @@ Rails.application.routes.draw do
   get '/admin' => 'admin#index'
   namespace :admin do
     resources :results, except: [:new,:show]
+    resources :factions
+    resources :identities
+    resources :users do
+      collection do
+        get 'search'
+      end
+    end
   end
 
   root 'home#index'

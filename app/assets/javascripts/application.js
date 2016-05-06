@@ -17,10 +17,13 @@
 //= require select2
 //= require_tree .
 
-$(function () {
+var ready = function () {
   $('[data-toggle="tooltip"]').tooltip()
 
   $( ".select2" ).select2({
     theme: "bootstrap"
   });
-})
+}
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

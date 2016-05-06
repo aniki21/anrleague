@@ -1,1 +1,33 @@
 <h1>Admin Panel</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <h3>Users</h3>
+    <%= form_tag search_admin_users_path, method: :get, class: "form-inline" do %>
+      <div class="form-group">
+        <%= label_tag :q, "Query", class: "sr-only" %>
+        <%= text_field_tag :q, "", placeholder: "Search for users", class: "form-control" %>
+      </div>
+      <%= submit_tag "Search", class: "btn btn-success" %>
+    <% end %>
+    <ul>
+      <li><%= link_to "Browse", "#" %></li>
+      <li><%= link_to "Bans", "#" %></li>
+      <li><%= link_to "Admins", "#" %></li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h3>Metadata</h3>
+    <ul>
+      <li><%= link_to "Results", admin_results_path %></li>
+      <li><%= link_to "Factions", admin_factions_path %></li>
+      <li><%= link_to "Identities", admin_identities_path %></li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h3>Something else</h3>
+    <ul>
+      <li><%= link_to "TBC", "#" %></li>
+    </ul>
+  </div>
+</div>

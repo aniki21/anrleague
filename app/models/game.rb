@@ -23,7 +23,7 @@ class Game < ActiveRecord::Base
   scope :corp_win, ->() { where(result_id:Result.corp_win.map(&:id)) }
   scope :draw, ->() { where(result_id:Result.draw.map(&:id)) }
 
-  scope :for_player, ->(player_id,season_id) { where("runner_player_id = ? OR corp_player_id = ?",player_id, player_id) }
+  scope :for_player, ->(player_id,season_id) { where("runner_player_id = ? OR corp_player_id = ?",player_id, player_id).where(season_id:season_id) }
   scope :player_season_wins, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result_id IN (?)) OR (corp_player_id = ? AND result_id IN (?))",player_id,Result.runner_win.map(&:id),player_id,Result.corp_win.map(&:id)) }
   scope :player_season_losses, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result_id IN (?)) OR (corp_player_id = ? AND result_id IN (?))",player_id,Result.corp_win.map(&:id),player_id,Result.runner_win.map(&:id)) }
   scope :player_season_draws, ->(player_id,season_id) { for_player(player_id,season_id).where(result_id: Result.where(winning_side:"draw")).map(&:id) }

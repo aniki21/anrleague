@@ -71,11 +71,22 @@ header{
   border-color:#2E557C;
   margin-bottom:0;
 
-  .navbar-nav > li > a:hover,
-  .navbar-nav > li > a:focus{
+  .navbar-nav > li > a{
+    &:link,&:visited{
+      color:rgba(255,255,255,0.8);
+    }
+    &:hover,&:focus{
     background-color:#036;
     color:$white;
+    }
   }
+
+  .navbar-nav > .open > a,
+  .navbar-nav > .open > a:hover,
+  .navbar-nav > .open > a:focus{
+    //background-color:#036;
+  }
+
   .navbar-toggle{
     color:#FCFCFC;
     background:none;
@@ -126,7 +137,6 @@ h4{
   font-size: 1.0em;
 }
 
-
 // Forms
 .field_with_errors{
   select,input,textarea{
@@ -138,11 +148,12 @@ h4{
   margin-bottom:0;
 }
 
-// Table
+// Tables
 table.table thead tr th.narrow{
   width:45px;
 }
 
+// Select2
 .select2-selection__rendered{
   font-family:$body-font;
 }
@@ -155,4 +166,21 @@ table.table thead tr th.narrow{
 .select2-container--bootstrap.select2-container--open .select2-selection,
 .select2-container--bootstrap .select2-dropdown{
   border-color:$link-colour;
+}
+
+// Misc
+.league_member{
+  font-size:0.8em;
+  color:#FC0;
+}
+
+.modal-header.danger{
+  background-color:#d9534f;
+  border-radius:5px 5px 0 0;
+  color:#FFF;
+}
+
+iframe.map{
+  width:100%;
+  height:225px;
 }

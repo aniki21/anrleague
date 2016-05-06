@@ -17,7 +17,7 @@ class Season < ActiveRecord::Base
   include AASM
   aasm do
     state :upcoming, initial: true
-    state :active, before_enter: :close_active_seasons
+    state :active, before_enter: :activation_tasks
     state :closed
 
     event :activate do
@@ -31,14 +31,15 @@ class Season < ActiveRecord::Base
 
   # Methods
   delegate :players , to: :league
+  delegate :approved_players, to: :league
   
   def table
     JSON.parse(self.league_table || "[]").map(&:symbolize_keys)
   end
 
   def update_table
-    # automatically go through all games and
-    # build the league table
+    # Go through all games and build the league table
+    # Games are generated in SeasonsController#generate_games
 
     # { player_id: { name: "name", played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0 }
     table = {}
@@ -104,8 +105,10 @@ class Season < ActiveRecord::Base
     end
   end
 
-  def close_active_seasons
-    self.league.seasons.closed.each{|s| s.games.delete_all && s.destroy }
+  def activation_tasks
+    self.update_attribute(:activated_at,Time.now)
+    self.update_table!
+    self.league.seasons.closed.each{|s| s.destroy }
     self.league.seasons.active.each{|s| s.close! if s.may_close? }
   end
 end
