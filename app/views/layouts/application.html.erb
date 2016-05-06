@@ -6,9 +6,16 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
 
-    <% if @require_maps %><script type="text/javascript" src='//maps.google.com/maps/api/js?libraries=places&key=<%= ENV['maps_api_key'] %>'></script><% end %>
+    <!-- Google Maps -->
+    <%= javascript_include_tag "//maps.google.com/maps/api/js?libraries=places&key=#{ENV['maps_api_key']}" %>
+
+    <!-- WebFonts -->
     <link href='//fonts.googleapis.com/css?family=Coda' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Source+Serif+Pro:400,600' rel='stylesheet' type='text/css'>
+    
+    <%# <!-- NetrunnerDB card integration --> %>
+    <%# <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css","http://netrunnerdb.com/bundles/netrunnerdbbuilder/css/icons.css" %1> %>
+    <%# <%= javascript_include_tag "http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js","http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js","http://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.data.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.format.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.tip.js" %1> %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -25,6 +32,4 @@
     <%= render partial: "shared/foot" %>
   </body>
 
-  <%# <%= stylesheet_link_tag "http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css","http://netrunnerdb.com/bundles/netrunnerdbbuilder/css/icons.css" %1> %>
-  <%# <%= javascript_include_tag "http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js","http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js","http://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.data.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.format.js","http://netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.tip.js" %1> %>
 </html>

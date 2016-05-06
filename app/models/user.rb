@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
 	validates_confirmation_of :password, :message => "should match password", :if => :password
 
 	# Methods
+	def games
+    Game.for_player(self.id)
+  end
 	
 	def member_of?(league)
     return leagues.include?(league)

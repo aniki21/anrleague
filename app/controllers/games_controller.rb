@@ -15,7 +15,7 @@ class GamesController < ApplicationController
     end
 
     if logged_in? && current_user.member_of?(@league) && params[:all] != "true"
-      @games = Game.for_player(current_user.id,@season.id)
+      @games = Game.for_player_season(current_user.id,@season.id)
       @title = "My games"
     else
       @games = Game.where(season_id: @season.id)

@@ -1,1 +1,23 @@
 <h1>Welcome to <%= SITE_NAME %></h1>
+
+<div class="row">
+  <div class="col-md-8">
+    <% if logged_in? %>
+      <h3>Logged in users</h3>
+      <p>List of games from membership leagues?</p>
+    <% end %>
+
+    <h3>TBD</h3>
+    <p>I don't know what to put here yet. Instructions for use?</p>
+
+  </div>
+
+  <div class="col-md-4">
+    <h3>Recently started</h3>
+    <ul class="list-unstyled">
+      <% @recent.each do |season| %>
+        <li><%= pretty_date(season.activated_at) %> &ndash; <%= link_to season.league.display_name, league_path(season.league_id) %>, <%= season.display_name %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

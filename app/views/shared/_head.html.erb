@@ -37,25 +37,19 @@
             <% if logged_in? %>
               <li><%= link_to "Profile", profile_path %></li>
               <li class="divider"></li>
-              <li class="dropdown-header">Owned Leagues</li>
-              <% if current_user.owned_leagues.any? %>
-                <% current_user.owned_leagues.each do |league| %>
-                  <li><%= link_to league.display_name.truncate(25), show_league_path(league.id,league.slug) %></li>
+              <li class="dropdown-header">My Leagues</li>
+                <% if current_user.leagues.any? %>
+                  <% current_user.leagues.each do |league| %>
+                    <li><%= link_to league.display_name.truncate(25), show_league_path(league.id,league.slug) %></li>
+                  <% end %>
                 <% end %>
-              <% end %>
-            <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>
-            <li class="dropdown-header">Memberships</li>
-              <% if current_user.leagues.any? %>
-                <% current_user.leagues.each do |league| %>
-                  <li><%= link_to league.display_name.truncate(25), show_league_path(league.id,league.slug) %></li>
+                <% if current_user.admin? %>
+                  <li class="divider"></li>
+                  <li><%= link_to "Admin Panel", admin_path %></li>
                 <% end %>
-              <% end %>
-              <% if current_user.admin? %>
-                <li class="divider"></li>
-                <li><%= link_to "Admin Panel", admin_path %></li>
-              <% end %>
-            <li class="divider"></li>
-            <li><%= link_to "Log out", logout_path(path: request.path) %></li>
+              <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Log out", logout_path(path: request.path) %></li>
             <% else %>
               <li><%= link_to "Log in / Register", login_path(path: request.path) %></li>
             <% end %>

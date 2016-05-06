@@ -1,5 +1,5 @@
 class LeaguesController < ApplicationController
-  before_filter :require_login, except: [:index,:show]
+  before_filter :require_login, except: [:index,:show,:search]
 
   # GET /leagues
   def index
@@ -33,7 +33,7 @@ class LeaguesController < ApplicationController
      
     if logged_in?
       unless @season.blank?
-        @games = Game.for_player(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
+        @games = Game.for_player_season(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
       end
       @member = current_user.member_of?(@league)
       @officer = current_user.liga_users.where(liga_id: @league.id, officer: true).any?

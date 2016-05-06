@@ -10,10 +10,16 @@
     <% games.each do |game| %>
       <tr<% if game.has_player?(current_user.id) %> class="<%= result_row(game.result_for_player(current_user.id)) %>"<% end %>>
         <td>
+          <div class="pull-left" style="padding-right:10px;">
+            <%= gravatar(game.corp_player.email,40) %>
+          </div>
           <%= game.corp_player.display_name %>
           <% unless game.corp_identity_id.blank? %><br /><small><%= player_identity(game.corp_identity,"Corp") %></small><% end %>
         </td>
         <td>
+          <div class="pull-left" style="padding-right:10px;">
+            <%= gravatar(game.runner_player.email,40) %>
+          </div>
           <%= game.runner_player.display_name %>
           <% unless game.runner_identity_id.blank? %><br /><small><%= player_identity(game.runner_identity,"Runner") %></small><% end %>
         </td>

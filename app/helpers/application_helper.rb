@@ -1,11 +1,8 @@
 module ApplicationHelper
   def page_title
     title = []
-    
     title.push(@page_title) unless @page_title.blank?
-
     title.push(SITE_NAME)
-
     return title.join(" | ")
   end
 
@@ -22,6 +19,10 @@ module ApplicationHelper
     end
   end
 
+  def pretty_date(date)
+    date.strftime("%b #{date.day.ordinalize}")
+  end
+
   def league_member(league)
     if logged_in?
       return '<i class="fa fa-star league_member" title="Member" data-toggle="tooltip" data-placement="right"></i>'.html_safe if current_user.leagues.include?(league)
@@ -29,7 +30,7 @@ module ApplicationHelper
   end
 
   def player_identity(identity,default="Unknown")
-    return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
+    return "<a class=\"nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name.truncate(25)}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
     return nil
     case default
     when "Runner"
@@ -39,6 +40,10 @@ module ApplicationHelper
     else
       return "<em>#{default}</em>".html_safe
     end
+  end
+
+  def gravatar(email,size=50)
+    gravatar_image_tag(email, :class => 'img-rounded', :gravatar => { :size => size, :rating => "g" }, title: "Gravatar")
   end
 
   def result_row(result)

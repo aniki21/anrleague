@@ -16,6 +16,7 @@
  *= require_tree .
  *= require_self
  */
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
@@ -58,7 +59,7 @@ body,footer{
 
 #body{
   background:$white;
-  padding:30px 0 50px;
+  padding:15px 0 50px;
 }
 
 // Header
@@ -90,13 +91,34 @@ header{
     //background-color:#036;
   }
 
+  @media (max-width:767px){
+    .navbar-nav .open .dropdown-menu{
+      & > li > a{
+        color:$white;
+      }
+      .divider{
+        background-color:#2E557C;
+      }
+      & > .dropdown-header{
+        border-color:#2E557C;
+        color:$white;
+        font-weight:bold;
+      }
+    }
+  }
+
   .navbar-toggle{
     color:#FCFCFC;
     background:none;
     border:none;
     padding:6px;
   }
+
+  .navbar-collapse, .navbar-form{
+    border-color:#2E557C;
+  }
 }
+
 .dropdown-menu > li > a{
   font-family:$body-font;
   &:hover,&:focus{
@@ -138,6 +160,10 @@ h3{
 }
 h4{
   font-size: 1.0em;
+}
+
+p{
+  text-align:justify;
 }
 
 // Forms
