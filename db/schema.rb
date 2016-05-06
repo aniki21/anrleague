@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504221808) do
+ActiveRecord::Schema.define(version: 20160506095950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20160504221808) do
     t.datetime "updated_at",   null: false
     t.string   "aasm_state"
     t.text     "league_table"
+    t.datetime "activated_at"
   end
 
   add_index "seasons", ["aasm_state"], name: "index_seasons_on_aasm_state", using: :btree

@@ -1,4 +1,6 @@
 class Season < ActiveRecord::Base
+  default_scope { order(created_at: :desc) }
+
   # Associations
   belongs_to :league, class_name: "Liga"
   has_many :games, dependent: :destroy
