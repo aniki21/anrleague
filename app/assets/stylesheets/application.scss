@@ -44,8 +44,11 @@ $link-footer-alt:$grey-lite;
 
 // Body
 body{
-  background: #555;
+  background:$grey-mid;
   color:$black;
+  &#iframe{
+    background: $white;
+  }
 }
 
 body,footer{
@@ -55,7 +58,7 @@ body,footer{
 
 #body{
   background:$white;
-  padding:0 0 50px;
+  padding:30px 0 50px;
 }
 
 // Header

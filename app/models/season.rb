@@ -29,8 +29,10 @@ class Season < ActiveRecord::Base
     end
   end
 
+  # Scopes
+
   # Methods
-  delegate :players , to: :league
+  delegate :players, to: :league
   delegate :approved_players, to: :league
   
   def table
@@ -55,8 +57,8 @@ class Season < ActiveRecord::Base
       unless game.result_id.blank?
         table[:"#{runner.id}"][:played] += 1
         table[:"#{corp.id}"][:played] += 1
-        table[:"#{runner.id}"][:ap] += game.runner_agenda_points
-        table[:"#{corp.id}"][:ap] += game.corp_agenda_points
+        table[:"#{runner.id}"][:ap] += (game.runner_agenda_points || 0)
+        table[:"#{corp.id}"][:ap] += (game.corp_agenda_points || 0)
 
         if game.runner_win?
           # runner win

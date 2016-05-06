@@ -100,6 +100,9 @@ class LeaguesController < ApplicationController
       redirect_to show_league_path(@league.id,@league.slug) and return
     else
       @require_maps = true
+      @season = Season.new(league_id: @league.id)
+      @current_season_id = @league.current_season.id rescue 0
+
       flash.now[:error] = @league.errors.full_messages.to_sentence
       render action: :edit
     end

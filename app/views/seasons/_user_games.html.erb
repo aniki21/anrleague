@@ -20,7 +20,8 @@
         <td>
           <% if game.unplayed? %>
             <% if game.has_player?(current_user.id) %>
-            <%= link_to 'Submit result'.html_safe, edit_league_season_game_path(game.league_id,game.season_id,game.id), class:"btn btn-default btn-xs" %>
+            <%= link_to 'Submit result'.html_safe, "javascript:void(0);", class:"btn btn-default btn-xs", "data-action":"gameResult", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
+            <%# <%= link_to 'Submit result'.html_safe, edit_league_season_game_path(game.league_id,game.season_id,game.id), class:"btn btn-default btn-xs" %1> %>
             <% else %>
               <em>Upcoming</em>
             <% end %>

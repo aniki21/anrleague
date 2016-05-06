@@ -101,3 +101,22 @@
 	&:before { content: "\e61a"; }
 }
 
+//
+// Actions
+//
+.nr-click{ &:before{ content: "\e611"; } }
+.nr-link{ &:before{ content: "\e601"; } }
+.nr-trash{ &:before{ content: "\e606"; } }
+
+.nr-credit:before{ content: "\e600"; }
+.nr-credit-recur{ &:before{ content: "\e608"; } }
+
+.nr-mem{ &:before{ content: "\e610"; } }
+.nr-mem-1{ &:before{ content: "\e60a"; } }
+.nr-mem-2{ &:before{ content: "\e60c"; } }
+.nr-mem-3{ &:before{ content: "\e60e"; } }
+
+.nr-agenda:before { content: "\e60d"; }
+
+.nr-ice{ &:before{ content: "\e60f"; } }
+.nr-sub,.nr-subroutine{ &:before{ content: "\e604"; } }

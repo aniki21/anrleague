@@ -8,4 +8,8 @@ class HomeController < ApplicationController
     end
   end
 
+  def blank
+    render text: "" and return
+  end
+
 end

@@ -49,6 +49,7 @@ class GamesController < ApplicationController
       flash[:error] = "The requested game could not be found in the specified league"
       redirect_to leagues_path and return
     end
+    render layout: "iframe"
   end
 
   def update
@@ -57,7 +58,7 @@ class GamesController < ApplicationController
       if @game.update_attributes(game_params)
         @game.season.update_table!
         flash[:success] = "Game saved"
-        redirect_to league_path(@game.league) and return
+        render layout: "iframe" and return
       else
         flash.now[:error] = @game.errors.full_messages.to_sentence
         render action: :edit and return

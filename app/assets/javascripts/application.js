@@ -21,7 +21,9 @@ var ready = function () {
   $('[data-toggle="tooltip"]').tooltip()
 
   $( ".select2" ).select2({
-    theme: "bootstrap"
+    theme: "bootstrap",
+    placeholder: "Select",
+    allowClear: true
   });
 }
 

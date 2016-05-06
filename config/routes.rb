@@ -59,5 +59,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/blank', to: 'home#blank'
+
   root 'home#index'
 end
