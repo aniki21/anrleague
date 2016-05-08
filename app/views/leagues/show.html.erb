@@ -26,7 +26,6 @@
       <h3>My Games</h3>
       <% unless @season.blank? %>
         <% if @games.any? %>
-          <p><%= page_entries_info(@games,model:"games") %></p>
           <%= render partial: "seasons/user_games", locals: { games: @games } %>
           <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
         <% else %>

@@ -1,0 +1,9 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Admin", admin_path %></li>
+  <li><%= link_to "Identities", admin_identities_path %></li>
+  <li class="active">Edit</li>
+</ul>
+
+<h1>Edit Identity</h1>
+
+<%= render partial: "admin/identities/form", locals: { identity: @identity, factions: @factions } %>

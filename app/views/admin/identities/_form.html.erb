@@ -1,0 +1,17 @@
+<%= render partial: "shared/errors", locals: { model: identity } %>
+<%= form_for [:admin,identity], html: { class: "form-inline" } do |f| %>
+  <div class="form-group", style="width:250px;">
+    <%= f.label :display_name, "Display name", class: "sr-only" %>
+    <%= f.text_field :display_name, placeholder:"Display name", class: "form-control", style:"width:100%;" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :faction_id, "Faction", class: "sr-only" %>
+    <%= f.select :faction_id, options_for_select(factions, identity.faction_id), { include_blank: true }, { class: "select2" } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :nrdb_id, "NetrunnerDB ID", class:"sr-only" %>
+    <%= f.text_field :nrdb_id, placeholder: "NRDB ID (00000)", class: "form-control" %>
+  </div>
+  <%= f.submit "Save", class: "btn btn-success" %>
+  <%= link_to "Cancel", admin_identities_path, class:"btn btn-default" unless identity.id.blank? %>
+<% end %>

@@ -48,7 +48,7 @@
 
     <h3>Users</h3>
 
-    <%= form_tag "#invite", class: "form-horizontal" do %>
+    <%= form_tag league_invite_path(@league.id), class: "form-horizontal" do %>
       <div class="form-group">
         <div class="col-md-12">
           <%= label_tag :email, "Email address", class: "sr-only" %>
@@ -76,6 +76,10 @@
               <td>
                 <% if player.approved? %>
                   <%= player.officer ? "Officer" : "Member" %>
+                <% elsif player.invited? %>
+                  <em>Invited</em>
+                <% elsif player.requested? %>
+                  <em>Pending</em>
                 <% end %>
               </td>
               <td>
@@ -84,8 +88,9 @@
                   <%= link_to "Promote", "#", class: "btn btn-default btn-xs" if player.may_promote? %>
                   <%= link_to "Demote", "#", class: "btn btn-default btn-xs" if player.may_demote? %>
                   <%= link_to "Ban", "#", class: "btn btn-default btn-xs" if player.may_ban? %>
+                  <%= link_to "Remove", "#", class: "btn btn-default btn-xs" %>
                 <% else %>
-                  <p><em>This is you</em></p>
+                  <em>This is you</em>
                 <% end %>
               </td>
             </tr>

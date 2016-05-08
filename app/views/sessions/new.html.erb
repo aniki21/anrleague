@@ -27,7 +27,7 @@
           <div class="form-group">
             <div class="col-md-8 col-md-offset-4">
               <%= submit_tag "Log in", class: "btn btn-success" %>
-              <%= link_to "Register", register_path, class: "btn btn-link" %>
+              <%= link_to "Register", register_path(path:params[:path]), class: "btn btn-link" %>
               <%= link_to "Forgot password?", new_password_reset_path, class:"btn btn-link" %>
             </div>
           </div>

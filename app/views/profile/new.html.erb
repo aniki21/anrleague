@@ -17,6 +17,7 @@
         <% end %>
 
         <%= form_for @user, url: register_path, html: { class: "form-horizontal" } do |f| %>
+          <%= hidden_field_tag :path, params[:path] %>
           <div class="form-group">
             <%= f.label :email, "Email", class: "col-md-4 control-label" %>
             <div class="col-md-8">

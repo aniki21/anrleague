@@ -27,7 +27,7 @@
     <div class="container">
       <%= render partial: "shared/alerts" %>
       <%= yield %>
-      <%= console if Rails.env == "development" %>
+      <%= console if Rails.env == "development" && params[:console] == "true" %>
     </div>
     </div>
     

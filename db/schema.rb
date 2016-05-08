@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160506095950) do
+ActiveRecord::Schema.define(version: 20160507230312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,10 +53,11 @@ ActiveRecord::Schema.define(version: 20160506095950) do
   create_table "liga_users", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "liga_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "aasm_state"
-    t.boolean  "officer",    default: false
+    t.boolean  "officer",          default: false
+    t.string   "invitation_token"
   end
 
   add_index "liga_users", ["aasm_state"], name: "index_liga_users_on_aasm_state", using: :btree

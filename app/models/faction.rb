@@ -4,18 +4,15 @@ class Faction < ActiveRecord::Base
 
   # Validations
   validates :display_name, presence: true, uniqueness: { case_sensitive: false }
+  validates :icon_style, presence: true
+  validates :side, presence: true
 
   # Callbacks
-  before_save :set_icon_style
 
   # Scopes
   scope :runner, ->() { where(side: "runner") }
   scope :corp, ->() { where(side: "corp") }
 
   # Methods
-  
   private
-  def set_icon_style
-    self.icon_style ||= self.display_name.parameterize
-  end
 end

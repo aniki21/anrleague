@@ -29,12 +29,12 @@ Rails.application.routes.draw do
         # user requests
         post 'approve'
         post 'reject'
-        # invitationals
-        post 'accept'
-        post 'dismiss'
       end
     end
-    post 'invite', to: 'liga_user#invite'
+    post 'invite', to: 'liga_users#invite'
+    get 'invite/:token', to: 'liga_users#view_invite', as: "view_invite"
+    post 'invite/:token/accept', to: 'liga_users#accept_invite', as: 'accept_invite'
+    post 'invite/:token/dismiss', to: 'liga_users#dismiss_invite', as: 'dismiss_invite'
 
     resources :seasons do
       member do
@@ -50,8 +50,8 @@ Rails.application.routes.draw do
   get '/admin' => 'admin#index'
   namespace :admin do
     resources :results, except: [:new,:show]
-    resources :factions
-    resources :identities
+    resources :factions, except:[:new,:show]
+    resources :identities, except:[:new,:show]
     resources :users do
       collection do
         get 'search'

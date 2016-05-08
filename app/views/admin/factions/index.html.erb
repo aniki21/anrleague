@@ -1,0 +1,41 @@
+<ul class="breadcrumb">
+<li><%= link_to "Admin", admin_path %></a></li>
+<li class="active">Factions</li>
+</ul>
+
+<h1>Manage Factions</h1>
+
+<h3>Create new faction</h3>
+<%= render partial: "admin/factions/form", locals: { faction: @faction } %>
+
+<h3>Existing factions</h3>
+
+<h4><%= page_entries_info(@factions,model:"faction") %></h4>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Faction</th>
+        <th style="width:120px;"><!-- actions --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @factions.any? %>
+        <% @factions.each do |faction| %>
+          <tr>
+            <td class="nr nr-<%= faction.icon_style %>">&nbsp;<%= faction.display_name %></td>
+            <td>
+              <%= link_to "Edit", edit_admin_faction_path(faction.id), class: "btn btn-info btn-xs" %>
+              <%= link_to "Delete", "#", class: "btn btn-danger btn-xs" %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="2" class="text-center"><em>Nothing to see here</em></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

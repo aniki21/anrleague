@@ -1,0 +1,5 @@
+<h1>League Invitation</h1>
+
+<p>You have been invited to join <strong><%= @league.display_name %></strong></p>
+
+<p><%= link_to "Click here", league_view_invite_url(@league.id,@token) %> to view this invitation.</p>

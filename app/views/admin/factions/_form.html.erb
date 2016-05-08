@@ -1,0 +1,32 @@
+<% if faction.errors.any? %>
+  <div class="alert alert-danger">
+    <h4>The following error(s) were found when saving:</h4>
+    <ul>
+      <% faction.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for [:admin,faction], html: { class: "form-inline" } do |f| %>
+
+  <div class="form-group">
+    <%= f.label :display_name, "Display name", class: "sr-only" %>
+    <%= f.text_field :display_name, placeholder: "Display name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :icon_style, "Icon class name", class: "sr-only" %>
+    <div class="input-group">
+      <span class="input-group-addon">nr-</span>
+      <%= f.text_field :icon_style, placeholder: "icon-class", class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :side, "Side", class: "sr-only" %>
+    <%= f.select :side, options_for_select([["Corp","corp"],["Runner","runner"]],faction.side), { prompt: "Side" }, { class: "form-control" } %>
+  </div>
+  <%= f.submit "Save", class: "btn btn-success" %>
+  <%= link_to "Cancel", admin_factions_path, class:"btn btn-default" unless faction.id.blank? %>
+
+<% end %>

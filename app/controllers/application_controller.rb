@@ -6,12 +6,15 @@ class ApplicationController < ActionController::Base
   private
   def require_login
     unless logged_in?
+      flash[:warning] = "You need to be logged in to do that"
       redirect_to login_path(path: request.path) and return
     end
   end
 
+  # Generic method to calculate page number for pagination
   def page
-    return (params[:page].to_i == 0) ? 1 : params[:page].to_i
+    _page = params[:page].to_i
+    return (_page == 0) ? 1 : _page
   end
 
   # Generate games for all approved players in the league

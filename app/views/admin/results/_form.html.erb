@@ -5,7 +5,7 @@
   </div>
   <div class="form-group">
     <%= f.label :winning_side, class:"sr-only" %>
-    <%= f.select :winning_side, options_for_select([["Draw","draw"],["Corporation win","corp"],["Runner win","runner"]],result.winning_side), { prompt:"Select winner" }, { class: "form-control" } %>
+    <%= f.select :winning_side, options_for_select([["Draw","draw"],["Corporation win","corp"],["Runner win","runner"]],result.winning_side), { prompt:"Winning side" }, { class: "form-control" } %>
   </div>
   <%= f.submit "Save", class:"btn btn-success" %>
 <% end %>

@@ -1,0 +1,11 @@
+<h1>View league invitation</h1>
+
+<code><%= @invitation.to_json %></code>
+
+<div class="row">
+  <div class="col-md-6 text-center">
+    <%= form_tag league_accept_invite_path(@league.id,@invitation.invitation_token) do %>
+      <%= submit_tag "Accept invitation", class: "btn btn-success" %>
+    <% end %>
+  </div>
+</div>

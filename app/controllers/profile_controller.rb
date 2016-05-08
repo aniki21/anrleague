@@ -12,7 +12,7 @@ class ProfileController < ApplicationController
     if @user.save
       flash[:success] = "Your account has been created"
       UserMailer.confirm_register(@user).deliver_now!
-      redirect_to login_path and return
+      redirect_to login_path(path:params[:path]) and return
     else
       render action: :new and return
     end

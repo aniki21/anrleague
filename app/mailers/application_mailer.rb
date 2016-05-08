@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'ANRLeagues <info@anrleagues.click>'
+  default from: "ANRLeagues <#{DEFAULT_FROM_ADDRESS}>"
   layout 'mailer'
 end
