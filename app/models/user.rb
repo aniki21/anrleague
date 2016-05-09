@@ -12,11 +12,20 @@ class User < ActiveRecord::Base
 	validates_confirmation_of :password, :message => "should match password", :if => :password
 
 	# Methods
+  def slug
+    return self.display_name.parameterize
+  end
+
 	def games
     Game.for_player(self.id)
   end
 	
 	def member_of?(league)
-    return leagues.include?(league)
+    self.liga_users.where(liga_id:league.id).first
+  end
+
+  def membership_of(league)
+    m = self.liga_users.where(liga_id:league.id).first
+    return m.blank? ? false : (m.officer? ? "officer" : "member")
   end
 end

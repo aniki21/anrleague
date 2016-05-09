@@ -26,6 +26,8 @@ class GamesController < ApplicationController
       @games = @games.unplayed
       @title += " (upcoming)"
     end
+
+    @games = @games.paginate(page: page)
   end
 
   # GET /leagues/:league_id/games/:id

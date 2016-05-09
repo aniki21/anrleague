@@ -4,18 +4,23 @@ class ProfileController < ApplicationController
   # GET /register
   def new
     @user = User.new
+    @page_title = "User registration"
   end
 
   # POST /register
   def create
     @user = User.new(user_params)
-    if @user.save
-      flash[:success] = "Your account has been created"
-      UserMailer.confirm_register(@user).deliver_now!
-      redirect_to login_path(path:params[:path]) and return
+    if valid_recaptcha?
+      if @user.save
+        flash[:success] = "Your account has been created"
+        UserMailer.confirm_register(@user).deliver_now!
+        redirect_to login_path(path:params[:path]) and return
+      end
     else
-      render action: :new and return
+      flash.now[:error] = recaptcha_response[:"error-codes"].to_sentence rescue recaptcha_response.to_json
     end
+    @page_title = "User registration"
+    render action: :new and return
   end
 
   # GET /profile/:id/:username
@@ -37,6 +42,8 @@ class ProfileController < ApplicationController
     end
 
     @own_profile = @user.id == current_user.id
+
+    @page_title = @own_profile ? "My profile" : "View profile"
   end
 
   # GET /profile/edit

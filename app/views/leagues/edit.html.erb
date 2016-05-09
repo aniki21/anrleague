@@ -4,7 +4,7 @@
   <div class="col-md-6">
     <h3>League details</h3>
     <%= form_for @league, url: league_path(@league.id), html: { class: "form-horizontal" } do |f| %>
-      <%= render partial: "leagues/form", locals: { f: f } %>
+      <%= render partial: "leagues/form", locals: { f: f, league: @league } %>
     <% end %>
   </div>
 
@@ -12,43 +12,10 @@
     <h3>Seasons</h3>
     <h4>New Season</h4>
     <%= render partial: "seasons/form", locals: { season: @season } %>
+
     <h4>Existing</h4>
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% if @league.seasons.any? %>
-          <% @league.seasons.each do |season| %>
-            <tr<% if season.id == @current_season_id %> class="success"<% end %>>
-              <td>
-                <%= season.display_name %>
-                <%= link_to "<small>Edit</small>".html_safe, edit_league_season_path(@league.id,season.id) if season.upcoming? %>
-              </td>
-              <td>
-                <%= season.aasm_state.humanize %>
-              </td>
-              <td>
-                <%= link_to "Set active", activate_league_season_path(@league.id,season.id), class: "btn btn-xs btn-default" if season.may_activate? %>
-                <%= link_to "Close", "#close", class:"btn btn-xs btn-warning" if season.may_close? %>
-                <%= link_to "Export", "#download", class:"btn btn-xs btn-info" unless season.upcoming? %>
-                <%= delete_button league_season_path(@league.id,season.id),"season" if season.closed? %>
-              </td>
-            </tr>
-          <% end %>
-        <% else %>
-          <tr>
-            <td colspan="3" class="text-center"><em>No seasons have been created yet</em></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
+    <%= render partial: "seasons/league_seasons", locals: { league: @league, current_season_id: @current_season_id } %>
+
 
     <h3>Users</h3>
 

@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   resources :password_reset, except: [:index,:destroy]
 
   # Profile
-  get '/profile', to: "profile#show", as: :profile
-  get '/profile/:id/:username', to: "profile#show"
+  get '/profile', to: "profile#show", as: :my_profile
+  get '/profile/:id/:username', to: "profile#show", as: :profile
   resource :profile, except: [:new,:create,:show], controller: :profile do
     post '/password', to: "profile#update_password", as: :update_password
   end
