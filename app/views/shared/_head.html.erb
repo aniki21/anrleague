@@ -35,12 +35,12 @@
           </a>
           <ul class="dropdown-menu">
             <% if logged_in? %>
-              <li><%= link_to "Profile", profile_path %></li>
+              <li><%= link_to "Profile", my_profile_path %></li>
               <li class="divider"></li>
               <li class="dropdown-header">My Leagues</li>
                 <% if current_user.leagues.any? %>
                   <% current_user.leagues.each do |league| %>
-                    <li><%= link_to league.display_name.truncate(25), show_league_path(league.id,league.slug) %></li>
+                    <li><%= link_to show_league_path(league.id,league.slug) do %><%= league.display_name.truncate(25) %> <%= league_member(league) %><% end %></li>
                   <% end %>
                 <% end %>
                 <li><%= link_to new_league_path do %><small><i class="fa fa-plus"></i> New League</small><% end %></li>

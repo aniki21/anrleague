@@ -4,6 +4,7 @@ class ProfileController < ApplicationController
   # GET /register
   def new
     @user = User.new
+    @page_title = "User registration"
   end
 
   # POST /register
@@ -18,6 +19,7 @@ class ProfileController < ApplicationController
     else
       flash.now[:error] = recaptcha_response[:"error-codes"].to_sentence rescue recaptcha_response.to_json
     end
+    @page_title = "User registration"
     render action: :new and return
   end
 
@@ -40,6 +42,8 @@ class ProfileController < ApplicationController
     end
 
     @own_profile = @user.id == current_user.id
+
+    @page_title = @own_profile ? "My profile" : "View profile"
   end
 
   # GET /profile/edit

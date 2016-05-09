@@ -23,9 +23,16 @@ module ApplicationHelper
     date.strftime("%b #{date.day.ordinalize}")
   end
 
+  # display icons for a user's membership or ownership of a league
   def league_member(league)
     if logged_in?
-      return '<i class="fa fa-star league_member" title="Member" data-toggle="tooltip" data-placement="right"></i>'.html_safe if current_user.leagues.include?(league)
+      membership = current_user.membership_of(league)
+      case membership
+      when "officer"
+        return '<i class="fa fa-angle-double-up league-officer" title="Officer" data-toggle="tooltip" data-placement="right"></i>'.html_safe 
+      when "member"
+        return '<i class="fa fa-star league-member" title="Member" data-toggle="tooltip" data-placement="right"></i>'.html_safe 
+      end
     end
   end
 
