@@ -34,14 +34,23 @@ class LigaUsersController < ApplicationController
     request = fetch_request(params[:league_id],params[:id])
     request.approve! if request.may_approve?
     flash[:success] = "The request has been approved"
-    redirect_to edit_league_path(league.id)
+    redirect_to edit_league_path(request.liga_id) and return
   end
 
-  # POST /leagues/:league_id/join/:id/reject
-  def reject
+  # DELETE /leagues/:league_id/join/:id
+  def destroy
+    request = fetch_request(params[:league_id],params[:id])
+    unless request.blank?
+      request.destroy
+      flash[:success] = "The request has been deleted"
+    else
+      flash[:error] = "The requested membership could not be found"
+    end
+    redirect_to edit_league_path(params[:league_id]) and return
   end
 
   # POST /leagues/:league_id/invite
+  # Send an invitation to join a league to an email address
   # PARAMS
   #   email   the email address to send the token to
   def invite
@@ -87,8 +96,6 @@ class LigaUsersController < ApplicationController
       flash[:info] = "You are already a member of this league"
       redirect_to league_path(@league.id,@league.slug) and return
     end
-
-    #render json: @invitation and return
   end
 
   # POST /leagues/:league_id/invite/:token/accept
@@ -116,12 +123,18 @@ class LigaUsersController < ApplicationController
   def dismiss
   end
 
+  def promote
+  end
+
+  def demote
+  end
+
   private
   def fetch_request(league_id,request_id)
     league = Liga.find_by_id(league_id)
     unless league.blank?
       if league.user_is_officer?(current_user)
-        request = LigaUser.where(liga_id: league_id, id: request_id)
+        request = LigaUser.where(liga_id: league_id, id: request_id).first
         unless request.blank?
           return request
         else

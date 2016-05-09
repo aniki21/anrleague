@@ -4,7 +4,7 @@
       <h3><%= @game.corp_player.display_name %> <small>Corporation</small></h3>
       <div class="form-group">
         <div class="col-sm-12">
-          <%= f.select :corp_identity_id, options_for_select(@corps, @game.corp_identity_id), {}, { class: "select2 form-control", style:"width:100%;" } %>
+          <%= f.select :corp_identity_id, options_for_select(@corps, @game.corp_identity_id), { include_blank: true }, { class: "select2 form-control", style:"width:100%;" } %>
         </div>
       </div>
       <div class="form-group">
@@ -21,7 +21,7 @@
       <h3><%= @game.runner_player.display_name %> <small>Runner</small></h3>
       <div class="form-group">
         <div class="col-sm-12">
-          <%= f.select :runner_identity_id, options_for_select(@runners, @game.runner_identity_id), { }, { class: "select2 form-control", style:"width:100%;" } %>
+          <%= f.select :runner_identity_id, options_for_select(@runners, @game.runner_identity_id), { include_blank: true }, { class: "select2 form-control", style:"width:100%;" } %>
         </div>
       </div>
       <div class="form-group">

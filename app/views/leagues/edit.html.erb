@@ -37,10 +37,14 @@
                 <%= link_to "Set active", activate_league_season_path(@league.id,season.id), class: "btn btn-xs btn-default" if season.may_activate? %>
                 <%= link_to "Close", "#close", class:"btn btn-xs btn-warning" if season.may_close? %>
                 <%= link_to "Export", "#download", class:"btn btn-xs btn-info" unless season.upcoming? %>
-                <%= link_to "Delete", "javascript:void(0);", "data-href":league_season_path(@league.id,season.id), "data-action": :delete, class:"btn btn-xs btn-danger" if season.closed? %>
+                <%= delete_button league_season_path(@league.id,season.id),"season" if season.closed? %>
               </td>
             </tr>
           <% end %>
+        <% else %>
+          <tr>
+            <td colspan="3" class="text-center"><em>No seasons have been created yet</em></td>
+          </tr>
         <% end %>
         </tbody>
       </table>
@@ -84,11 +88,11 @@
               </td>
               <td>
                 <% unless player.user == current_user %>
-                  <%= link_to "Accept", "#", class: "btn btn-default btn-xs" if player.may_approve? %>
+                  <%= link_to "Accept", approve_league_join_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_approve? %>
                   <%= link_to "Promote", "#", class: "btn btn-default btn-xs" if player.may_promote? %>
                   <%= link_to "Demote", "#", class: "btn btn-default btn-xs" if player.may_demote? %>
                   <%= link_to "Ban", "#", class: "btn btn-default btn-xs" if player.may_ban? %>
-                  <%= link_to "Remove", "#", class: "btn btn-default btn-xs" %>
+                  <%= delete_button league_join_path(@league.id,player.id),"membership","Remove" %>
                 <% else %>
                   <em>This is you</em>
                 <% end %>
@@ -101,4 +105,4 @@
   </div>
 </div>
 
-<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season", additional_message: "You will be unable to view the table for this league season on #{SITE_NAME} after this - make sure you've exported the results if you want to keep records." } %>
+<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season", additional_message: "" } %>

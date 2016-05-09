@@ -34,7 +34,7 @@
             </td>
             <td>
               <%= link_to "Edit", edit_admin_identity_path(identity.id), class: "btn btn-info btn-xs" %>
-              <%= link_to "Delete", "javascript:void(0)", class:"btn btn-danger btn-xs", "data-action": "delete", "data-href":admin_identity_path(identity.id) %>
+              <%= delete_button(admin_identity_path(identity.id),"identity") %>
             </td>
           </tr>
         <% end %>

@@ -24,11 +24,10 @@ Rails.application.routes.draw do
     collection do
       get 'search', to: 'leagues#search', as: :search
     end
-    resources :join, controller: "liga_users", only: [:create] do
+    resources :join, controller: "liga_users", only: [:create,:destroy] do
       member do
         # user requests
-        post 'approve'
-        post 'reject'
+        get 'approve'
       end
     end
     post 'invite', to: 'liga_users#invite'
