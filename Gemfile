@@ -48,6 +48,7 @@ end
 
 # User authentication and profile
 gem 'sorcery'
+#gem "recaptcha", require: "recaptcha/rails"
 gem 'gravatar_image_tag'
 
 # Icons and layout
