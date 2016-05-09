@@ -47,4 +47,14 @@ class ApplicationController < ActionController::Base
       season.update_table!
     end
   end
+
+  def valid_recaptcha?
+    recaptcha_response = Recaptcha.validate_response(params[:"g-recaptcha-response"])
+    if recaptcha_response["success"].to_s == "true"
+      return true
+    else
+      flash.now[:error] = "Invalid reCAPTCHA"
+      return false
+    end
+  end
 end

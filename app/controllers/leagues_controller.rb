@@ -52,15 +52,17 @@ class LeaguesController < ApplicationController
   def create
     @league = Liga.new(liga_params)
     @league.owner_id = current_user.id
-    if @league.save
-      # Add this user to the league as an officer
-      LigaUser.create(user_id:current_user.id, liga_id:@league.id, officer:true).approve!
-      
-      flash[:success] = "League created"
-      redirect_to show_league_path(@league.id,@league.slug) and return
-    else
-      render json: { model: params[:liga], errors: @league.errors.full_messages } and return
+    if valid_recaptcha?
+      if @league.save
+        # Add this user to the league as an officer
+        LigaUser.create(user_id:current_user.id, liga_id:@league.id, officer:true).approve!
+        
+        flash[:success] = "League created"
+        redirect_to show_league_path(@league.id,@league.slug) and return
+      end
     end
+    @require_maps = true
+    render action: :new and return
   end
 
   # GET /leagues/:id/edit

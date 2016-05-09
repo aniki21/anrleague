@@ -15,17 +15,17 @@
   <div class="form-group">
     <%= f.label :table_privacy, "Table Privacy", class: "col-md-4 control-label" %>
     <div class="col-md-8">
-      <%= f.select :table_privacy, options_for_select([["Public - visible to everyone","public"],["Private - visible only to members","private"]], @league.table_privacy), {}, { class: "form-control" } %>
+      <%= f.select :table_privacy, options_for_select([["Public - visible to everyone","public"],["Private - visible only to members","private"]], league.table_privacy), {}, { class: "form-control" } %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :location_type, "Location", class: "col-md-4 control-label" %>
     <div class="col-md-4">
-      <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]], @league.location_type), {}, { id:"type-select", class: "form-control" } %>
+      <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]], league.location_type), {}, { id:"type-select", class: "form-control" } %>
     </div>
     <div class="col-md-4">
       <div class="location-select offline">
-        <%= text_field_tag :lookup_address, @league.latlong, id: "lookup-address", class: "form-control" %>
+        <%= text_field_tag :lookup_address, league.latlong, id: "lookup-address", class: "form-control" %>
       </div>
       <div class="location-select online">
         <%= f.text_field :online_location, placeholder: "http://...", class: "form-control" %>
@@ -50,6 +50,14 @@
     </div>
   </div>
 
+  <% if league.new_record? %>
+    <div class="form-group">
+      <div class="col-md-8 col-md-offset-4">
+        <%= render partial: "shared/recaptcha" %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <div class="col-md-8 col-md-offset-4">
       <%= f.submit "Save", class: "btn btn-success" %>
@@ -57,8 +65,8 @@
   </div>
 
 <script type="text/javascript">
-var latitude = <%= @league.latitude %>;
-var longitude = <%= @league.longitude %>;
+var latitude = <%= league.latitude %>;
+var longitude = <%= league.longitude %>;
 
 var getLocation = function() {
   if (navigator.geolocation) {
@@ -91,15 +99,15 @@ var setMapPicker = function(latitude,longitude){
 }
 
 var toggleLocation = function(){
-  <% if @league.location_type == "offline" %>
+  <% if league.location_type == "offline" %>
     $('.online').hide();
-  <% elsif @league.location_type == "online" %>
+  <% elsif league.location_type == "online" %>
     $('.offline').hide();
   <% end %>
 }
 
 var form_ready = function(){
-  <% if @league.latitude.blank? || @league.latitude == 0 %>
+  <% if league.latitude.blank? || league.latitude == 0 %>
     getLocation();
   <% else %>
     setMapPicker(latitude,longitude);

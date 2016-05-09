@@ -2,23 +2,29 @@ class Recaptcha
   require 'net/https'
   require 'uri'
 
-  def self.valid_response?(response,remote_ip=nil)
+  def self.validate_response(response,remote_ip=nil)
+    begin
+      postdata = {
+        response: response,
+        secret: ENV['RECAPTCHA_SECRET_KEY']
+      }
+      postdata[:remoteip] = remote_ip unless remote_ip.blank?
 
-    postdata = {
-      response: response,
-      secret: ENV['RECAPTCHA_PRIVATE_KEY']
-    }
+      # Configure the POST request
+      uri = URI.parse("https://www.google.com/recaptcha/api/siteverify")
+      http = Net::HTTP.new(uri.host,uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-    postdata[:remoteip] = remote_ip unless remote_ip.blank?
+      # Send the POST request
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data(postdata)
+      response = http.request(request)
+      return JSON.parse(response.body)
 
-    uri = URI.parse("https://www.google.com/recaptcha/api/siteverify")
-    http = Net::HTTP.new(uri.host,uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.set_form_data(postdata)
-    response = http.request(request)
-    JSON.parse(response.body) rescue false
+    rescue Exception => e
+      return { success: false, "error-codes": [ e.message ] }
+    end
   end
 
 end
