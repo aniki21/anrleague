@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   resources :leagues do
     collection do
       get 'search', to: 'leagues#search', as: :search
+      get 'nearby', to: 'leagues#nearby', as: :nearby
+      match 'search_api', to: 'leagues#search_api', as: :search_api, via: [:get,:post]
     end
     resources :join, controller: "liga_users", only: [:create,:destroy] do
       member do

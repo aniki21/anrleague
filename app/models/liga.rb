@@ -1,5 +1,8 @@
 class Liga < ActiveRecord::Base
-  self.per_page = 20
+  per_page = 20
+  @allowed_location_types = %w(online offline)
+  @allowed_memberships = %w(open closed invitational)
+  @allowed_table_privacies = %w(public private)
 
   # Allow location lookup
   acts_as_mappable lat_column_name: :latitude,
@@ -13,7 +16,37 @@ class Liga < ActiveRecord::Base
   has_many :games, through: :seasons
 
   # Validations
-  validates :display_name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 50, message: "cannot be more than 50 characters" }
+  validates :display_name,
+    presence: true,
+    uniqueness: { case_sensitive: false },
+    length: {
+      maximum: 50,
+      message: "cannot be more than 50 characters"
+    }
+  validates :location_type,
+    presence: true,
+    inclusion: {
+      in: %w(online offline),
+      message: "must be online or offline"
+    }
+  validates :privacy,
+    presence: true,
+    inclusion: {
+      in: %w(open closed invitational),
+      message: "must be a valid option"
+    }
+  validates :table_privacy,
+    presence: true,
+    inclusion: {
+      in: %w(public private),
+      message: "must be a valid option"
+    }
+  validates :offline_location,
+    presence: { message: "must be provided for offline leagues" },
+    if: :offline?
+  validates :online_location,
+    presence: { message: "must be provided for offline leagues" },
+    if: :online?
 
   # Scopes
   scope :online, ->() { where(location_type: "online") }
@@ -31,7 +64,11 @@ class Liga < ActiveRecord::Base
   before_validation :render_markdown
   before_validation :set_offline_location, if: :offline?
 
+  #
   # Methods
+  #
+
+  # Users and memberships
   def players
     approved_user_ids = (self.liga_users.map(&:user_id) + [self.owner_id]).uniq
     return User.where(id: approved_user_ids).order("lower(display_name) ASC")
@@ -53,18 +90,6 @@ class Liga < ActiveRecord::Base
   def slug
     self.display_name.parameterize
   end
-  
-  def online?
-    self.location_type == "online"
-  end
-
-  def offline?
-    self.location_type == "offline"
-  end
-
-  def current_season
-    self.seasons.active.last || self.seasons.closed.last
-  end
 
   # Privacy
   def open?
@@ -80,6 +105,22 @@ class Liga < ActiveRecord::Base
   end
 
   # Location functions
+  def self.location_types
+    @location_types
+  end
+  
+  def online?
+    self.location_type == "online"
+  end
+
+  def offline?
+    self.location_type == "offline"
+  end
+
+  def current_season
+    self.seasons.active.last || self.seasons.closed.last
+  end
+
   def nearby(radius=5)
     return Liga.offline.within(radius,origin:self) if self.offline?
     return []
@@ -95,23 +136,26 @@ class Liga < ActiveRecord::Base
   end
 
   # Search
+  # This is /incrediby/ basic
   def self.search(query)
-    q = "%#{query}%".downcase
+    q = "%#{query.gsub(/\s/,"%")}%".downcase
     self.where("lower(display_name) LIKE ? OR lower(offline_location) LIKE ?",q,q)
   end
 
   private
   def render_markdown
-    self.description_html = MARKDOWN.render(self.description_markdown)
+    self.description_html = MARKDOWN.render(self.description_markdown || "")
   end
 
   def set_offline_location
-    lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
-    loc = []
-    loc.push(lookup.city) unless lookup.city.blank?
-    loc.push(lookup.state) unless lookup.state.blank?
-    loc.push(lookup.country) unless lookup.country.blank?
+    unless self.latlong.blank?
+      lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
+      loc = []
+      loc.push(lookup.city) unless lookup.city.blank?
+      loc.push(lookup.state) unless lookup.state.blank?
+      loc.push(lookup.country) unless lookup.country.blank?
 
-    self.offline_location = loc.join(", ")    
+      self.offline_location = loc.join(", ")    
+    end
   end
 end

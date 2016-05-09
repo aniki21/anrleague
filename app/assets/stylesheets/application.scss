@@ -162,10 +162,6 @@ h4{
   font-size: 1.0em;
 }
 
-p{
-  text-align:justify;
-}
-
 // Forms
 .field_with_errors{
   select,input,textarea{
@@ -216,10 +212,14 @@ hr{
   .league-officer,.league-member{ color: $white; }
 }
 
-.modal-header.danger{
-  background-color:#d9534f;
-  border-radius:5px 5px 0 0;
-  color:#FFF;
+.modal-header{
+  font-family:$header-font;
+  font-size:1.2em;
+  &.danger{
+    background-color:#d9534f;
+    border-radius:5px 5px 0 0;
+    color:#FFF;
+  }
 }
 
 iframe.map{

@@ -20,10 +20,10 @@
   </div>
   <div class="form-group">
     <%= f.label :location_type, "Location", class: "col-md-4 control-label" %>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <%= f.select :location_type, options_for_select([["Offline","offline"],["Online","online"]], league.location_type), {}, { id:"type-select", class: "form-control" } %>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="location-select offline">
         <%= text_field_tag :lookup_address, league.latlong, id: "lookup-address", class: "form-control" %>
       </div>
@@ -38,6 +38,7 @@
         <%= f.hidden_field :latitude %>
         <%= f.hidden_field :longitude %>
         <div id="map-picker" style="width:100%; height: 200px;"></div>
+        <small class="help-block">Click and drag the marker for precise position</small>
       </div>
     </div>
   </div>
@@ -108,13 +109,11 @@ var toggleLocation = function(){
 
 var form_ready = function(){
   <% if league.latitude.blank? || league.latitude == 0 %>
-    getLocation();
+  getLocation();
   <% else %>
-    setMapPicker(latitude,longitude);
+  setMapPicker(latitude,longitude);
   <% end %>
-
-    window.setTimeout(toggleLocation,500);
-
+  window.setTimeout(toggleLocation,500);
 
   $('#type-select').on('change',function(e){
     var show = $(this).val();
@@ -122,6 +121,10 @@ var form_ready = function(){
     $('.location-select.'+show).show();
   });
 
+  // Prevent premature form submission with the location search box
+  $('#lookup-address').keydown(function(event){
+    if(event.keyCode == "13"){ event.preventDefault(); return false; }
+  });
 };
 
 $(document).ready(form_ready);

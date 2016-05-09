@@ -14,6 +14,9 @@ class LeaguesController < ApplicationController
     @leagues = @leagues.paginate(page:page)
   end
 
+  def nearby
+  end
+
   # GET /leagues/:id/:slug
   def show
     @league = Liga.find_by_id(params[:id])
@@ -123,6 +126,38 @@ class LeaguesController < ApplicationController
       flash[:error] = "Search queries must be longer than three characters"
       redirect_to :back and return
     end
+  end
+
+  def search_api
+    @leagues = Liga.all
+
+    # Search by query
+    unless params[:q].blank?
+      if params[:q].length >= 3
+        @leagues = @leagues.search(params[:q])
+      else
+        @leagues = []
+      end
+    end
+
+    # Search by location type
+    unless params[:t].blank?
+      case params[:t]
+      when "online"
+        @leagues = @leagues.online
+      when "offline"
+        @leagues = @leagues.offline
+      end
+    end
+
+    # Search by Coordinate and Radius
+    unless params[:c].blank?
+      radius = params[:r].blank? ? 15 : params[:r].to_i
+      origin = params[:c].split(",")
+      @leagues = @leagues.offline.within(radius,origin: origin)
+    end
+
+    render json: @leagues.map{|l| { id: l.id, display_name: l.display_name, location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude } } and return
   end
 
   private

@@ -24,15 +24,18 @@ module ApplicationHelper
   end
 
   # display icons for a user's membership or ownership of a league
-  def league_member(league)
+  def league_member(league,user=nil)
     if logged_in?
-      membership = current_user.membership_of(league)
-      case membership
-      when "officer"
-        return '<i class="fa fa-angle-double-up league-officer" title="Officer" data-toggle="tooltip" data-placement="right"></i>'.html_safe 
-      when "member"
-        return '<i class="fa fa-star league-member" title="Member" data-toggle="tooltip" data-placement="right"></i>'.html_safe 
-      end
+      user ||= current_user
+    end
+    return if user.blank?
+
+    membership = user.membership_of(league)
+    case membership
+    when "officer"
+      return '<i data-toggle="tooltip" data-placement="left" title="Officer" class="fa fa-angle-double-up league-officer"></i>'.html_safe 
+    when "member"
+      return '<i data-toggle="tooltip" data-placement="left" title="Member" class="fa fa-star league-member"></i>'.html_safe 
     end
   end
 

@@ -1,0 +1,69 @@
+<div id="map" style="width:100%; height:450px;"></div>
+
+<script type="text/javascript">
+var pos = { lat: 0, lng: 0 }
+var markedData = {}
+
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: pos
+  });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position){
+      pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(pos);
+      searchMap(pos,map);
+    });
+  } else {
+    alert("Your browser doesn't support geolocation");
+  }
+
+  google.maps.event.addListener(map, "zoom_changed", function() {  setTimeout(function(){searchMap(map.getCenter(),map);},3000); });
+
+  google.maps.event.addListener(map,'center_changed', function() {
+    pos = map.getCenter();
+    setTimeout(function(){
+      searchMap(pos,map);
+    },3000);
+  });
+}
+
+function searchMap(coordinates,map){
+  coordinates = ""+pos.lat()+","+pos.lng()+"";
+  $.ajax({
+    url: "<%= search_api_leagues_path %>",
+    data: {
+      c: coordinates,
+      r: 30
+    },
+    dataType: "json",
+    success: function(d,s,x){
+      $(d).each(function(i,m){
+        marker_pos = new google.maps.LatLng(parseFloat(m["lat"]),parseFloat(m["lng"]));
+        var infoWindow = new google.maps.InfoWindow({
+          content: "<h3>"+m["display_name"]+"</h3><p>"+m["location"]+"</p>"
+        });
+        var marker = new google.maps.Marker({
+          position: marker_pos,
+          map: map,
+          icon: "<%= root_url %>mapicon.png",
+          animation: google.maps.Animation.DROP
+        });
+        marker.addListener('click',function(){
+          infoWindow.open(map,marker);
+        });
+      });
+    }
+  });
+}
+
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
+
+$(document).ready(initMap);
+$(document).on('page:load',initMap);
+</script>
