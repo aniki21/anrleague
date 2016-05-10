@@ -1,5 +1,5 @@
 class LeaguesController < ApplicationController
-  before_filter :require_login, except: [:index,:show,:search]
+  before_filter :require_login, except: [:index,:show,:search,:nearby,:search_api]
 
   # GET /leagues
   def index
@@ -157,11 +157,17 @@ class LeaguesController < ApplicationController
       @leagues = @leagues.offline.within(radius,origin: origin)
     end
 
-    render json: @leagues.map{|l| { id: l.id, display_name: l.display_name, location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude } } and return
+    @leagues = @leagues.limit(26);
+
+    render json: @leagues.each_with_index.map{|l,i| { label: labels[i], id: l.id, display_name: l.display_name, url: league_url(l.id,l.slug), location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude } } and return
   end
 
   private
   def liga_params
     params.require(:liga).permit(:display_name,:location_type,:online_location,:latitude,:longitude,:description_markdown,:privacy,:table_privacy)
+  end
+
+  def labels
+    %w(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
   end
 end
