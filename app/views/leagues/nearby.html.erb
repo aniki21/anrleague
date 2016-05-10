@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 var pos = { lat: 0, lng: 0 }
-var markedData = {}
+var markerData = {}
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -40,6 +40,8 @@ function searchMap(coordinates,map){
     },
     dataType: "json",
     success: function(d,s,x){
+      $(markerData).each(function(i,m){ m.setMap(null); });
+      markerData = []
       $(d).each(function(i,m){
         marker_pos = new google.maps.LatLng(parseFloat(m["lat"]),parseFloat(m["lng"]));
         var infoWindow = new google.maps.InfoWindow({
@@ -47,16 +49,17 @@ function searchMap(coordinates,map){
         });
         var marker = new google.maps.Marker({
           position: marker_pos,
-          map: map,
           icon: "<%= root_url %>mapicon.png",
           animation: google.maps.Animation.DROP
-        });
+        })
         marker.addListener('click',function(){
           infoWindow.open(map,marker);
         });
+        markerData.push(marker);
       });
     }
   });
+  $(markerData).each(function(i,m){ m.setMap(map); });
 }
 
 function deleteMarkers() {
