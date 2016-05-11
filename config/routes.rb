@@ -14,10 +14,10 @@ Rails.application.routes.draw do
 
   # Profile
   get '/profile', to: "profile#show", as: :my_profile
-  get '/profile/:id/:username', to: "profile#show", as: :profile
-  resource :profile, except: [:new,:create,:show], controller: :profile do
+  resource :profile, except: [:new,:create], controller: :profile do
     post '/password', to: "profile#update_password", as: :update_password
   end
+  get '/profile/:id/:username', to: "profile#show", as: :show_profile
 
   # Leagues
   resources :leagues do

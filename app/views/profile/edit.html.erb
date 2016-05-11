@@ -10,8 +10,27 @@
             <%= f.text_field :email, class: "form-control" %>
           </div>
         </div>
+        <div class="form-group">
+          <%= f.label :display_name, "Display name", class: "col-md-4 control-label" %>
+          <div class="col-md-8">
+            <%= f.text_field :display_name, class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :jinteki_username, "Jinteki Username", class: "col-md-4 control-label" %>
+          <div class="col-md-8">
+            <%= f.text_field :jinteki_username, class: "form-control", placeholder: "Optional" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <%= f.submit "Update profile", class: "btn btn-success" %>
+          </div>
+        </div>
       <% end %>
     </div>
+
     <div class="col-md-6">
       <h3>Password</h3>
       <%= form_tag update_password_profile_path, class: "form-horizontal" do |f| %>

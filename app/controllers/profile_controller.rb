@@ -9,7 +9,7 @@ class ProfileController < ApplicationController
 
   # POST /register
   def create
-    @user = User.new(user_params)
+    @user = User.new(registration_params)
     if valid_recaptcha?
       if @user.save
         flash[:success] = "Your account has been created"
@@ -53,6 +53,14 @@ class ProfileController < ApplicationController
 
   # POST /profile
   def update
+    @user = current_user
+
+    if @user.update_attributes(profile_params)
+      flash[:success] = "Profile updated"
+      redirect_to my_profile_path and return
+    else
+      render action: :edit and return
+    end
   end
 
   # POST /profile/password
@@ -63,7 +71,7 @@ class ProfileController < ApplicationController
         password_confirmation: params[:new_password_confirmation]
       }
       if current_user.save
-        UserMailer.password_updated(current_user).deliver_now!
+        UserMailer.password_updated(password_user).deliver_now!
         logout
         flash[:success] = "Your password has been updated - please log in again"
         redirect_to login_path and return
@@ -77,8 +85,16 @@ class ProfileController < ApplicationController
   end
 
   private
-  def user_params
+  def registration_params
     params.require(:user).permit(:email,:password,:password_confirmation,:display_name,:jinteki_username)
+  end
+
+  def profile_params
+    params.require(:user).permit(:email,:display_name,:jinteki_username)
+  end
+
+  def password_params
+    params.require(:user).permit(:password,:password_confirmation)
   end
 
 end

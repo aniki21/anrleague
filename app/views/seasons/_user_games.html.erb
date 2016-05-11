@@ -14,14 +14,14 @@
           <div class="pull-left" style="padding-right:10px;">
             <%= gravatar(game.corp_player.email,40) %>
           </div>
-          <%= link_to game.corp_player.display_name, profile_path(game.corp_player.id, game.corp_player.slug) %>
+          <%= link_to game.corp_player.display_name, show_profile_path(game.corp_player.id, game.corp_player.slug) %>
           <% unless game.corp_identity_id.blank? %><br /><small><%= player_identity(game.corp_identity,"Corp") %></small><% end %>
         </td>
         <td>
           <div class="pull-left" style="padding-right:10px;">
             <%= gravatar(game.runner_player.email,40) %>
           </div>
-          <%= link_to game.runner_player.display_name, profile_path(game.runner_player.id, game.runner_player.slug) %>
+          <%= link_to game.runner_player.display_name, show_profile_path(game.runner_player.id, game.runner_player.slug) %>
           <% unless game.runner_identity_id.blank? %><br /><small><%= player_identity(game.runner_identity,"Runner") %></small><% end %>
         </td>
         <td>
