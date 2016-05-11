@@ -108,8 +108,9 @@ function viewableRadius(){
   var lon2 = ne.lng() / 57.2958;
 
   // distance = circle radius from center to Northeast corner of bounds
-  return r * Math.acos(Math.sin(lat1) * Math.sin(lat2) + 
+  radius =  r * Math.acos(Math.sin(lat1) * Math.sin(lat2) + 
       Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
+  return Math.ceil(radius);
 }
 
 $(document).ready(initMap);
