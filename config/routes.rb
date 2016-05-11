@@ -27,6 +27,13 @@ Rails.application.routes.draw do
       get 'nearby', to: 'leagues#nearby', as: :nearby
       match 'search_api', to: 'leagues#search_api', as: :search_api, via: [:get,:post]
     end
+    member do
+      scope :broadcast do
+        get '/', to: 'leagues#new_broadcast', as: :broadcast
+        post '/', to: 'leagues#create_broadcast'
+        match "preview", to: "leagues#preview_broadcast", as: :preview_broadcast, via: [:get,:post]
+      end
+    end
     resources :join, controller: "liga_users", only: [:create,:destroy] do
       member do
         # user requests

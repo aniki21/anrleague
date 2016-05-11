@@ -5,4 +5,8 @@ class MarkdownRenderer < Redcarpet::Render::HTML
   def autolink(link, link_type)
     "<a target=\"_blank\" href=\"#{link}\">#{link}</a>"
   end
+
+  def image(link,title,content)
+    "<img src=\"#{link}\" style=\"max-width:100%;\" alt=\"#{content}\" title=\"#{content}\"/>"
+  end
 end

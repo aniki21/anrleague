@@ -1,0 +1,29 @@
+<h1>Broadcast</h1>
+<p>Send a message to all league members (except those who have opted out of recieving broadcast messages).</p>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_tag broadcast_league_path(@league.id), class: "form-horizontal" do %>
+      <div class="form-group">
+        <%= label_tag :subject, "Subject", class:"col-md-2 control-label" %>
+        <div class="col-md-10">
+          <%= text_field_tag :subject, params[:subject], class:"form-control", placeholder: "Important information from #{@league.display_name}" %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= label_tag :message, "Message", class:"col-md-2 control-label" %>
+        <div class="col-md-10">
+          <%= text_area_tag :message, params[:message], class:"form-control", rows: 15, maxlength: 5000 %>
+          <small class="help-block">Accepts <a href="https://daringfireball.net/projects/markdown/dingus" target="_blank">markdown</a>. Maximum 5,000 characters.</small>
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <div class="col-md-10 col-md-offset-2">
+          <%= submit_tag "Send broadcast", class: "btn btn-success" %>
+          <%= link_to "Cancel", edit_league_path(@league.id), class: "btn btn-default" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

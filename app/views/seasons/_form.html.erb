@@ -1,7 +1,11 @@
-<%= form_for season, url: league_seasons_path(season.league.id), html: { class: "form-inline" } do |f| %>
+<%= form_for season, url: league_seasons_path(season.league.id), html: { class: "form-horizontal" } do |f| %>
   <%= f.hidden_field :league_id %>
   <div class="form-group">
-    <%= f.text_field :display_name, class: "form-control", placeholder: "Display name" %>
+    <div class="col-md-12">
+      <div class="input-group">
+        <%= f.text_field :display_name, class: "form-control", placeholder: "Display name" %>
+        <span class="input-group-btn"><%= f.submit "Create League", class: "btn btn-success" %></span>
+      </div>
+    </div>
   </div>
-  <%= f.submit "Save", class: "btn btn-success" %>
 <% end %>

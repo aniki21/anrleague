@@ -18,13 +18,15 @@ class LeagueMailer < ApplicationMailer
   end
 
   # Broadcast message to all members
-  def broadcast(league,message,sender)
+  def broadcast(league,message,sender,subject=nil)
     @league = league
     @sender = sender
     @message = MARKDOWN.render(message)
-    @subject = "[#{SITE_NAME}] #{league.display_name} - League broadcast"
 
-    bcc = @league.users.notify_league_broadcast.map(&:email)
+    subject = subject.blank? ? "Important information from #{@league.display_name}" : subject
+    @subject = "[#{SITE_NAME}] #{subject}"
+
+    bcc = @league.users.notify_league_broadcast.map{|u| "#{u.display_name} <#{u.email}>" }
     mail(to: DEFAULT_FROM_ADDRESS, bcc: bcc, subject: @subject)
   end
 end

@@ -46,8 +46,8 @@
   <div class="form-group">
     <%= f.label :description, "Description", class: "col-md-4 control-label" %>
     <div class="col-md-8">
-      <%= f.text_area :description_markdown, class: "form-control", placeholder: "Provide information about day/time of offline group meetings, specific directions to location", rows: 8 %>
-      <small class="help-block">Accepts <a href="#markdown">markdown</a></small>
+      <%= f.text_area :description_markdown, class: "form-control", placeholder: "Provide information about day/time of offline group meetings, specific directions to location", rows: 12, maxlength:500 %>
+      <small class="help-block">Accepts <a href="https://daringfireball.net/projects/markdown/dingus" target="_blank">markdown</a>. Maximum of 500 characters.</small>
     </div>
   </div>
 

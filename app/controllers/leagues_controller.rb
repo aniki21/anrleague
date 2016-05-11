@@ -117,6 +117,47 @@ class LeaguesController < ApplicationController
   def destroy
   end
 
+  #
+  #
+  #
+  def new_broadcast
+    @league = Liga.find_by_id(params[:id])
+    if @league.blank?
+      flash[:error] = "The specified league could not be found"
+      redirect_to edit_league_path(@league.id) and return
+    end
+  end
+
+  def create_broadcast
+    @league = Liga.find_by_id(params[:id])
+    unless @league.blank?
+      message = params[:message].strip
+      unless message.blank?
+        flash[:success] = "Broadcast sent to #{@league.users.notify_league_broadcast.count} member(s)"
+        LeagueMailer.broadcast(@league,message,current_user).deliver_now!
+        redirect_to edit_league_path(@league.id) and return
+      else
+        flash.now[:error] = "Broadcast message cannot be blank"
+        render action: :new_broadcast and return
+      end
+    else
+      flash[:error] = "The specified league could not be found"
+      redirect_to leagues_path and return
+    end
+  end
+
+  def preview_broadcast
+    unless params[:markdown].blank?
+      render html: MARKDOWN.render(params[:markdown]).html_safe and return
+    end
+    render text: "" and return
+  end
+
+
+  #
+  #
+  #
+
   # GET /leagues/search
   def search
     if params[:q].length >= 3
