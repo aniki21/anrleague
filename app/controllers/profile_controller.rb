@@ -55,7 +55,17 @@ class ProfileController < ApplicationController
   def update
     @user = current_user
 
-    if @user.update_attributes(profile_params)
+    new_email = params[:email]
+    old_email = @user.email
+
+    @user.attributes = profile_params
+
+    if @user.save
+
+      unless new_email == old_email
+        UserMailer.email_updated(@user,old_email).deliver_now!
+      end
+
       flash[:success] = "Profile updated"
       redirect_to my_profile_path and return
     else
@@ -71,7 +81,7 @@ class ProfileController < ApplicationController
         password_confirmation: params[:new_password_confirmation]
       }
       if current_user.save
-        UserMailer.password_updated(password_user).deliver_now!
+        UserMailer.password_updated(current_user).deliver_now!
         logout
         flash[:success] = "Your password has been updated - please log in again"
         redirect_to login_path and return

@@ -18,7 +18,15 @@ class UserMailer < ApplicationMailer
   # Notify the user of a password change
   def password_updated(user)
     @user = user
-    @subject = "[#{SITE_NAME}] Your password has been reset"
+    @subject = "[#{SITE_NAME}] Your password has been changed"
     mail(to: @user.email, subject: @subject)
+  end
+
+  # Notify the user of an email address change
+  def email_updated(user,old_email)
+    @user = user
+    @old_email = old_email
+    @subject = "[#{SITE_NAME}] Your email address has been updated"
+    mail(to: [@old_email,@user.email].join(","), subject: @subject)
   end
 end
