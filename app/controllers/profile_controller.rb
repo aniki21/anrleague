@@ -3,6 +3,7 @@ class ProfileController < ApplicationController
 
   # GET /register
   def new
+    redirect_to my_profile_path if logged_in?
     @user = User.new
     @page_title = "User registration"
   end
@@ -32,7 +33,7 @@ class ProfileController < ApplicationController
       if logged_in?
         @user = current_user
       else
-        require_login
+        require_login and return
       end
     end
     
@@ -54,18 +55,9 @@ class ProfileController < ApplicationController
   # POST /profile
   def update
     @user = current_user
-
-    new_email = params[:email]
-    old_email = @user.email
-
     @user.attributes = profile_params
 
     if @user.save
-
-      unless new_email == old_email
-        UserMailer.email_updated(@user,old_email).deliver_now!
-      end
-
       flash[:success] = "Profile updated"
       redirect_to my_profile_path and return
     else
@@ -94,6 +86,10 @@ class ProfileController < ApplicationController
     redirect_to edit_profile_path and return
   end
 
+  def update_notifications
+    render json: notification_params and return
+  end
+
   private
   def registration_params
     params.require(:user).permit(:email,:password,:password_confirmation,:display_name,:jinteki_username)
@@ -105,6 +101,10 @@ class ProfileController < ApplicationController
 
   def password_params
     params.require(:user).permit(:password,:password_confirmation)
+  end
+
+  def notification_params
+    params.require(:user).permit(:notify_league_broadcast)
   end
 
 end

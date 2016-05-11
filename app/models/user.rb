@@ -1,6 +1,12 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
+  # Attribute Accessors
+  attr_writer :suppress_notification
+  def suppress_notification
+    @suppress_notification || false
+  end
+
   # Associations
   has_many :liga_users, dependent: :destroy
   has_many :leagues, through: :liga_users
@@ -8,8 +14,15 @@ class User < ActiveRecord::Base
 
   # Validations
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /.+@.+\..+/, message: "must be in a valid format" }
-	validates_length_of :password, :minimum => 6, :message => "must be at least 6 characters long", :if => :password
-	validates_confirmation_of :password, :message => "should match password", :if => :password
+	validates_length_of :password, :minimum => 6, :message => "must be at least 6 characters long", if: :password
+	validates_confirmation_of :password, :message => "should match password", if: :password
+	validate :password_complexity, if: :password
+
+	# Callbacks
+	before_save :notify_on_email_change
+
+	# Scopes
+	scope :notify_league_broadcast, ->() { where(notify_league_broadcast: true) }
 
 	# Methods
   def slug
@@ -27,5 +40,21 @@ class User < ActiveRecord::Base
   def membership_of(league)
     m = self.liga_users.where(liga_id:league.id).first
     return m.blank? ? false : (m.officer? ? "officer" : "member")
+  end
+
+  private
+  # Do this on the model so that even if an admin changes the email,
+  # a user will be notified (prevents support abuse)
+  def notify_on_email_change
+    email_changed = self.changes[:email]
+    unless email_changed.blank?
+      UserMailer.email_updated(self,email_changed.first).deliver_now! unless @suppress_notification
+    end
+  end
+
+  def password_complexity
+    if /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.match(self.password).blank?
+      self.errors.add(:password,"must contain at least one upper and lower-case letter, and at least one number")
+    end
   end
 end

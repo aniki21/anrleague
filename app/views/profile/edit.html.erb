@@ -2,12 +2,13 @@
 
   <div class="row">
     <div class="col-md-6">
-      <h3>Profile</h3>
+      <h3>Profile details</h3>
       <%= form_for @user, url: profile_path, html: { class: "form-horizontal" } do |f| %>
         <div class="form-group">
           <%= f.label :email, "Email address", class: "col-md-4 control-label" %>
           <div class="col-md-8">
             <%= f.text_field :email, class: "form-control" %>
+            <small class="help-block">This will be used to fetch your <%= link_to "Gravatar", "https://en.gravatar.com/", target: "_blank" %> profile image</small>
           </div>
         </div>
         <div class="form-group">
@@ -29,10 +30,28 @@
           </div>
         </div>
       <% end %>
+
+
+      <h3>Notification preferences</h3>
+      <%= form_for @user, url: update_notifications_profile_path, html: { class: "form-horizontal" } do |f| %>
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <label class="checkbox" style="font-weight:normal;">
+              <%= f.check_box :notify_league_broadcast %>
+              <strong data-toggle="popover" data-content="Messages sent by organizers to a league's members">League broadcasts</strong>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <%= f.submit "Save preferences", class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <div class="col-md-6">
-      <h3>Password</h3>
+      <h3>Update password</h3>
       <%= form_tag update_password_profile_path, class: "form-horizontal" do |f| %>
         <div class="form-group">
           <%= label_tag :current_password, "Current password", class: "control-label col-md-4" %>
@@ -44,6 +63,7 @@
           <%= label_tag :new_password, "New password", class: "control-label col-md-4" %>
           <div class="col-md-8">
             <%= password_field_tag :new_password, "", class: "form-control" %>
+            <small class="help-block">Passwords must contain at least one upper- and lower-case letter, and at least one number</small>
           </div>
         </div>
         <div class="form-group">
@@ -62,3 +82,6 @@
     </div>
   </div>
 
+  <script type="text/javascript">
+    $('[data-toggle="popover"]').popover({ trigger:"hover" })
+  </script>
