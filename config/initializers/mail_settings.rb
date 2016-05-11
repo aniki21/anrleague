@@ -1,1 +1,1 @@
-DEFAULT_FROM_ADDRESS = "info@anrleagues.click"
+DEFAULT_FROM_ADDRESS = "anrleagues@gmail.com"

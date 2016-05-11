@@ -67,6 +67,7 @@ module ApplicationHelper
     end
   end
 
+  # Common delete button
   def delete_button(path_to_delete,model_name="item",button_label="Delete")
     link_to button_label, "javascript:void(0)", class:"btn btn-danger btn-xs", "data-action": "delete", "data-model-name": model_name, "data-href":path_to_delete
   end
