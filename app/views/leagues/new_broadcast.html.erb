@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_tag broadcast_league_path(@league.id), class: "form-horizontal" do %>
+    <%= form_tag send_broadcast_league_path(@league.id), class: "form-horizontal" do %>
       <div class="form-group">
         <%= label_tag :subject, "Subject", class:"col-md-2 control-label" %>
         <div class="col-md-10">

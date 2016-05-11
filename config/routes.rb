@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     member do
       scope :broadcast do
         get '/', to: 'leagues#new_broadcast', as: :broadcast
-        post '/', to: 'leagues#create_broadcast'
+        post '/', to: 'leagues#create_broadcast', as: :send_broadcast
         match "preview", to: "leagues#preview_broadcast", as: :preview_broadcast, via: [:get,:post]
       end
     end
