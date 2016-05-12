@@ -9,6 +9,8 @@ class HomeController < ApplicationController
     if logged_in?
       # load my leagues and upcoming matches?
     end
+
+    @api_request = HttpsRequest.get('https://netrunnerdb.com/api/card/05038') rescue "error"
   end
 
   # GET /about
