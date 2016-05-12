@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   def player_identity(identity,default="Unknown")
-    return "<a class=\"nr nr-#{identity.icon_style}\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name.truncate(40)}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
+    return "<a class=\"nr nr-#{identity.icon_style} icon\" href=\"#{identity.nrdb_url}\" target=\"_blank\"> <span class=\"hidden-xs\">#{identity.display_name.truncate(40)}</span><span class=\"visible-xs-inline\">#{identity.short_name}</span></a>".html_safe unless identity.blank?
     return nil
     case default
     when "Runner"

@@ -34,11 +34,4 @@
     <%= render partial: "shared/foot" %>
   </body>
 
-  <% if Rails.env == "production" %>
-    <!-- NetrunnerDB card integration -->
-    <%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css","//netrunnerdb.com/bundles/netrunnerdbbuilder/css/icons.css" %>
-    <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js","//cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js","//netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.data.js","//netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.format.js","//netrunnerdb.com/bundles/netrunnerdbbuilder/js/nrdb.tip.js" %>
-  <% else %>
-      
-  <% end %>
 </html>

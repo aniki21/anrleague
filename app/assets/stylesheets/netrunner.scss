@@ -106,43 +106,43 @@
 
 .nr-anarch{
   color:orangered;
-  &:before {
+  &.icon:before {
     content: "\e91a";
   }
 }
 .nr-criminal{
   color:royalblue;
-  &:before {
+  &.icon:before {
     content: "\e919";
   }
 }
 .nr-shaper{
   color:limegreen;
-  &:before {
+  &.icon:before {
     content: "\e91b";
   }
 }
 .nr-jinteki{
   color:crimson;
-  &:before {
+  &.icon:before {
     content: "\e916";
   }
 }
 .nr-haas-bioroid{
   color:blueviolet;
-  &:before{
+  &.icon:before{
     content: "\e918";
   }
 }
 .nr-nbn{
   color:darkorange;
-  &:before {
+  &.icon:before {
     content: "\e915";
   }
 }
 .nr-weyland-consortium{
   color:darkgreen;
-  &:before{
+  &.icon:before{
     content: "\e917";
   }
 }
@@ -153,20 +153,26 @@
   color:#555;
 }
 
-.nr-adam:before {
+.nr-adam{
+  &.icon:before{
     content: "\e91d";
+  }
 }
-.nr-apex:before {
+.nr-apex{
+  &.icon:before{
     content: "\e91e";
+  }
 }
-.nr-sunny-lebeau:before{
+.nr-sunny-lebeau{
+  &.icon:before{
     content: "\e91c";
+  }
 }
 
 .nr-neutral{
   color:#555;
-  &:before{
+  &.icon:before{
     // Link icon
-    content: "\e908";
+    //content: "\e908";
   }
 }
