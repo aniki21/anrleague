@@ -10,7 +10,7 @@
 
 <% unless @member %>
   <% unless @league.invitational? %>
-    <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag "Join this league", class: "btn btn-success" %><% end %></p>
+    <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag (@league.closed? ? "Request to join this league" : "Join this league"), class: "btn btn-success" %><% end %></p>
   <% else %>
     <p>This league is invitation-only</p>
   <% end %>
@@ -19,20 +19,28 @@
 
 <div class="row">
   <div class="col-md-8">
+    <% unless @season.blank? %>
 
-    <%= render partial: "seasons/league_table", locals: { season: @season } if !@season.blank? && ( @league.table_privacy == "public" || @member ) %>
+      <% if @league.table_public? || @member %>
+        <%= render partial: "seasons/league_table", locals: { season: @season } %>
+      <% end %>
 
-    <% if logged_in? && current_user.member_of?(@league) %>
-      <h3>My Games</h3>
-      <% unless @season.blank? %>
+      <% if @member %>
+        <h3>My Games</h3>
         <% if @games.any? %>
           <%= render partial: "seasons/user_games", locals: { games: @games } %>
           <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
         <% else %>
           <p><em>You don't have any upcoming games</em></p>
         <% end %>
-      <% else %>
-        <p>No active season</p>
+      <% end %>
+    <% else %>
+      <h3>We're still getting ready!</h3>
+      <p>This league doesn't have an active season at the moment.</p>
+      <% unless @member %>
+        <% unless @league.invitational? %>
+          <p>Click the button above to <% if @league.closed? %>submit a membership request for<% else %>join<% end %> this league and <% if @league.closed? %>once your application's been approved<% end %> you'll have the option of being notified when the new season starts.</p>
+        <% end %>
       <% end %>
     <% end %>
   </div>
@@ -42,7 +50,9 @@
     <%= (@league.description_html.blank? ? "<em>No description has been provided.</em>" : @league.description_html).html_safe %>
     <h3>Where we play</h3>
     <% if @league.offline? %>
-      <iframe class="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=<%= ENV["maps_api_key"] %>&q=<%= @league.latlong %>" allowfullscreen></iframe>
+      <div class="map-container square">
+        <iframe class="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=<%= ENV["maps_api_key"] %>&q=<%= @league.latlong %>" allowfullscreen></iframe>
+      </div>
     <% end %>
     <% if @league.online? %>
       <%= link_to @league.online_location, @league.online_location, target:"_blank" %>

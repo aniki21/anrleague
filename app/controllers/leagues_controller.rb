@@ -20,12 +20,12 @@ class LeaguesController < ApplicationController
   # GET /leagues/:id/:slug
   def show
     @league = Liga.find_by_id(params[:id])
-    if params[:slug].blank?
-      redirect_to show_league_path(@league.id,@league.slug) and return
-    end
     if @league.blank?
       flash[:error] = "The requested league could not be found"
       redirect_to root_path and return
+    end
+    unless params[:slug] == @league.slug
+      redirect_to show_league_path(@league.id,@league.slug) and return
     end
 
     @season = @league.current_season
@@ -77,7 +77,7 @@ class LeaguesController < ApplicationController
       redirect_to leagues_path and return
     end
 
-    unless current_user.id == @league.owner_id
+    unless @league.user_is_officer?(current_user)
       flash[:error] = "You don't have permission to do that"
       redirect_to show_league_path(@league.id,@league.slug) and return
     end
@@ -95,7 +95,7 @@ class LeaguesController < ApplicationController
       redirect_to leagues_path and return
     end
 
-    unless current_user.id == @league.owner_id
+    unless @league.user_is_officer?(current_user)
       flash[:error] = "You don't have permission to do that"
       redirect_to show_league_path(@league.id,@league.slug) and return
     end
@@ -193,12 +193,14 @@ class LeaguesController < ApplicationController
 
     # Search by Coordinate and Radius
     unless params[:c].blank?
-      radius = params[:r].blank? ? 15 : params[:r].to_i
       origin = params[:c].split(",")
-      @leagues = @leagues.offline.within(radius,origin: origin)
+      radius = params[:r].blank? ? 15 : params[:r].to_i
+      @leagues = @leagues.nearby(origin[0],origin[1],radius)
     end
 
-    @leagues = @leagues.limit(26);
+    @leagues = @leagues.to_a unless @leagues.is_a?(Array)
+
+    @leagues = @leagues.take(26);
 
     render json: @leagues.each_with_index.map{|l,i| { label: labels[i], id: l.id, display_name: l.display_name, url: league_url(l.id,l.slug), location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude } } and return
   end
