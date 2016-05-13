@@ -25,6 +25,9 @@ var ready = function () {
     placeholder: "Select",
     allowClear: true
   });
+
+  // Display NetrunnerDB popovers on click
+  nrdbPopover();
 }
 
 $(document).ready(ready);

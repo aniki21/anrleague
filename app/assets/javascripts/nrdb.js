@@ -1,6 +1,3 @@
-$(document).ready(nrdbPopover);
-$(document).on('page:load', nrdbPopover);
-
 var nrdbPopover = function(){
   $('a[href*="netrunnerdb.com"]').on('click',function(e){
     e.preventDefault();
