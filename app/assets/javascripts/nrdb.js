@@ -1,3 +1,6 @@
+$(document).ready(nrdbPopover);
+$(document).on('page:load', nrdbPopover);
+
 var nrdbPopover = function(){
   $('a[href*="netrunnerdb.com"]').on('click',function(e){
     e.preventDefault();
@@ -11,8 +14,6 @@ var nrdbPopover = function(){
           dataType:'json',
           success: function(d,s,x){
             var card = d[0];
-            console.log(card);
-            
             var card_body = formatCardBody(card);
 
             // Set the attributes on the link
@@ -36,9 +37,6 @@ var nrdbPopover = function(){
   });
 };
 
-$(document).ready(nrdbPopover);
-$(document).on('page:load', nrdbPopover);
-
 function formatCardBody(card){
 
   // Metadata
@@ -53,11 +51,11 @@ function formatCardBody(card){
         card_meta += ' &middot; <i class="nr nr-link"></i> '+card.baselink;
       }
       card_meta += ' &middot; '+card.minimumdecksize+'/'+card.influencelimit;
-        break;
-    // Corp cards
+      break;
+      // Corp cards
     case 'agenda':
       card_meta += ' &middot; '+card.advancementcost+'/'+card.agendapoints;
-        break;
+      break;
     case 'asset':
       // rez, trash
       card_meta += ' &middot; '+card.cost+'<i class="nr nr-credit"></i> &middot; <i class="nr nr-trash"></i>'+card.trash;
@@ -68,7 +66,7 @@ function formatCardBody(card){
     case 'ice':
       card_meta += ' &middot; '+card.cost+'<i class="nr nr-credit"></i> &middot; Str: '+card.strength;
       break;
-    // Runner cards
+      // Runner cards
     case 'event':
       card_meta += ' &middot; '+card.cost+'<i class="nr nr-credit"></i>';
       break;
@@ -95,7 +93,8 @@ function formatCardBody(card){
   card_text = card_text.replace(/\[Memory Unit\]/g,'<i class="nr nr-mu"></i>');
 
   // Set the actual content of the card popover
-  var card_body = '<p><small>'+card_meta+'</small></p>';
+  var card_body = '';
+  card_body += '<p><small>'+card_meta+'</small></p>';
   card_body += '<p>'+card_text+'</p>';
 
   if(card.flavor != undefined){
