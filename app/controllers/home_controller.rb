@@ -7,10 +7,9 @@ class HomeController < ApplicationController
     @recent = Season.where(league_id:leagues).active.order(activated_at: :desc)
 
     if logged_in?
-      # load my leagues and upcoming matches?
+      season_ids = current_user.games.unplayed.map(&:season_id)
+      @seasons_with_games = Season.where(id: season_ids).active
     end
-
-    @api_request = HttpsRequest.get('https://netrunnerdb.com/api/card/05038') rescue "error"
   end
 
   # GET /about

@@ -18,4 +18,12 @@ class Identity < ActiveRecord::Base
     return "http://netrunnerdb.com/en/card/#{self.nrdb_id}" unless self.nrdb_id.blank?
     return nil
   end
+
+  def short_name
+    if self[:short_name].blank?
+      return self.display_name.split(":").first
+    else
+      return self[:short_name]
+    end
+  end
 end

@@ -24,7 +24,7 @@
       <% if @identities.any? %>
         <% @identities.each do |identity| %>
           <tr>
-            <td class="nr nr-<%= identity.icon_style %> icon">&nbsp;<%= identity.display_name %></td>
+            <td class="icon icon-<%= identity.icon_style %> icon">&nbsp;<%= identity.display_name %></td>
             <td>
               <% unless identity.nrdb_id.blank? %>
                 <%= link_to "Open", identity.nrdb_url, target:"_blank", class: "btn btn-default btn-xs" %>

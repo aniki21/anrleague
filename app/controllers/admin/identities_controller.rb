@@ -60,6 +60,6 @@ class Admin::IdentitiesController < AdminController
   end
 
   def identity_params
-    params.require(:identity).permit(:display_name,:faction_id,:nrdb_id)
+    params.require(:identity).permit(:display_name,:faction_id,:nrdb_id,:short_name)
   end
 end

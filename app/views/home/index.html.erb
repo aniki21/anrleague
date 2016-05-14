@@ -1,23 +1,38 @@
-<h1>Welcome to <%= SITE_NAME %></h1>
+<h1><%= SITE_NAME %></h1>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
     <% if logged_in? %>
-      <h3>Logged in users</h3>
-      <p>List of games from membership leagues?</p>
+      <h2>My Games</h2>
+      <% if @seasons_with_games.any? %>
+        <% @seasons_with_games.each do |season| %>
+          <h4><%= link_to league_path(season.league.id,season.league.slug) do %><%= season.league.display_name %> &ndash; <%= season.display_name %><% end %></h4>
+          <% season_games = season.games.for_player(current_user.id).unplayed %>
+          <%= render partial: "games/table", locals: { games: season_games.limit(3) } %>
+          <% if season_games.count > 3 %>
+            <p class="text-right"><%= link_to "See more", league_path(season.league.id, season.league.slug) %></p>
+          <% end %>
+        <% end %>
+      <% else %>
+        <p><em>You don't have any unplayed games at the moment</em></p>
+      <% end %>
+    <% else %>
+      <h2>Welcome!</h2>
+      <p><%= SITE_NAME %> is a tool to help organise Netrunner leagues, record game results and automatically generate league tables for your players.</p>
+      <p><%= link_to "Log in", login_path %> or <%= link_to "register", register_path %> to join an existing league, or create your own offline league and invite your local meta, or set up an online league for players around the world.</p>
     <% end %>
-
-    <h3>NetrunnerDB API Test</h3>
-    <p><%= link_to "Public Terminal", "https://netrunnerdb.com/en/card/05038" %></p>
-
   </div>
 
   <div class="col-md-4">
-    <h3>Recently started seasons</h3>
+    <h2>Recent seasons</h2>
     <ul class="list-unstyled">
       <% @recent.each do |season| %>
         <li><%= pretty_date(season.activated_at) %> &ndash; <%= link_to season.league.display_name, league_path(season.league_id) %>, <%= season.display_name %></li>
       <% end %>
     </ul>
+
+    <!-- advertising -->
   </div>
 </div>
+
+<%= render partial: "games/results_popup" if logged_in? %>

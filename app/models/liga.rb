@@ -45,7 +45,7 @@ class Liga < ActiveRecord::Base
     presence: { message: "must be provided for offline leagues" },
     if: :offline?
   validates :online_location,
-    presence: { message: "must be provided for offline leagues" },
+    presence: { message: "must be provided for online leagues" },
     if: :online?
 
   # Scopes
@@ -160,7 +160,7 @@ class Liga < ActiveRecord::Base
       loc = []
       loc.push(lookup.street_name) unless lookup.street_name.blank?
       loc.push(lookup.city) unless lookup.city.blank?
-      loc.push(lookup.zip) unless lookup.zip.blank?
+      #loc.push(lookup.zip) unless lookup.zip.blank?
       loc.push(lookup.state) unless lookup.state.blank?
       loc.push(lookup.country) unless lookup.country.blank?
 

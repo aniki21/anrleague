@@ -58,6 +58,11 @@ class GamesController < ApplicationController
     @game = Game.where(id: params[:id], league_id: params[:league_id]).first
     unless @game.blank?
       if @game.update_attributes(game_params)
+        
+        unless @game.result_id.blank?
+          LeagueMailer.game_result(@game).deliver_now!
+        end
+
         @game.season.update_table!
         flash[:success] = "Game saved"
         render layout: "iframe" and return

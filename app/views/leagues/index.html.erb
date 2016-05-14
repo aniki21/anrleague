@@ -1,17 +1,17 @@
 <div class="row">
-  <div class="col-md-3">
-    <div class="list-group">
-      <% unless params[:t] == "online" %>
-        <%= link_to "Nearby Leagues", nearby_leagues_path, class:"list-group-item" if params[:f].blank? %>
-        <%= link_to "Nearby Leagues", nearby_leagues_path, class:"list-group-item active" if params[:f] == "nearby" %>
-      <% end %>
-      <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-      <a href="#" class="list-group-item">Morbi leo risus</a>
-      <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-      <a href="#" class="list-group-item">Vestibulum at eros</a>
-    </div>
-  </div>
-  <div class="col-md-6">
+  <%# <div class="col-md-3"> %>
+  <%#   <div class="list-group"> %>
+  <%#     <% unless params[:t] == "online" %1> %>
+  <%#       <%= link_to "Nearby Leagues", nearby_leagues_path, class:"list-group-item" if params[:f].blank? %1> %>
+  <%#       <%= link_to "Nearby Leagues", nearby_leagues_path, class:"list-group-item active" if params[:f] == "nearby" %1> %>
+  <%#     <% end %1> %>
+  <%#     <a href="#" class="list-group-item">Dapibus ac facilisis in</a> %>
+  <%#     <a href="#" class="list-group-item">Morbi leo risus</a> %>
+  <%#     <a href="#" class="list-group-item">Porta ac consectetur ac</a> %>
+  <%#     <a href="#" class="list-group-item">Vestibulum at eros</a> %>
+  <%#   </div> %>
+  <%# </div> %>
+  <div class="col-md-9">
     <h2>Leagues</h2>
     <% @leagues.each do |league| %>
       <%= render partial: "leagues/short", locals: { league: league } %>

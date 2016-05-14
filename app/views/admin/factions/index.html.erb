@@ -24,7 +24,7 @@
       <% if @factions.any? %>
         <% @factions.each do |faction| %>
           <tr>
-            <td class="nr nr-<%= faction.icon_style %> icon">&nbsp;<%= faction.display_name %></td>
+            <td class="icon icon-<%= faction.icon_style %> icon">&nbsp;<%= faction.display_name %></td>
             <td>
               <%= link_to "Edit", edit_admin_faction_path(faction.id), class: "btn btn-info btn-xs" %>
               <%= link_to "Delete", "#", class: "btn btn-danger btn-xs" %>

@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
     if logged_in?
       redirect_to root_path and return
     end
+    @user = User.new
   end
 
   # POST /login

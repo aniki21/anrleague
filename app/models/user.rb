@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
 	# Scopes
 	scope :notify_league_broadcast, ->() { where(notify_league_broadcast: true) }
+	scope :notify_game_result, ->() { where(notify_game_result: true) }
 
 	# Methods
   def slug

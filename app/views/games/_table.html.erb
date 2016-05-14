@@ -1,0 +1,22 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Corporation</th>
+        <th>Runner</th>
+        <th><!-- actions --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if games.any? %>
+        <% games.each do |game| %>
+          <%= render partial: "games/table_row", locals: { game: game } %>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="3" class="table-center"><em>Nothing to see here</em></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

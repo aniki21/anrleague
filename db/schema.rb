@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511124132) do
+ActiveRecord::Schema.define(version: 20160514123245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20160511124132) do
 
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
   add_index "ligas", ["privacy"], name: "index_ligas_on_privacy", using: :btree
+  add_index "ligas", ["table_privacy"], name: "index_ligas_on_table_privacy", using: :btree
 
   create_table "results", force: :cascade do |t|
     t.string   "display_name"
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(version: 20160511124132) do
     t.string   "jinteki_username"
     t.boolean  "admin",                           default: false
     t.boolean  "notify_league_broadcast",         default: true
+    t.boolean  "notify_game_result",              default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
