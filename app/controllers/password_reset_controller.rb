@@ -14,8 +14,8 @@ class PasswordResetController < ApplicationController
       UserMailer.reset_password_email(@user).deliver_now!
       redirect_to login_path and return
     else
-      flash[:error] = "A user could not be found with that email address"
-      redirect_to password_resets_path and return
+      flash[:error] = "Could not find a user with that email address"
+      redirect_to login_path and return
     end
   end
 
