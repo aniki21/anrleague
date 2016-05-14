@@ -3,10 +3,10 @@ class LeagueMailer < ApplicationMailer
   # Game result
   def game_result(game)
     @game = game
-    user_ids = [game.league.owner_id]
-    user_ids += game.players.map(&:id)
+    users = game.league.officers.notify_owned_league_game_result
+    users += game.players.notify_game_result
     
-    emails = User.where(id: user_ids).notify_game_result.map(&:email).join(",")
+    emails = users.uniq.map(&:email).join(",")
     @subject = "[#{SITE_NAME}] Game result submitted"
 
     mail(to: DEFAULT_FROM_ADDRESS, bcc: emails, subject: @subject)

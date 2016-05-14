@@ -87,6 +87,13 @@ class ProfileController < ApplicationController
   end
 
   def update_notifications
+    user = current_user
+    if current_user.update_attributes(notification_params)
+      flash[:success] = "Notification settings saved"
+    else
+      flash[:error] = "The following issue(s) prevented saving your profile: #{current_user.errors.full_messages.to_sentence}"
+    end
+    redirect_to edit_profile_path and return
     render json: notification_params and return
   end
 
@@ -104,7 +111,7 @@ class ProfileController < ApplicationController
   end
 
   def notification_params
-    params.require(:user).permit(:notify_league_broadcast, :notify_game_result)
+    params.require(:user).permit(:notify_league_broadcast, :notify_game_result, :notify_officer_game_result, :notify_league_membership, :notify_league_season)
   end
 
 end

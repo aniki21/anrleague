@@ -1,3 +1,8 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li class="active"><%= @league.display_name %></li>
+</ul>
+
 <h1>
   <%= @league.display_name %>
   <%= league_member(@league) %>  
@@ -12,7 +17,7 @@
   <% unless @league.invitational? %>
     <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag (@league.closed? ? "Request to join this league" : "Join this league"), class: "btn btn-success" %><% end %></p>
   <% else %>
-    <p>This league is invitation-only</p>
+    <p><button class="btn btn-default disabled">This league is invitation-only</button></p>
   <% end %>
 <% end %>
 
@@ -57,6 +62,9 @@
     <% if @league.online? %>
       <%= link_to @league.online_location, @league.online_location, target:"_blank" %>
     <% end %>
+
+    <!-- ads -->
+    <%= render partial: "shared/ads", locals: {} %>
   </div>
 </div>
 

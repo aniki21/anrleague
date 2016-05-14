@@ -13,21 +13,16 @@
       </tr>
     </thead>
     <tbody>
-      <% last_lp = nil %>
-      <% last_pos = 1 %>
-      <% season.table.each_with_index do |row,i| %>
-        <% pos = last_lp == row[:lp] ? last_pos : i+1 %>
-        <tr>
-          <td class="text-center"><%= pos %></td>
-          <td><%= row[:name] %></td>
-          <td class="text-center"><%= row[:played] %></td>
-          <td class="text-center"><%= row[:wins] %></td>
-          <td class="text-center"><%= row[:losses] %></td>
-          <td class="text-center"><%= row[:ap] %></td>
-          <td class="text-center"><%= row[:lp] %></td>
+      <% season.table.each do |row| %>
+        <tr<% if logged_in? && row.id == current_user.id %> class="success"<% end %>>
+          <td class="text-center"><%= row.position %></td>
+          <td><%= row.name %></td>
+          <td class="text-center"><%= row.played %></td>
+          <td class="text-center"><%= row.wins %></td>
+          <td class="text-center"><%= row.losses %></td>
+          <td class="text-center"><%= row.ap %></td>
+          <td class="text-center"><%= row.lp %></td>
         </tr>
-        <% last_lp = row[:lp] %>
-        <% last_pos = pos %>
       <% end %>
     </tbody>
   </table>

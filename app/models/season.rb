@@ -36,7 +36,14 @@ class Season < ActiveRecord::Base
   delegate :approved_players, to: :league
   
   def table
-    JSON.parse(self.league_table || "[]").map(&:symbolize_keys)
+    # JSON.parse(self.league_table || "[]").map(&:symbolize_keys)
+    JSON.parse(self.league_table || "[]").map{|r| OpenStruct.new(r) }
+  end
+
+  def user_position(user)
+    row = self.table.select{|r| r.id == user.id }.first
+    return row.position unless row.blank?
+    return nil
   end
 
   def update_table
@@ -50,8 +57,8 @@ class Season < ActiveRecord::Base
       runner = game.runner_player
       corp = game.corp_player
       # initialize the players' league rows
-      table[:"#{runner.id}"] ||= { name: runner.display_name, played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0 }
-      table[:"#{corp.id}"] ||= { name: corp.display_name, played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0 }
+      table[:"#{runner.id}"] ||= { id: runner.id, name: runner.display_name, played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0, position: 0 }
+      table[:"#{corp.id}"] ||= { id: corp.id, name: corp.display_name, played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0, position: 0 }
 
       # result
       unless game.result_id.blank?
@@ -90,6 +97,16 @@ class Season < ActiveRecord::Base
     table = table.sort do |a,b|
       comp = (b[:lp] <=> a[:lp])
       comp.zero? ? (b[:ap] <=> a[:ap]) : comp
+    end
+
+    last_lp = nil
+    last_pos = 1
+
+    table.each_with_index do |row,i|
+      pos = last_lp == row[:lp] ? last_pos : i+1
+      row[:position] = pos
+      last_lp = row[:lp]
+      last_pos = pos
     end
 
     self.league_table = table.to_json

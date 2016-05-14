@@ -1,4 +1,20 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li class="active"><%= @season.display_name %></li>
+</ul>
+
 <h1><%= @league.display_name %> &ndash; <%= @season.display_name %></h1>
 
-<h3><%= @title %></h3>
-<%= render partial: "seasons/user_games", locals: { games: @games } %>
+<div class="row">
+  <div class="col-md-9">
+    <h3><%= @title %></h3>
+    <%= render partial: "seasons/user_games", locals: { games: @games } %>
+  </div>
+  <div class="col-md-3">
+    <!-- ads -->
+    <%= render partial: "shared/ads", locals: {} %>
+  </div>
+</div>
+
+<%= render partial: "games/results_popup", locals: {} %>

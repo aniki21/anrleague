@@ -193,16 +193,17 @@ class LeaguesController < ApplicationController
 
     # Search by Coordinate and Radius
     unless params[:c].blank?
-      origin = params[:c].split(",")
+      origin = params[:o].split(",")
+      centre = params[:c].split(",")
       radius = params[:r].blank? ? 15 : params[:r].to_i
-      @leagues = @leagues.nearby(origin[0],origin[1],radius)
+      @leagues = @leagues.nearby(centre[0],centre[1],radius)
     end
 
     @leagues = @leagues.to_a unless @leagues.is_a?(Array)
 
     @leagues = @leagues.take(26);
 
-    render json: @leagues.each_with_index.map{|l,i| { label: labels[i], id: l.id, display_name: l.display_name, url: league_url(l.id,l.slug), location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude } } and return
+    render json: @leagues.each_with_index.map{|l,i| { label: labels[i], id: l.id, display_name: l.display_name, url: league_url(l.id,l.slug), location:(l.offline? ? l.offline_location : ( l.online? ? "Online" : "Unknown" )), lat: l.latitude, lng: l.longitude, distance: l.distance_from(origin,units: :miles).round(1) } } and return
   end
 
   private

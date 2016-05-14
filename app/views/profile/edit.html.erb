@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-md-6">
-      <h3>Profile details</h3>
+      <h2>Profile details</h2>
       <%= form_for @user, url: profile_path, html: { class: "form-horizontal" } do |f| %>
         <div class="form-group">
           <%= f.label :email, "Email address", class: "col-md-4 control-label" %>
@@ -32,13 +32,40 @@
       <% end %>
 
 
-      <h3>Notification preferences</h3>
+      <h2>Notification preferences</h2>
       <%= form_for @user, url: update_notifications_profile_path, html: { class: "form-horizontal" } do |f| %>
+        <h3>Game results</h3>
         <div class="form-group">
           <div class="col-md-8 col-md-offset-4">
             <label class="checkbox" style="font-weight:normal;">
               <%= f.check_box :notify_game_result %>
-              <strong data-toggle="popover" data-content="Emails sent when a game you're a player in has its result saved">Game Results</strong>
+              <strong data-toggle="popover" data-content="Emails sent when a game you played has its result saved">My game results</strong>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <label class="checkbox" style="font-weight:normal;">
+              <%= f.check_box :notify_officer_game_result %>
+              <strong data-toggle="popover" data-content="Emails sent to league organizers when any game in that league has its result saved">League game results</strong>
+            </label>
+          </div>
+        </div>
+
+        <h3>Leagues &amp; memberships</h3>
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <label class="checkbox" style="font-weight:normal;">
+              <%= f.check_box :notify_league_membership %>
+              <strong data-toggle="popover" data-content="Emails sent when you join an open league, when your application to a closed league is accepted, or when you accept an invitation to join a league">League membership</strong>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-8 col-md-offset-4">
+            <label class="checkbox" style="font-weight:normal;">
+              <%= f.check_box :notify_league_season %>
+              <strong data-toggle="popover" data-content="Emails sent to league members when a new season is activated">Season starts</strong>
             </label>
           </div>
         </div>
@@ -59,7 +86,7 @@
     </div>
 
     <div class="col-md-6">
-      <h3>Update password</h3>
+      <h2>Update password</h2>
       <%= form_tag update_password_profile_path, class: "form-horizontal" do |f| %>
         <div class="form-group">
           <%= label_tag :current_password, "Current password", class: "control-label col-md-4" %>

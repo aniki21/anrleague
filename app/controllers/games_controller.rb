@@ -39,7 +39,7 @@ class GamesController < ApplicationController
     @game = Game.where(id: params[:id], league_id: params[:league_id]).first
 
     unless @game.blank?
-      if @game.has_player?(current_user.id)
+      if @game.user_can_update?(current_user)
         @runners = Identity.runner.order(display_name: :asc).map{|r| [r.display_name,r.id ] }
         @corps = Identity.corp.order(display_name: :asc).map{|c| [c.display_name,c.id ] }
         @results = Result.order("lower(display_name) ASC").map{|r| [r.display_name,r.id] }

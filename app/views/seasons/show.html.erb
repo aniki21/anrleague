@@ -1,3 +1,9 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li class="active"><%= @season.display_name %></li>
+</ul>
+
 <h1><%= @league.display_name %> &ndash; <%= @season.display_name %></h1>
 
 <% if logged_in? %>

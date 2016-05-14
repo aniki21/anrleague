@@ -1,11 +1,14 @@
 <h1>Nearby Leagues</h1>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-3">
+    <%= render partial: "leagues/sidebar", locals: {} %>
+  </div>
+  <div class="col-md-6">
     <div class="map-container square">
       <div id="map"></div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div id="nearby-leagues" class="list-unstyled"></div>
   </div>
 </div>
@@ -52,7 +55,8 @@ function searchMap(coordinates,map){
     url: "<%= search_api_leagues_path %>",
     data: {
       c: coordinates,
-      r: viewableRadius()
+      r: viewableRadius(),
+      o: ""+myLocation.position.lat()+","+myLocation.position.lng()+""
     },
     dataType: "json",
     success: function(d,s,x){
@@ -82,7 +86,7 @@ function addMarkers(markers){
     });
     markerData.push(marker);
 
-    $('#nearby-leagues').append('<h3>'+m["label"]+' &ndash; <a href="'+m["url"]+'">'+m["display_name"]+'</a> <small>'+m["location"]+'</small></h3>');
+    $('#nearby-leagues').append('<h3>'+m["label"]+' &ndash; <a href="'+m["url"]+'">'+m["display_name"]+'</a> <small>'+m["distance"]+' miles</small></h3>');
   });
   $(markerData).each(function(i,m){ m.setMap(map); });
 }

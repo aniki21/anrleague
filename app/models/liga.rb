@@ -82,7 +82,7 @@ class Liga < ActiveRecord::Base
   end
 
   def officers
-    self.liga_users.officers
+    self.liga_users.officers.map(&:user)
   end
 
   def user_is_officer?(user)

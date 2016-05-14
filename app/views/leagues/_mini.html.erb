@@ -1,5 +1,5 @@
 <h3>
   <%= link_to league.display_name, show_league_path(league.id,league.slug) %>
   <small><% if league.offline? && !league.offline_location.blank? %><%= league.offline_location %><% elsif league.online? %>Online<% end %></small>
-  <span class="pull-right"><%= league_member(league,user) %></span>
+  <%= league_member(league,user) %>
 </h3>

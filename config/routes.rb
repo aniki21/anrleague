@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get '/profile', to: "profile#show", as: :my_profile
   resource :profile, except: [:new,:create], controller: :profile do
     post '/password', to: "profile#update_password", as: :update_password
-    post '/notifications', to: "profile#update_notifications", as: :update_notifications
+    match '/notifications', to: "profile#update_notifications", as: :update_notifications, via:[:post,:patch,:put]
   end
   get '/profile/:id/:username', to: "profile#show", as: :show_profile
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160514123245) do
+ActiveRecord::Schema.define(version: 20160514215936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20160514123245) do
   add_index "seasons", ["aasm_state"], name: "index_seasons_on_aasm_state", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                                           null: false
+    t.string   "email",                                            null: false
     t.string   "crypted_password"
     t.string   "salt"
     t.datetime "created_at"
@@ -119,9 +119,13 @@ ActiveRecord::Schema.define(version: 20160514123245) do
     t.datetime "reset_password_email_sent_at"
     t.string   "display_name"
     t.string   "jinteki_username"
-    t.boolean  "admin",                           default: false
-    t.boolean  "notify_league_broadcast",         default: true
-    t.boolean  "notify_game_result",              default: true
+    t.boolean  "admin",                            default: false
+    t.boolean  "notify_league_broadcast",          default: true
+    t.boolean  "notify_game_result",               default: true
+    t.boolean  "notify_officer_game_result",       default: true
+    t.boolean  "notify_league_membership",         default: true
+    t.boolean  "notify_league_season",             default: true
+    t.boolean  "notify_officer_league_membership", default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

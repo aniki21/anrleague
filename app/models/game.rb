@@ -30,27 +30,44 @@ class Game < ActiveRecord::Base
   scope :player_season_losses, ->(player_id,season_id) { where(season_id: season_id).where("(runner_player_id = ? AND result_id IN (?)) OR (corp_player_id = ? AND result_id IN (?))",player_id,Result.corp_win.map(&:id),player_id,Result.runner_win.map(&:id)) }
   scope :player_season_draws, ->(player_id,season_id) { for_player(player_id,season_id).where(result_id: Result.where(winning_side:"draw")).map(&:id) }
 
-  # Delegates
-  delegate :runner_win?, to: :result
-  delegate :corp_win?, to: :result
-  delegate :draw?, to: :result
-  
   # Methods
-  def has_player?(player_id)
-    return (self.runner_player_id == player_id || self.corp_player_id == player_id)
+
+  def corp_win?
+    return false if self.result.blank?
+    return self.result.corp_win?
+  end
+  
+  def runner_win?
+    return false if self.result.blank?
+    return self.result.runner_win?
+  end
+
+  def draw?
+    return false if self.result.blank?
+    return self.result.draw?
+  end
+
+  def has_player?(user)
+    return false if user.blank?
+    return (self.runner_player_id == user.id || self.corp_player_id == user.id)
   end
 
   def unplayed?
     self.result.nil?
   end
 
-  def result_for_player(player_id)
-    return nil if self.result_id.blank? || ![self.runner_player_id,self.corp_player_id].include?(player_id)
-    return (self.winning_player_id == player_id) ? "Win" : (self.winning_player_id.blank? ? "Draw" : "Loss")
+  def result_for_player(user)
+    return nil if self.result_id.blank? || ![self.runner_player_id,self.corp_player_id].include?(user.id)
+    return (self.winning_player_id == user.id) ? "Win" : (self.winning_player_id.blank? ? "Draw" : "Loss")
   end
 
   def players
     User.where(id: [self.corp_player_id,self.runner_player_id])
+  end
+
+  def user_can_update?(user)
+    return false if user.blank?
+    return (self.players + self.league.officers).include?(user)
   end
 
   private
