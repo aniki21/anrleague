@@ -19,10 +19,13 @@ class LigaUsersController < ApplicationController
     if league_user.save
       if league.closed?
         # email officers
+        LeagueMailer.membership_requested(@invitation).deliver_now!
         flash[:success] = "Your request to join #{league.display_name} has been submitted for review by the league organiser(s)"
       elsif league.open?
         league_user.approve!
         # email user and officers
+        LeagueMailer.user_approved(@invitation).deliver_now!
+        LeagueMailer.user_joined(@invitation).deliver_now!
         flash[:success] = "You are now a member of #{league.display_name}"
       end
     else
@@ -129,7 +132,9 @@ class LigaUsersController < ApplicationController
     end
 
     @invitation.user_id ||= current_user.id
-    @invitation.accept!
+    @invitation.accept! if @invitation.may_accept?
+
+    LeagueMailer.user_joined(@invitation).deliver_now!
 
     flash[:success] = "The invitation has been accepted"
     redirect_to league_path(@league.id,@league.slug) and return

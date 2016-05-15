@@ -2,10 +2,10 @@ class SessionsController < ApplicationController
 
   # GET /login
   def new
+    redir_path = params[:path].blank? ? profile_path : params[:path]
     if logged_in?
-      redirect_to root_path and return
+      redirect_to redir_path and return
     end
-    @user = User.new
   end
 
   # POST /login
@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       redirect_to redir_path and return
     else
       flash[:error] = "Unable to log you in. Check your username and password and try again."
-      redirect_to login_path and return
+      redirect_to login_path(path:redir_path) and return
     end
   end
 

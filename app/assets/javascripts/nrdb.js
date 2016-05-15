@@ -56,7 +56,10 @@ function formatCardBody(card){
       if(card.side_code == "runner"){
         card_meta += ' &middot; <i class="icon icon-link"></i> '+card.baselink;
       }
-      card_meta += ' &middot; '+card.minimumdecksize+'/'+card.influencelimit;
+      if(card.influencelimit == undefined){
+        influenceLimit = '&infin;';
+      } else { influenceLimit = card.influencelimit; }
+      card_meta += ' &middot; '+card.minimumdecksize+'/'+influenceLimit;
       break;
       // Corp cards
     case 'agenda':

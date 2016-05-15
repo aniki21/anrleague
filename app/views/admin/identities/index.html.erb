@@ -9,42 +9,16 @@
 <%= render partial: "admin/identities/form", locals: { identity: @identity, factions: @factions } %>
 
 
-<h3>Existing identities (<%= @identities.count %>)</h3>
 
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Identity</th>
-        <th>NRDB Entry</th>
-        <th style="width:120px;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @identities.any? %>
-        <% @identities.each do |identity| %>
-          <tr>
-            <td class="icon icon-<%= identity.icon_style %> icon">&nbsp;<%= identity.display_name %></td>
-            <td>
-              <% unless identity.nrdb_id.blank? %>
-                <%= link_to "Open", identity.nrdb_url, target:"_blank", class: "btn btn-default btn-xs" %>
-              <% else %>
-                <em>Not set</em>
-              <% end %>
-            </td>
-            <td>
-              <%= link_to "Edit", edit_admin_identity_path(identity.id), class: "btn btn-info btn-xs" %>
-              <%= delete_button(admin_identity_path(identity.id),"identity") %>
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td colspan="2" class="text-center"><em>Nothing to see here</em></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-md-6">
+    <h3>Existing corp identities (<%= @identities.corp.count %>)</h3>
+    <%= render partial: "admin/identities/table", locals: { identities: @identities.corp } %>
+  </div>
+  <div class="col-md-6">
+    <h3>Existing runner identities (<%= @identities.runner.count %>)</h3>
+    <%= render partial: "admin/identities/table", locals: { identities: @identities.runner } %>
+  </div>
 </div>
 
 <%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "Identity" } %>

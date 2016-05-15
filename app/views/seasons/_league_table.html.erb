@@ -16,7 +16,7 @@
       <% season.table.each do |row| %>
         <tr<% if logged_in? && row.id == current_user.id %> class="success"<% end %>>
           <td class="text-center"><%= row.position %></td>
-          <td><%= row.name %></td>
+          <td><%= link_to row.name, show_profile_path(row.id,row.name.parameterize) %></td>
           <td class="text-center"><%= row.played %></td>
           <td class="text-center"><%= row.wins %></td>
           <td class="text-center"><%= row.losses %></td>

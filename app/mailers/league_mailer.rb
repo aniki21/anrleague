@@ -29,6 +29,26 @@ class LeagueMailer < ApplicationMailer
     mail(to: email, subject: @subject)
   end
 
+  # Notify officers of a new user joining their league
+  def user_joined(liga_user)
+    @league = liga_user.league
+    @user = liga_user.user
+
+    emails = @league.officers.notify_officer_league_membership.map(&:email).join(",")
+
+    @subject = "[#{SITE_NAME}] New user joined #{@league.display_name}"
+    mail(to: DEFAULT_TO_EMAIL, bcc: emails, subject: @subject)
+  end
+
+  # Notify user of membership acceptance
+  def user_approved(liga_user)
+    @league = liga_user.league
+    @user = liga_user.user
+
+    @subject = "[#{SITE_NAME}] You are now a member of #{@league.display_name}"
+    mail(to: @user.email, subject: @subject)
+  end
+
   # Broadcast message to all members
   def broadcast(league,message,sender,subject=nil)
     @league = league

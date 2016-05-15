@@ -1,0 +1,27 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Identity</th>
+        <th style="width:120px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if identities.any? %>
+        <% identities.each do |identity| %>
+          <tr>
+            <td><%= link_to identity.nrdb_url, class: identity.icon_style do %><i class="icon icon-<%= identity.icon_style %>"></i>&nbsp;<%= identity.display_name %><% end %></td>
+            <td>
+              <%= link_to "Edit", edit_admin_identity_path(identity.id), class: "btn btn-info btn-xs" %>
+              <%= delete_button(admin_identity_path(identity.id),"identity") %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="2" class="text-center"><em>Nothing to see here</em></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

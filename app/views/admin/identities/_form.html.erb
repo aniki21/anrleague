@@ -1,12 +1,12 @@
 <%= render partial: "shared/errors", locals: { model: identity } %>
 <%= form_for [:admin,identity], html: { class: "form-inline" } do |f| %>
-  <div class="form-group", style="width:250px;">
+  <div class="form-group" style="min-width:250px;">
     <%= f.label :display_name, "Display name", class: "sr-only" %>
     <%= f.text_field :display_name, placeholder:"Display name", class: "form-control", style:"width:100%;" %>
   </div>
-  <div class="form-group">
+  <div class="form-group" style="min-width:250px;">
     <%= f.label :faction_id, "Faction", class: "sr-only" %>
-    <%= f.select :faction_id, options_for_select(factions, identity.faction_id), { include_blank: true }, { class: "select2" } %>
+    <%= f.select :faction_id, options_for_select(factions, identity.faction_id), { include_blank: true }, { class: "select2", style: "width:100%;" } %>
   </div>
   <div class="form-group">
     <%= f.label :nrdb_id, "NetrunnerDB ID", class:"sr-only" %>

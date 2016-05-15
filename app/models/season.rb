@@ -99,12 +99,15 @@ class Season < ActiveRecord::Base
       comp.zero? ? (b[:ap] <=> a[:ap]) : comp
     end
 
+    last_ap = nil
     last_lp = nil
     last_pos = 1
 
     table.each_with_index do |row,i|
-      pos = last_lp == row[:lp] ? last_pos : i+1
+      pos = (last_lp == row[:lp] && last_ap == row[:ap]) ? last_pos : i+1
       row[:position] = pos
+
+      last_ap = row[:ap]
       last_lp = row[:lp]
       last_pos = pos
     end
