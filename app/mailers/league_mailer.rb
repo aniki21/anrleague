@@ -12,6 +12,15 @@ class LeagueMailer < ApplicationMailer
     mail(to: DEFAULT_FROM_ADDRESS, bcc: emails, subject: @subject)
   end
 
+  # Membership requested
+  def membership_request(liga_user)
+    @league = liga_user.league
+    officers = @league.officers.notify_officer_league_membership.map(&:email).join(",")
+    @user = liga_user.user
+    @subject = "[#{SITE_NAME}] Membership requested"
+    mail(to: DEFAULT_FROM_ADDRESS, bcc: officers, subject: @subject)
+  end
+
   # Send invitation
   def invite(email,liga_user)
     @league = liga_user.league

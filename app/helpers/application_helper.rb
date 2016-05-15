@@ -32,10 +32,12 @@ module ApplicationHelper
 
     membership = user.membership_of(league)
     case membership
+    when "owner"
+      return '<i data-toggle="tooltip" data-placement="left" title="Owner" class="fa fa-star-o league-officer"></i>'.html_safe 
     when "officer"
       return '<i data-toggle="tooltip" data-placement="left" title="Officer" class="fa fa-angle-double-up league-officer"></i>'.html_safe 
     when "member"
-      return '<i data-toggle="tooltip" data-placement="left" title="Member" class="fa fa-star league-member"></i>'.html_safe 
+      return '<i data-toggle="tooltip" data-placement="left" title="Member" class="fa fa-check league-member"></i>'.html_safe 
     end
   end
 
@@ -64,6 +66,13 @@ module ApplicationHelper
       return "danger"
     else
       return ""
+    end
+  end
+
+  def league_role_row_style(role)
+    case role.downcase
+    when "owner","officer"
+      return "info"
     end
   end
 

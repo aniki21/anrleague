@@ -45,6 +45,10 @@ Rails.application.routes.draw do
     post 'invite/:token/accept', to: 'liga_users#accept_invite', as: 'accept_invite'
     post 'invite/:token/dismiss', to: 'liga_users#dismiss_invite', as: 'dismiss_invite'
 
+    get 'member/:id/promote', to: 'liga_users#promote', as: :promote_member
+    get 'member/:id/demote', to: 'liga_users#demote', as: :demote_member
+    get 'member/:id/ban', to: 'liga_users#ban', as: :ban_member
+
     resources :seasons do
       member do
         get '/activate', to: 'seasons#activate'

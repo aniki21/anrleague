@@ -45,6 +45,8 @@ class ProfileController < ApplicationController
     @own_profile = @user.id == current_user.id
 
     @page_title = @own_profile ? "My profile" : "View profile"
+
+    @memberships = @user.liga_users.approved.map(&:league)
   end
 
   # GET /profile/edit

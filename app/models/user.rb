@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   def membership_of(league)
     m = self.liga_users.where(liga_id:league.id).first
-    return m.blank? ? false : (m.officer? ? "officer" : "member")
+    return m.blank? ? false : (m.owner? ? "owner" : (m.officer? ? "officer" : (m.approved? ? "member" : "pending")))
   end
 
   private

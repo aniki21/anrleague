@@ -33,7 +33,7 @@ class LigaUser < ActiveRecord::Base
     end
 
     event :ban do
-      transitions from: [:requested,:approved], to: :banned
+      transitions from: [:invited,:requested,:approved], to: :banned
     end
   end
 
@@ -58,6 +58,11 @@ class LigaUser < ActiveRecord::Base
 
   def may_demote?
     return self.approved? && self.officer?
+  end
+
+  #
+  def owner?
+    self.league.owner_id == self.user_id
   end
   
   private

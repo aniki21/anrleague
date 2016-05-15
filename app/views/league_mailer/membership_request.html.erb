@@ -1,0 +1,5 @@
+<h1>League Membership Request</h1>
+
+<p><%= @user.display_name %> (<%= @user.email %>) has requested to join <strong><%= @league.display_name %></strong></p>
+
+<p><%= link_to "Click here", edit_league_url(@league.id) %> to review this membership request.</p>

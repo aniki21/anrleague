@@ -4,7 +4,7 @@
   <div class="col-md-6">
     <h3>League details</h3>
     <%= form_for @league, url: league_path(@league.id), html: { class: "form-horizontal" } do |f| %>
-      <%= render partial: "leagues/form", locals: { f: f, league: @league } %>
+      <%= render partial: "leagues/form", locals: { f: f, league: @league, disabled: !@league.user_is_owner?(current_user) } %>
     <% end %>
   </div>
 
@@ -35,30 +35,34 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Player Name</th>
-            <th>Role/Status</th>
-            <th>Actions</th|>
+            <th>Player</th>
+            <th></th>
+            <th></th|>
           </tr>
         </thead>
         <tbody>
-          <% @league.liga_users.order(officer: :desc).each do |player| %>
-            <tr>
-              <td><%= player.display_name %></td>
+          <% @league.liga_users.each do |player| %>
+            <% role = player.owner? ? "Owner" : (player.officer ? "Officer" : "Member") %>
+            <tr class="<%= league_role_row_style(role) %>">
               <td>
+                <%= link_to player.display_name, show_profile_path(player.user_id,player.user.slug) %>
                 <% if player.approved? %>
-                  <%= player.officer ? "Officer" : "Member" %>
-                <% elsif player.invited? %>
-                  <em>Invited</em>
-                <% elsif player.requested? %>
-                  <em>Pending</em>
+                  <%= league_member(@league,player.user) %>
                 <% end %>
               </td>
               <td>
+                <% if player.invited? %>
+                  <em>Invitation pending</em>
+                <% elsif player.requested? %>
+                  <em>Request pending</em>
+                <% end %>
+              </td>
+              <td class="text-right">
                 <% unless player.user == current_user %>
-                  <%= link_to "Accept", approve_league_join_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_approve? %>
-                  <%= link_to "Promote", "#", class: "btn btn-default btn-xs" if player.may_promote? %>
-                  <%= link_to "Demote", "#", class: "btn btn-default btn-xs" if player.may_demote? %>
-                  <%= link_to "Ban", "#", class: "btn btn-default btn-xs" if player.may_ban? %>
+                  <%= link_to "Accept", approve_league_join_path(@league.id,player.id), class: "btn btn-success btn-xs" if player.may_approve? %>
+                  <%= link_to "Promote", league_promote_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_promote? %>
+                  <%= link_to "Demote", league_demote_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_demote? %>
+                  <%= link_to "Ban", league_ban_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_ban? %>
                   <%= delete_button league_join_path(@league.id,player.id),"membership","Remove" %>
                 <% else %>
                   <em>This is you</em>

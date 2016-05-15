@@ -10,7 +10,7 @@ class Liga < ActiveRecord::Base
 
   # Associations
   belongs_to :owner, class_name: "User"
-  has_many :liga_users, ->() { order(created_at: :asc) }, dependent: :destroy
+  has_many :liga_users, ->() { order(officer: :desc, created_at: :asc) }, dependent: :destroy
   has_many :users, through: :liga_users
   has_many :seasons, foreign_key: "league_id", dependent: :destroy
   has_many :games, through: :seasons
@@ -70,6 +70,11 @@ class Liga < ActiveRecord::Base
   # Methods
   #
 
+  def user_position(user)
+    return self.current_season.user_position(user) unless self.current_season.blank?
+    return nil
+  end
+
   # Users and memberships
   def players
     approved_user_ids = (self.liga_users.map(&:user_id) + [self.owner_id]).uniq
@@ -85,8 +90,12 @@ class Liga < ActiveRecord::Base
     self.liga_users.officers.map(&:user)
   end
 
+  def user_is_owner?(user)
+    self.owner_id == user.id
+  end
+
   def user_is_officer?(user)
-    self.officers.include?(user) || user.id == self.owner_id || user.admin?
+    self.officers.include?(user) || self.user_is_owner?(user)
   end
   
   def slug
@@ -140,11 +149,6 @@ class Liga < ActiveRecord::Base
     coordinates = coordinates.split(",")
     self.latitude = coordinates[0].to_d
     self.longitude = coordinates[1].to_d
-  end
-
-  # Management
-  def user_can_edit?(user_id)
-    return user_id == owner_id
   end
 
   # Search

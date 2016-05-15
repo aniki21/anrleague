@@ -18,9 +18,11 @@ class LigaUsersController < ApplicationController
     league_user = LigaUser.new(liga_id: league.id,user_id: current_user.id)
     if league_user.save
       if league.closed?
+        # email officers
         flash[:success] = "Your request to join #{league.display_name} has been submitted for review by the league organiser(s)"
       elsif league.open?
         league_user.approve!
+        # email user and officers
         flash[:success] = "You are now a member of #{league.display_name}"
       end
     else
@@ -31,10 +33,24 @@ class LigaUsersController < ApplicationController
 
   # POST /leagues/:league_id/join/:id/approve
   def approve
-    request = fetch_request(params[:league_id],params[:id])
-    request.approve! if request.may_approve?
-    flash[:success] = "The request has been approved"
-    redirect_to edit_league_path(request.liga_id) and return
+    league = Liga.find_by_id(params[:league_id])
+    unless league.blank?
+      if league.user_is_officer?(current_user)
+        request = fetch_request(params[:league_id],params[:id])
+        if request.may_approve?
+          # email user and officers
+          request.approve!
+          flash[:success] = "The request has been approved"
+        end
+        redirect_to edit_league_path(request.liga_id) and return
+      else
+        flash[:error] = "You don't have permission to do that"
+        redirect_to league_path(league.id,league.slug) and return
+      end
+    else 
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
   end
 
   # DELETE /leagues/:league_id/join/:id
@@ -112,21 +128,85 @@ class LigaUsersController < ApplicationController
       redirect_to league_path(@league.id,@league.slug) and return
     end
 
-    @invitation.user_id = current_user.id
+    @invitation.user_id ||= current_user.id
     @invitation.accept!
 
     flash[:success] = "The invitation has been accepted"
     redirect_to league_path(@league.id,@league.slug) and return
   end
 
-  # POST /leagues/:league_id/invite/:token/accept
+  # POST /leagues/:league_id/invite/:token/dismiss
   def dismiss
+    @league = Liga.find_by_id(params[:league_id])
+    if @league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+
+    @invitation = @league.liga_users.where(invitation_token: params[:token]).invited.first
+    if @invitation.blank?
+      flash[:error] = "The invitation specified has already been accepted or does not exist"
+      redirect_to league_path(@league.id,@league.slug) and return
+    end
+
+    @invitation.destroy
+
+    flash[:success] = "The invitation has been removed"
+    redirect_to league_path(@league.id,@league.slug) and return
   end
 
+  # GET /leagues/:league_id/member/:id/promote
   def promote
+    league = Liga.find_by_id(params[:league_id])
+    if league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+    
+    # Only owners can promote
+    unless league.user_is_owner?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member = league.liga_users.where(id:params[:id]).approved.first
+    if member.blank?
+      flash[:error] = "The requested membership could not be found"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member.promote! if member.may_promote?
+    flash[:success] = "Member promoted to officer"
+    redirect_to edit_league_path(league.id) and return
   end
 
+  # GET /leagues/:league_id/member/:id/demote
   def demote
+    league = Liga.find_by_id(params[:league_id])
+    if league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+    
+    # Only owners can promote
+    unless league.user_is_owner?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member = league.liga_users.where(id:params[:id]).approved.first
+    if member.blank?
+      flash[:error] = "The requested membership could not be found"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member.demote! if member.may_demote?
+    flash[:success] = "Officer demoted to member"
+    redirect_to edit_league_path(league.id) and return
+  end
+
+  # GET /leagues/:league_id/member/:id/ban
+  def ban
   end
 
   private
