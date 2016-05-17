@@ -84,6 +84,7 @@ class LeaguesController < ApplicationController
     @require_maps = true
     @season = Season.new(league_id: @league.id)
     @current_season_id = @league.current_season.id rescue 0
+    @members = @league.liga_users.not_banned
   end
 
   # POST /leagues/:id
@@ -118,8 +119,9 @@ class LeaguesController < ApplicationController
   end
 
   #
+  # Broadcast messages
   #
-  #
+  # GET /league/:id/broadcast
   def new_broadcast
     @league = Liga.find_by_id(params[:id])
     if @league.blank?
@@ -128,6 +130,7 @@ class LeaguesController < ApplicationController
     end
   end
 
+  # POST /league/:id/broadcast
   def create_broadcast
     @league = Liga.find_by_id(params[:id])
     unless @league.blank?
@@ -146,18 +149,9 @@ class LeaguesController < ApplicationController
     end
   end
 
-  def preview_broadcast
-    unless params[:markdown].blank?
-      render html: MARKDOWN.render(params[:markdown]).html_safe and return
-    end
-    render text: "" and return
-  end
-
-
   #
+  # Search
   #
-  #
-
   # GET /leagues/search
   def search
     if params[:q].length >= 3
@@ -169,6 +163,7 @@ class LeaguesController < ApplicationController
     end
   end
 
+  # GET|POST /leagues/search_api
   def search_api
     @leagues = Liga.all
 

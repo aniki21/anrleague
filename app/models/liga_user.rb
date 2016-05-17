@@ -11,6 +11,7 @@ class LigaUser < ActiveRecord::Base
 
   # Scopes
   scope :officers, ->() { where(officer: true) }
+  scope :not_banned, ->() { where.not(aasm_state: "banned") }
 
   # States
   include AASM
@@ -20,20 +21,26 @@ class LigaUser < ActiveRecord::Base
     state :approved, before_enter: :clear_invitation_token
     state :banned
 
-    event :invite do
-      transitions from: :requested, to: :invited
-    end
-
-    event :accept do
-      transitions from: :invited, to: :approved
-    end
-
+    # Membership approved
     event :approve do
       transitions from: [:requested], to: :approved
     end
+    
+    # Invitational
+    event :invite do
+      transitions from: :requested, to: :invited
+    end
+    event :accept do
+      transitions from: :invited, to: :approved
+    end
+    # event :reject is just a deletion of the LigaUser
 
+    # Banning
     event :ban do
-      transitions from: [:invited,:requested,:approved], to: :banned
+      transitions from: [:approved], to: :banned, guard: :bannable?
+    end
+    event :unban do
+      transitions from: [:banned], to: :approved
     end
   end
 
@@ -60,7 +67,6 @@ class LigaUser < ActiveRecord::Base
     return self.approved? && self.officer?
   end
 
-  #
   def owner?
     self.league.owner_id == self.user_id
   end
@@ -82,5 +88,10 @@ class LigaUser < ActiveRecord::Base
 
   def generate_token(length=10)
     return (0...length).map{ RANDOM_CHARS[rand(RANDOM_CHARS.length)] }.join    
+  end
+
+  def bannable?
+    return false if self.officer?
+    return true
   end
 end

@@ -78,6 +78,11 @@ class LigaUsersController < ApplicationController
       flash[:error] = "The requested league could not be found"
       redirect_to leagues_path and return
     end
+    
+    unless league.user_is_officer?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(league.id,league.slug)
+    end
 
     if league.users.where(email: params[:email]).any?
       flash[:error] = "A user with that email address is already a member of this league"
@@ -212,6 +217,69 @@ class LigaUsersController < ApplicationController
 
   # GET /leagues/:league_id/member/:id/ban
   def ban
+    league = Liga.find_by_id(params[:league_id])
+    if league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+    
+    # Only league officers can ban (maybe owners?)
+    unless league.user_is_officer?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(league.id,league.slug)
+    end
+    
+    member = league.liga_users.where(id:params[:id]).approved.first
+    if member.blank?
+      flash[:error] = "The requested membership could not be found"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member.ban! if member.may_ban?
+    flash[:success] = "The requested member has been banned and will not be able to re-join the league"
+    redirect_to edit_league_path(league.id)
+  end
+
+  # GET /league/:id/mambers/banned
+  def banned
+    @league = Liga.find_by_id(params[:league_id])
+    if @league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+    
+    # Only league officers can ban (maybe owners?)
+    unless @league.user_is_officer?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(@league.id,@league.slug)
+    end
+
+    @members = @league.liga_users.banned.paginate(page:page)
+  end
+
+  # GET /leagues/:league_id/member/:id/unban
+  def unban
+    league = Liga.find_by_id(params[:league_id])
+    if league.blank?
+      flash[:error] = "The requested league could not be found"
+      redirect_to leagues_path and return
+    end
+    
+    # Only league officers can ban (maybe owners?)
+    unless league.user_is_officer?(current_user)
+      flash[:error] = "You don't have permission to do that"
+      redirect_to league_path(league.id,league.slug)
+    end
+    
+    member = league.liga_users.where(id:params[:id]).banned.first
+    if member.blank?
+      flash[:error] = "The requested membership could not be found"
+      redirect_to edit_league_path(league.id) and return
+    end
+
+    member.unban! if member.may_unban?
+    flash[:success] = "The requested member has been reinstated"
+    redirect_to edit_league_path(league.id)
   end
 
   private
@@ -235,4 +303,5 @@ class LigaUsersController < ApplicationController
       redirect_to leagues_path and return
     end
   end
+
 end

@@ -43,7 +43,7 @@ class Season < ActiveRecord::Base
   def user_position(user=nil)
     return nil if user.blank?
     row = self.table.select{|r| r.id == user.id }.first
-    return row.position unless row.blank?
+    return { position: row.position, points: row.lp } unless row.blank?
     return nil
   end
 

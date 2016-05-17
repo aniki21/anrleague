@@ -1,3 +1,9 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li class="active">Edit</li>
+</ul>
+
 <h1><%= @league.display_name %> <small>Edit</small></h1>
 
 <div class="row">
@@ -35,19 +41,21 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Player</th>
+            <th>Name</th>
             <th></th>
             <th></th|>
           </tr>
         </thead>
         <tbody>
-          <% @league.liga_users.each do |player| %>
+          <% @members.each do |player| %>
             <% role = player.owner? ? "Owner" : (player.officer ? "Officer" : "Member") %>
             <tr class="<%= league_role_row_style(role) %>">
               <td>
-                <%= link_to player.display_name, show_profile_path(player.user_id,player.user.slug) %>
                 <% if player.approved? %>
+                  <%= link_to player.display_name, show_profile_path(player.user_id,player.user.slug) %>
                   <%= league_member(@league,player.user) %>
+                <% else %>
+                  <%= player.invitation_token %>
                 <% end %>
               </td>
               <td>
@@ -62,8 +70,8 @@
                   <%= link_to "Accept", approve_league_join_path(@league.id,player.id), class: "btn btn-success btn-xs" if player.may_approve? %>
                   <%= link_to "Promote", league_promote_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_promote? %>
                   <%= link_to "Demote", league_demote_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_demote? %>
-                  <%= link_to "Ban", league_ban_member_path(@league.id,player.id), class: "btn btn-default btn-xs" if player.may_ban? %>
-                  <%= delete_button league_join_path(@league.id,player.id),"membership","Remove" %>
+                  <%= link_to "Ban", league_ban_member_path(@league.id,player.id), class: "btn btn-danger btn-xs" if player.may_ban? %>
+                  <%= delete_button league_join_path(@league.id,player.id),"membership","Remove" unless player.approved? %>
                 <% else %>
                   <em>This is you</em>
                 <% end %>
@@ -73,8 +81,11 @@
         </tbody>
       </table>
     </div>
+    <% if @league.liga_users.banned.any? %>
+      <p><%= link_to "View #{pluralize @league.liga_users.banned.count,"banned user"}", league_banned_members_path(@league.id) %></p>
+    <% end %>
     <p class="text-right"><%= link_to '<i class="fa fa-envelope"></i> Send a Broadcast'.html_safe, broadcast_league_path(@league.id), class: "btn btn-primary" %></p>
   </div>
 </div>
 
-<%= render partial: "shared/delete_confirmation_modal", locals: { model_name: "League Season", additional_message: "" } %>
+<%= render partial: "shared/delete_confirmation_modal" %>

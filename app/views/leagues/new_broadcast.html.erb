@@ -1,5 +1,12 @@
-<h1>Broadcast</h1>
-<p>Send a message to all league members (except those who have opted out of recieving broadcast messages).</p>
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li><%= link_to "Edit", edit_league_path(@league.id) %></li>
+  <li class="active">Broadcast</li>
+</ul>
+
+<h1>Send a broadcast</h1>
+<p>Send a message to all league members. Users who have opted out of recieving broadcast messages will not receive this message.</p>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">

@@ -1,0 +1,47 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li><%= link_to "Edit", edit_league_path(@league.id) %></li>
+  <li class="active">Banned Users</li>
+</ul>
+
+<h1>Banned users</h1>
+
+<p>The following user(s) have been banned from <%= @league.display_name %>.</p>
+
+<h4><%= page_entries_info(@members,model:"member") %></h4>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th style="width:150px;"><!-- actions --></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @members.any? %>
+            <% @members.each do |member| %>
+              <tr>
+                <td><%= member.user.display_name %></td>
+                <td class="text-right">
+                  <%= link_to "Unban", league_unban_member_path(@league.id,member.id), class: "btn btn-success btn-xs", confirmation: "Are you sure you want to reinstate this member?" %>
+                  <%= delete_button league_join_path(@league.id,member.id),"membership","Remove" %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="2" class="text-center"><em>No banned members</em></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%= paginate(@members) %>
+
+<%= render partial: "shared/delete_confirmation_modal" %>

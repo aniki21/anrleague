@@ -9,4 +9,9 @@ class MarkdownRenderer < Redcarpet::Render::HTML
   def image(link,title,content)
     "<img src=\"#{link}\" style=\"max-width:100%;\" alt=\"#{content}\" title=\"#{content}\"/>"
   end
+
+  def header(text,level)
+    level += 1
+    "<h#{level}>#{text}</h#{level}>"
+  end
 end

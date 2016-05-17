@@ -58,7 +58,9 @@ class LeagueMailer < ApplicationMailer
     subject = subject.blank? ? "Important information from #{@league.display_name}" : subject
     @subject = "[#{SITE_NAME}] #{subject}"
 
-    bcc = @league.users.notify_league_broadcast.map{|u| "#{u.display_name} <#{u.email}>" }
+    ids = @league.liga_users.approved.map(&:user_id)
+    bcc = User.where(id: ids).notify_league_broadcast.map{|u| "#{u.display_name} <#{u.email}>" }
+
     mail(to: DEFAULT_FROM_ADDRESS, bcc: bcc, subject: @subject)
   end
 end

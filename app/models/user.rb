@@ -19,7 +19,8 @@ class User < ActiveRecord::Base
 	validate :password_complexity, if: :password
 
 	# Callbacks
-	before_save :notify_on_email_change
+  before_validation :render_markdown
+	before_save :notify_on_email_change, on: :update
 
 	# Scopes
 	scope :notify_league_broadcast, ->() { where(notify_league_broadcast: true) }
@@ -61,5 +62,9 @@ class User < ActiveRecord::Base
     if /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.match(self.password).blank?
       self.errors.add(:password,"must contain at least one upper and lower-case letter, and at least one number")
     end
+  end
+
+  def render_markdown
+    self.about_html = MARKDOWN.render(self.about_markdown || "")
   end
 end

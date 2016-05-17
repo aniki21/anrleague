@@ -42,7 +42,7 @@ class ProfileController < ApplicationController
       redirect_to root_path and return
     end
 
-    @own_profile = @user.id == current_user.id
+    @own_profile = (logged_in? && (@user.id == current_user.id))
 
     @page_title = @own_profile ? "My profile" : "View profile"
 

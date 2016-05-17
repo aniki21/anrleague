@@ -6,6 +6,7 @@
   </head>
   <body>
     <%= yield %>
-    <p><em>&mdash;The ANRLeagues team</em></p>    
+    <p><em>&mdash;The <%= SITE_NAME %> team</em></p>
+    <p><small>You can change which notifications you reveive from <%= SITE_NAME %> by <%= link_to "logging in", login_url %> and <%= link_to "updating your preferences", profile_url(anchor:"#notifications") %>.
   </body>
 </html>

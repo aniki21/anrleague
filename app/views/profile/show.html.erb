@@ -6,12 +6,14 @@
   <% end %>
 </h1>
 
-<% if @user.id == current_user.id %>
+<% if @own_profile %>
   <p><%= link_to "Edit profile", edit_profile_path, class: "btn btn-default" %></p>
 <% end %>
 
-<h3>About me?</h3>
-<p>Not sure what other profile information should go here</p>
+<% unless @user.about_html.blank? %>
+<h3>About me</h3>
+<%= @user.about_html.html_safe %>
+<% end %>
 
 <div class="row">
   <div class="col-md-6">

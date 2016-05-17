@@ -70,7 +70,8 @@ class Liga < ActiveRecord::Base
   # Methods
   #
 
-  def user_position(user)
+  def user_position(user=nil)
+    return nil if user.blank?
     return self.current_season.user_position(user) unless self.current_season.blank?
     return nil
   end
@@ -87,7 +88,8 @@ class Liga < ActiveRecord::Base
   end
 
   def officers
-    self.liga_users.officers.map(&:user)
+    ids = self.liga_users.officers.map(&:user_id)
+    return User.where(id:ids)
   end
 
   def user_is_owner?(user)
@@ -162,7 +164,7 @@ class Liga < ActiveRecord::Base
     unless self.latlong.blank?
       lookup = Geokit::Geocoders::GoogleGeocoder.reverse_geocode self.latlong
       loc = []
-      loc.push(lookup.street_name) unless lookup.street_name.blank?
+      #loc.push(lookup.street_name) unless lookup.street_name.blank?
       loc.push(lookup.city) unless lookup.city.blank?
       #loc.push(lookup.zip) unless lookup.zip.blank?
       loc.push(lookup.state) unless lookup.state.blank?

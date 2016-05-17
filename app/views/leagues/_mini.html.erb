@@ -2,5 +2,5 @@
   <%= link_to league.display_name, show_league_path(league.id,league.slug) %>
   <small><% if league.offline? && !league.offline_location.blank? %><%= league.offline_location %><% elsif league.online? %>Online<% end %></small>
   <%= league_member(league,user) %>
-  <%= "<small> Current position: #{league.user_position(user).ordinalize} place</small>".html_safe unless league.user_position(user).blank? %>
+  <small><%= league_position(league,user) %></small>
 </h3>
