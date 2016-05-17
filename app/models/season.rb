@@ -40,7 +40,8 @@ class Season < ActiveRecord::Base
     JSON.parse(self.league_table || "[]").map{|r| OpenStruct.new(r) }
   end
 
-  def user_position(user)
+  def user_position(user=nil)
+    return nil if user.blank?
     row = self.table.select{|r| r.id == user.id }.first
     return row.position unless row.blank?
     return nil
