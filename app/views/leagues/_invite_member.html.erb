@@ -1,0 +1,11 @@
+<%= form_tag league_invite_path(league.id), class: "form-horizontal" do %>
+  <div class="form-group">
+    <div class="col-md-12">
+      <%= label_tag :email, "Email address", class: "sr-only" %>
+      <div class="input-group">
+        <%= text_field_tag :email, "", placeholder: "Invite by email address", class: "form-control" %>
+        <span class="input-group-btn"><%= submit_tag "Send invitation", class: "btn btn-success" %></span>
+      </div>
+    </div>
+  </div>
+<% end %>
