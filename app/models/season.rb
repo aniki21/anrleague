@@ -18,7 +18,7 @@ class Season < ActiveRecord::Base
   aasm do
     state :upcoming, initial: true
     state :active, before_enter: :activation_tasks
-    state :closed
+    state :closed, before_enter: :cancel_unplayed_games
 
     event :activate do
       transitions from: [:upcoming], to: :active
@@ -62,7 +62,7 @@ class Season < ActiveRecord::Base
       table[:"#{corp.id}"] ||= { id: corp.id, name: corp.display_name, played: 0, wins: 0, losses: 0, draws: 0, ap: 0, lp: 0, position: 0 }
 
       # result
-      unless game.result_id.blank?
+      unless game.result_id.blank? || game.result_id == 0
         table[:"#{runner.id}"][:played] += 1
         table[:"#{corp.id}"][:played] += 1
         table[:"#{runner.id}"][:ap] += (game.runner_agenda_points || 0)
@@ -133,5 +133,9 @@ class Season < ActiveRecord::Base
     self.update_table!
     self.league.seasons.closed.each{|s| s.destroy }
     self.league.seasons.active.each{|s| s.close! if s.may_close? }
+  end
+
+  def cancel_unplayed_games
+    self.games.unplayed.each{|g| g.cancel! }
   end
 end

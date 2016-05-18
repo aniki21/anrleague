@@ -2,10 +2,12 @@ class SeasonsController < ApplicationController
   before_filter :require_login, except: [:show]
   before_filter :fetch_league
 
+  # GET /leagues/:league_id/seasons
   def index
     @seasons = @league.seasons
   end
 
+  # GET /leagues/:league_id/seasons/:id
   def show
     @season = @league.seasons.find_by_id(params[:id])
     if @season.blank?
@@ -71,7 +73,23 @@ class SeasonsController < ApplicationController
     redirect_to edit_league_path(params[:league_id])
   end
 
-  def deactivate
+  def close
+    if @league.user_is_officer?(current_user)
+      season = Season.find_by_id(params[:id])
+      unless season.blank?
+        if season.may_close?
+          season.close!
+          flash[:success] = "Season closed - all unplayed games have been cancelled"
+        else
+          flash[:error] = "Season could not be closed"
+        end
+      else
+        flash[:error] = "The requested season could not be found"
+      end
+    else
+      flash[:error] = "You don't have permission to do that"
+    end
+    redirect_to edit_league_path(@league.id) and return
   end
 
   private

@@ -15,10 +15,10 @@
           <% if game.runner_win? %><strong>Winner</strong><% end %>
           <% unless game.runner_identity_id.blank? %><br /><small><%= player_identity(game.runner_identity,"Runner") %></small><% end %>
         </td>
-        <td>
+        <td class="text-right">
           <% if game.unplayed? %>
             <% if logged_in? && game.user_can_update?(current_user) %>
-              <%= link_to 'Update'.html_safe, "javascript:void(0);", class:"btn btn-default btn-xs", "data-action":"gameResult", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
+              <%= link_to 'Update'.html_safe, "javascript:void(0);", class:"btn btn-success btn-xs", "data-action":"gameResult", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
             <% else %>
               <em>Upcoming</em>
             <% end %>

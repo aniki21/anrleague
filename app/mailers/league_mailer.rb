@@ -3,7 +3,7 @@ class LeagueMailer < ApplicationMailer
   # Game result
   def game_result(game)
     @game = game
-    users = game.league.officers.notify_owned_league_game_result
+    users = game.league.officers.notify_officer_game_result
     users += game.players.notify_game_result
     
     emails = users.uniq.map(&:email).join(",")

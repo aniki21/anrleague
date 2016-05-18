@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     resources :seasons do
       member do
         get '/activate', to: 'seasons#activate'
+        get '/close', to: 'seasons#close'
       end
       resources :games do
       end

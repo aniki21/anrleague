@@ -36,7 +36,7 @@
           <%= render partial: "seasons/user_games", locals: { games: @games } %>
           <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
         <% else %>
-          <p><em>You don't have any upcoming games</em></p>
+          <p><em>You don't have any unplayed games</em></p>
         <% end %>
       <% end %>
     <% else %>
@@ -68,3 +68,4 @@
   </div>
 </div>
 
+<%= render partial: "games/results_popup", locals: {} %>

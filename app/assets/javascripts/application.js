@@ -26,6 +26,11 @@ var ready = function () {
     allowClear: true
   });
 
+  // Confirmation alert on links
+  $('a[confirmation]').on('click', function(e){
+    return confirm($(this).attr('confirmation'));
+  });
+
   // Display NetrunnerDB popovers on click
   nrdbPopover();
 }

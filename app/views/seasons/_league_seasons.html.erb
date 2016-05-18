@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <th><!-- Status --></th>
+        <th><!-- Actions --></th>
       </tr>
     </thead>
     <tbody>
@@ -13,14 +13,14 @@
         <tr<% if season.id == current_season_id %> class="success"<% end %>>
           <td>
             <%= season.display_name %>
-            <%= link_to "<small>Edit</small>".html_safe, edit_league_season_path(league.id,season.id) if season.upcoming? %>
           </td>
           <td>
             <%= season.aasm_state.humanize %>
           </td>
-          <td>
-            <%= link_to "Set active", activate_league_season_path(league.id,season.id), class: "btn btn-xs btn-default" if season.may_activate? %>
-            <%= link_to "Close", "#close", class:"btn btn-xs btn-warning" if season.may_close? %>
+          <td class="text-right">
+            <%= link_to "Edit", edit_league_season_path(league.id,season.id), class: "btn btn-xs btn-default" if season.upcoming? %>
+            <%= link_to "Set active", activate_league_season_path(league.id,season.id), class: "btn btn-xs btn-success" if season.may_activate? %>
+            <%= link_to "Close", close_league_season_path(league.id,season.id), class:"btn btn-xs btn-warning", confirmation: "Are you sure you want to close this season? Unplayed games will be cancelled." if season.may_close? %>
             <%= link_to "Export", "#download", class:"btn btn-xs btn-info" unless season.upcoming? %>
             <%= delete_button league_season_path(league.id,season.id),"season","Delete" if season.closed? %>
           </td>

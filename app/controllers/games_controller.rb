@@ -44,12 +44,17 @@ class GamesController < ApplicationController
         @corps = Identity.corp.order(display_name: :asc).map{|c| [c.display_name,c.id ] }
         @results = Result.order("lower(display_name) ASC").map{|r| [r.display_name,r.id] }
       else
-        flash[:error] = "You don't have permission to do that"
-        redirect_to league_path(@game.league_id) and return
+        if @game.result_id == 0
+          flash.now[:error] = "You can't update the results for a cancelled game"
+        else
+          flash.now[:error] = "You don't have permission to do that"
+        end
+        render action: :update, layout: "iframe" and return
+        #redirect_to league_path(@game.league_id) and return
       end
     else
-      flash[:error] = "The requested game could not be found in the specified league"
-      redirect_to leagues_path and return
+      flash.now[:error] = "The requested game could not be found in the specified league"
+      #redirect_to leagues_path and return
     end
     render layout: "iframe"
   end
