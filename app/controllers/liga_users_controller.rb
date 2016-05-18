@@ -19,7 +19,7 @@ class LigaUsersController < ApplicationController
     if league_user.save
       if league.closed?
         # email officers
-        LeagueMailer.membership_requested(@invitation).deliver_now!
+        LeagueMailer.membership_request(league_user).deliver_now!
         flash[:success] = "Your request to join #{league.display_name} has been submitted for review by the league organiser(s)"
       elsif league.open?
         league_user.approve!

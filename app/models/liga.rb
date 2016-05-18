@@ -78,7 +78,7 @@ class Liga < ActiveRecord::Base
 
   # Users and memberships
   def players
-    approved_user_ids = (self.liga_users.map(&:user_id) + [self.owner_id]).uniq
+    approved_user_ids = (self.liga_users.approved.map(&:user_id) + [self.owner_id]).uniq
     return User.where(id: approved_user_ids).order("lower(display_name) ASC")
   end
 

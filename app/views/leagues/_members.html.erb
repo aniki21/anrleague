@@ -12,7 +12,7 @@
       <% role = member.owner? ? "Owner" : (member.officer ? "Officer" : "Member") %>
       <tr class="<%= league_role_row_style(role) %>">
         <td>
-          <% if member.approved? %>
+          <% if member.approved? || member.requested? %>
             <%= link_to member.display_name, show_profile_path(member.user_id,member.user.slug) %>
             <%= league_member(@league,member.user) %>
           <% else %>

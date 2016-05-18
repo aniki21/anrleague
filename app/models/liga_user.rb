@@ -37,14 +37,23 @@ class LigaUser < ActiveRecord::Base
 
     # Banning
     event :ban do
+      before do
+        cancel_unplayed_games
+      end
       transitions from: [:approved], to: :banned, guard: :bannable?
     end
     event :unban do
+      before do
+        reactivate_cancelled_games
+      end
       transitions from: [:banned], to: :approved
     end
   end
 
   # Methods
+  delegate :email, to: :user
+  delegate :display_name, to: :user
+
   def display_name
     return self.user.display_name unless self.user.blank?
     return self.invitation_token if self.invited?
@@ -93,5 +102,13 @@ class LigaUser < ActiveRecord::Base
   def bannable?
     return false if self.officer?
     return true
+  end
+
+  def cancel_unplayed_games
+    self.user.games.unplayed.each{|g| g.cancel! }
+  end
+
+  def reactivate_cancelled_games
+    self.user.games.cancelled.each{|g| g.update_attribute(:result_id, nil) }
   end
 end
