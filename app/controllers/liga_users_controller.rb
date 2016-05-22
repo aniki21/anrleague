@@ -60,8 +60,13 @@ class LigaUsersController < ApplicationController
   def destroy
     membership = fetch_request(params[:league_id],params[:id])
     league = membership.league
-    membership.destroy
-    flash[:success] = "The specified membership has been removed"
+
+    unless membership.user_id == league.owner_id
+      membership.destroy
+      flash[:success] = "The specified membership has been removed"
+    else
+      flash[:error] = "You can't remove the owner from their own league"
+    end
 
     if membership.league.user_is_officer?(current_user)
       redirect_to edit_league_path(params[:league_id]) and return
