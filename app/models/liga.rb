@@ -14,6 +14,7 @@ class Liga < ActiveRecord::Base
   has_many :users, through: :liga_users
   has_many :seasons, foreign_key: "league_id", dependent: :destroy
   has_many :games, through: :seasons
+  has_many :reports_against, class_name: "ReportFlag", as: :reportee
 
   # Validations
   validates :display_name,

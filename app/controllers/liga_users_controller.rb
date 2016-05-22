@@ -24,8 +24,8 @@ class LigaUsersController < ApplicationController
       elsif league.open?
         league_user.approve!
         # email user and officers
-        LeagueMailer.user_approved(@invitation).deliver_now!
-        LeagueMailer.user_joined(@invitation).deliver_now!
+        LeagueMailer.user_approved(league_user).deliver_now!
+        LeagueMailer.user_joined(league_user).deliver_now!
         flash[:success] = "You are now a member of #{league.display_name}"
       end
     else
@@ -39,13 +39,13 @@ class LigaUsersController < ApplicationController
     league = Liga.find_by_id(params[:league_id])
     unless league.blank?
       if league.user_is_officer?(current_user)
-        request = fetch_request(params[:league_id],params[:id])
-        if request.may_approve?
+        membership = fetch_request(params[:league_id],params[:id])
+        if membership.may_approve?
           # email user and officers
-          request.approve!
+          membership.approve!
           flash[:success] = "The request has been approved"
         end
-        redirect_to edit_league_path(request.liga_id) and return
+        redirect_to edit_league_path(membership.liga_id) and return
       else
         flash[:error] = "You don't have permission to do that"
         redirect_to league_path(league.id,league.slug) and return
@@ -58,14 +58,16 @@ class LigaUsersController < ApplicationController
 
   # DELETE /leagues/:league_id/join/:id
   def destroy
-    request = fetch_request(params[:league_id],params[:id])
-    unless request.blank?
-      request.destroy
-      flash[:success] = "The request has been deleted"
+    membership = fetch_request(params[:league_id],params[:id])
+    league = membership.league
+    membership.destroy
+    flash[:success] = "The specified membership has been removed"
+
+    if membership.league.user_is_officer?(current_user)
+      redirect_to edit_league_path(params[:league_id]) and return
     else
-      flash[:error] = "The requested membership could not be found"
+      redirect_to league_path(league.id,league.slug) and return
     end
-    redirect_to edit_league_path(params[:league_id]) and return
   end
 
   # POST /leagues/:league_id/invite
@@ -286,14 +288,14 @@ class LigaUsersController < ApplicationController
   def fetch_request(league_id,request_id)
     league = Liga.find_by_id(league_id)
     unless league.blank?
-      if league.user_is_officer?(current_user)
-        request = LigaUser.where(liga_id: league_id, id: request_id).first
-        unless request.blank?
-          return request
+      membership_request = LigaUser.where(liga_id: league_id, id: request_id).first
+      unless membership_request.blank?
+        if league.user_is_officer?(current_user) || membership_request.user == current_user
+          return membership_request
         else
           flash[:error] = "The specified request could not be found"
+          redirect_to edit_league_path(league.id) and return
         end
-        redirect_to edit_league_path(league.id)
       else
         flash[:error] = "You don't have permission to do that"
         redirect_to league_path(league.id,league.slug) and return

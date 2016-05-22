@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reporter_id: 1
+  reportee_id: 1
+  reportee_type: MyString
+  description: MyText
+  aasm_state: MyString
+
+two:
+  reporter_id: 1
+  reportee_id: 1
+  reportee_type: MyString
+  description: MyText
+  aasm_state: MyString

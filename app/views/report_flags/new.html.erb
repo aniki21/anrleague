@@ -1,0 +1,35 @@
+<h1>Report a <%= params[:type].singularize %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <%= form_tag new_report_path(params[:type],params[:id]), class: "form-horizontal" do %>
+      <div class="form-group">
+        <%= label_tag :reportee, "Reporting", class: "control-label col-md-4" %>
+        <div class="col-md-8">
+          <%= text_field_tag :reportee, @reportee.display_name, class: "form-control", disabled: true %>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <%= label_tag :description, "Description", class: "control-label col-md-4" %>
+        <div class="col-md-8">
+          <%= text_area_tag :description, params[:description], class: "form-control", rows: 10, maxlength: 2000, placeholder: "Explain how you believe this #{params[:type].singularize} has violated the terms of service" %>
+          <small class="help-block">Maximum 2,000 characters.</small>
+        </div>
+      </div>
+
+    <div class="form-group">
+      <div class="col-md-8 col-md-offset-4">
+        <%= render partial: "shared/recaptcha" %>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <div class="col-md-8 col-md-offset-4">
+          <%= submit_tag "Submit report", class: "btn btn-success" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

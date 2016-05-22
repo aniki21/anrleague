@@ -1,14 +1,17 @@
 <h1>About <%= SITE_NAME %></h1>
 
-<div class="row">
-  <div class="media col-md-6">
-    <div class="media-left">
-      <%= gravatar("pacosgrove1@gmail.com") %>
-    </div>
-    <div class="media-body">
-      <h3 class="media-heading">Paul C <small><%= link_to "@aniki21", "http://twitter.com/aniki21" %></small></h3>
-      <p>Adopted Scot. I play games pretty well and guitar pretty badly, and have strong opinions about anime.</p>
-      <p>My Netrunner career, such as it exists, has been marked primarily by defeat, but I like to think that it just means I'm constantly learning.</p>
-    </div>
+<p>Back in the mists of time (<%= distance_of_time_in_words(DateTime.new(2016,4,22,20,18),Time.now).downcase %> ago; ancient history for the internet), the <%= link_to "Cool Ghosts #netrunning chatroom", "https://discord.gg/0q29ateDTaAJaH0x", target:"_blank" %> kicked off an online Netrunner tournament at Jinteki.net. I thought it would be nice to have a website where we could track players and games, so I started to make one - but the closer it got to being "finished", the more features I thought of that a "real" website would have.</p>
+
+<p>It's taken me a couple weeks to develop this <em>mostly</em>-functional alpha version you're seeing now; there's definitely more to come, but for now feel free to poke around and <%= link_to "let me know", "http://twitter.com/aniki21", target:"_blank" %> if there's anything missing, or that doesn't work the way it should.</p>
+
+<hr />
+
+<div class="media">
+  <div class="media-left">
+    <%= gravatar("pacosgrove1@gmail.com") %>
+  </div>
+  <div class="media-body">
+    <h3 class="media-heading">Paul C <small><%= link_to "@aniki21", "http://twitter.com/aniki21" %></small></h3>
+    <p>Adopted Scot. I play games pretty well and guitar pretty badly, and have strong opinions about anime.</p>
   </div>
 </div>

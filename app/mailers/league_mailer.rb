@@ -37,7 +37,7 @@ class LeagueMailer < ApplicationMailer
     emails = @league.officers.notify_officer_league_membership.map(&:email).join(",")
 
     @subject = "[#{SITE_NAME}] New user joined #{@league.display_name}"
-    mail(to: DEFAULT_TO_EMAIL, bcc: emails, subject: @subject)
+    mail(to: DEFAULT_FROM_ADDRESS, bcc: emails, subject: @subject)
   end
 
   # Notify user of membership acceptance

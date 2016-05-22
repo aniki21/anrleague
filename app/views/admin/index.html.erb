@@ -14,11 +14,27 @@
       </div>
       <%= submit_tag "Search", class: "btn btn-success" %>
     <% end %>
-    <ul>
+    <ul class="list-unstyled">
       <li><%= link_to "Browse", "#" %></li>
       <li><%= link_to "Bans", "#" %></li>
       <li><%= link_to "Admins", "#" %></li>
     </ul>
+    <hr />
+
+  </div>
+  <div class="col-md-4">
+    <h3>Leagues</h3>
+    <ul>
+      <li>Coming soon</li>
+    </ul>
+    <hr />
+
+    <h3>Reports</h3>
+    <ul>
+      <li><%= link_to "Report flags", admin_report_flags_path %></li>
+    </ul>
+    <hr />
+
   </div>
   <div class="col-md-4">
     <h3>Metadata</h3>
@@ -27,11 +43,7 @@
       <li><%= link_to "Factions", admin_factions_path %></li>
       <li><%= link_to "Identities", admin_identities_path %></li>
     </ul>
-  </div>
-  <div class="col-md-4">
-    <h3>Something else</h3>
-    <ul>
-      <li><%= link_to "TBC", "#" %></li>
-    </ul>
+    <hr />
+
   </div>
 </div>

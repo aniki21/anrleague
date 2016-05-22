@@ -27,7 +27,7 @@ var ready = function () {
   });
 
   // Confirmation alert on links
-  $('a[confirmation]').on('click', function(e){
+  $('[confirmation]').on('click', function(e){
     return confirm($(this).attr('confirmation'));
   });
 

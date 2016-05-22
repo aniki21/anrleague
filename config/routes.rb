@@ -62,6 +62,9 @@ Rails.application.routes.draw do
   end
   get '/leagues/:id/:slug', to: "leagues#show", as: :show_league
 
+  get '/report/:type/:id', to: 'report_flags#new', as: :new_report
+  post '/report/:type/:id', to: 'report_flags#create'
+
   # Admin tools
   get '/admin' => 'admin#index'
   namespace :admin do
@@ -71,6 +74,11 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         get 'search'
+      end
+    end
+    resources :report_flags, only: [:index,:show] do
+      member do
+        match "respond", to: "report_flags#respond", via: [:post,:put,:patch]
       end
     end
   end

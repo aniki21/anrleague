@@ -1,0 +1,54 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Admin", admin_path %></li>
+  <li class="active">Report flags</li>
+</ul>
+
+<h1>Report flags</h1>
+
+<p>
+<% filter = params[:filter] %>
+<%= link_to "Raised", admin_report_flags_path(filter:""), class: "btn btn-default#{" btn-info disabled" if filter.blank? || filter == "raised"}" %>
+<%= link_to "Upheld", admin_report_flags_path(filter:"upheld"), class: "btn btn-default#{" btn-info disabled" if filter == "upheld"}" %>
+<%= link_to "Rejected", admin_report_flags_path(filter:"rejected"), class: "btn btn-default#{" btn-info disabled" if filter == "rejected"}" %>
+<%= link_to "All", admin_report_flags_path(filter:"all"), class: "btn btn-default#{" btn-info disabled" if filter == "all"}" %>
+</p>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width:30px;"></th>
+        <th>Reportee</th>
+        <th>Reporter</th>
+        <th>Status</th>
+        <th style="width:100px"><!-- actions --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @flags.any? %>
+        <% @flags.each do |flag| %>
+          <% row_class =  %>
+          <tr class="<%= report_row_class(flag) %>">
+            <td class="text-center">
+              <%= reportee_icon(flag.reportee_type) %>
+            </td>
+            <td>
+              <%= link_to flag.reportee.display_name, reportee_path(flag.reportee) %>
+              <%= reportee_stats(flag.reportee) %>
+            </td>
+            <td>
+              <%= link_to flag.reporter.display_name, show_profile_path(flag.reporter.id,flag.reporter.slug) %>
+              <%= reporter_stats(flag.reporter) %>
+            </td>
+            <td><%= flag.aasm_state.humanize %></td>
+            <td class="text-right"><%= link_to "View report", admin_report_flag_path(flag.id), class: "btn btn-xs btn-primary" %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="5" class="text-center"><em>Nothing to see here</em></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

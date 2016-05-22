@@ -4,6 +4,9 @@
   <% unless @user.display_name == @user.jinteki_username %>
     <small><%= @user.jinteki_username %></small>
   <% end %>
+  <% unless logged_in? && @user == current_user %>
+    <span class="pull-right"><%= link_to '<i class="fa fa-flag-o"></i>'.html_safe, new_report_path("users",@user.id), class: "btn btn-default" %></span>
+<% end %>
 </h1>
 
 <% if @own_profile %>

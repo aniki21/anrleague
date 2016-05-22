@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517204727) do
+ActiveRecord::Schema.define(version: 20160521224623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,21 @@ ActiveRecord::Schema.define(version: 20160517204727) do
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
   add_index "ligas", ["privacy"], name: "index_ligas_on_privacy", using: :btree
   add_index "ligas", ["table_privacy"], name: "index_ligas_on_table_privacy", using: :btree
+
+  create_table "report_flags", force: :cascade do |t|
+    t.integer  "reporter_id"
+    t.integer  "reportee_id"
+    t.string   "reportee_type"
+    t.text     "description"
+    t.string   "aasm_state"
+    t.text     "response"
+    t.integer  "responder_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "report_flags", ["aasm_state"], name: "index_report_flags_on_aasm_state", using: :btree
+  add_index "report_flags", ["reportee_type"], name: "index_report_flags_on_reportee_type", using: :btree
 
   create_table "results", force: :cascade do |t|
     t.string   "display_name"

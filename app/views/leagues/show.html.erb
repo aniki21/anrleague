@@ -7,20 +7,30 @@
   <%= @league.display_name %>
   <%= league_member(@league) %>  
   <small><% if @league.offline? %><%= @league.offline_location %><% elsif @league.online? %><%= link_to "Online", @league.online_location, target:"_blank" %><% else %>No location specified<% end %></small>
+  <% unless @officer %>
+    <span class="pull-right"><%= link_to '<i class="fa fa-flag-o"></i>'.html_safe, new_report_path("leagues",@league.id), class: "btn btn-default" %></span>
+  <% end %>
 </h1>
 
+<div class="p">
 <% if @officer %>
-  <p><%= link_to "Manage", edit_league_path(@league.id), class:"btn btn-default btn-sm" %></p> 
+  <%= link_to "Manage", edit_league_path(@league.id), class:"btn btn-warning btn-sm" %>
 <% end %>
 
 <% unless @member %>
   <% unless @league.invitational? %>
-    <p><%= form_tag league_join_index_path(@league.id) do %><%= submit_tag (@league.closed? ? "Request to join this league" : "Join this league"), class: "btn btn-success" %><% end %></p>
+    <%= form_tag league_join_index_path(@league.id), style:"display:inline;" do %><%= submit_tag (@league.closed? ? "Request to join this league" : "Join this league"), class: "btn btn-success btn-sm" %><% end %>
   <% else %>
-    <p><button class="btn btn-default disabled">This league is invitation-only</button></p>
+    <button class="btn btn-default disabled btn-sm">This league is invitation-only</button>
+  <% end %>
+<% else %>
+  <% unless current_user == @league.owner %>
+    <%= form_tag league_join_path(@league.id,@member.id), method: :delete, style:"display:inline;" do %><%= submit_tag "Leave this league", class: "btn btn-danger btn-sm", confirmation: "Are you sure you want to leave this league?" %><% end %>
+  <% else %>
+    <button class="btn btn-danger btn-sm disabled">Cannot leave an owned league</button>
   <% end %>
 <% end %>
-
+</div>
 
 <div class="row">
   <div class="col-md-8">

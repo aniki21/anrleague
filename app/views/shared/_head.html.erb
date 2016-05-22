@@ -3,7 +3,7 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#headerMenu">
         <span class="sr-only">Collapse Navbar</span>
-        <i class="fa fa-list"></i>
+        <i class="fa fa-bars"></i>
       </button>
       <%= link_to "#{'<i class="icon icon-spin"></i>'} #{SITE_NAME}".html_safe, root_path, class: "navbar-brand" %>
     </div>
@@ -39,8 +39,8 @@
               <li><%= link_to "Profile", my_profile_path %></li>
               <li class="divider"></li>
               <li class="dropdown-header">My Leagues</li>
-                <% if current_user.leagues.any? %>
-                  <% current_user.leagues.each do |league| %>
+                <% if @my_leagues.any? %>
+                  <% @my_leagues.each do |league| %>
                     <li><%= link_to show_league_path(league.id,league.slug) do %><%= league.display_name.truncate(25) %> <%= league_member(league) %><% end %></li>
                   <% end %>
                 <% end %>

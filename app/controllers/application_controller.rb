@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_filter :my_leagues
+
   private
   def require_login
     unless logged_in?
@@ -55,6 +57,12 @@ class ApplicationController < ActionController::Base
     else
       flash.now[:error] = "Invalid reCAPTCHA"
       return false
+    end
+  end
+
+  def my_leagues
+    if logged_in?
+      @my_leagues = current_user.liga_users.approved.map(&:league)
     end
   end
 end
