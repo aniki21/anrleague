@@ -8,40 +8,47 @@
     </tr>
   </thead>
   <tbody>
-    <% members.each do |member| %>
-      <% role = member.owner? ? "Owner" : (member.officer ? "Officer" : "Member") %>
-      <tr class="<%= league_role_row_style(role) %>">
-        <td>
-          <% if member.approved? || member.requested? %>
-            <%= link_to member.display_name, show_profile_path(member.user_id,member.user.slug) %>
-            <%= league_member(@league,member.user) %>
-          <% else %>
-            <%= member.invitation_token %>
-          <% end %>
-        </td>
-        <td>
-          <% if member.invited? %>
-            <em>Invitation pending</em>
-          <% elsif member.requested? %>
-            <em>Request pending</em>
-          <% end %>
-        </td>
-        <td class="text-right">
-          <% unless member.user == current_user %>
-            <%= link_to "Accept", approve_league_join_path(@league.id,member.id), class: "btn btn-success btn-xs" if member.may_approve? %>
-            <%= link_to "Promote", league_promote_member_path(@league.id,member.id), class: "btn btn-default btn-xs" if member.may_promote? %>
-            <%= link_to "Demote", league_demote_member_path(@league.id,member.id), class: "btn btn-default btn-xs" if member.may_demote? %>
-            <%= link_to "Ban", league_ban_member_path(@league.id,member.id), class: "btn btn-danger btn-xs" if member.may_ban? %>
-            <%= delete_button league_join_path(@league.id,member.id),"membership","Remove" unless member.approved? %>
-          <% else %>
-            <em>This is you</em>
-          <% end %>
+    <% if members.any? %>
+      <% members.each do |member| %>
+        <% role = member.owner? ? "Owner" : (member.officer ? "Officer" : "Member") %>
+        <tr class="<%= league_role_row_style(role) %>">
+          <td>
+            <% unless member.invited? %>
+              <%= link_to member.display_name, show_profile_path(member.user_id,member.user.slug) %>
+              <%= league_member(@league,member.user) %>
+            <% else %>
+              <%= member.invitation_token %>
+            <% end %>
+          </td>
+          <td>
+            <% if member.invited? %>
+              <em>Invitation pending</em>
+            <% elsif member.requested? %>
+              <em>Request pending</em>
+            <% end %>
+          </td>
+          <td class="text-right">
+            <% unless member.user == current_user %>
+              <%= link_to "Accept", approve_league_member_path(@league.id,member.id), class: "btn btn-success btn-xs" if member.may_approve? %>
+              <%= link_to "Promote", promote_league_member_path(@league.id,member.id), class: "btn btn-default btn-xs" if member.may_promote? %>
+              <%= link_to "Demote", demote_league_member_path(@league.id,member.id), class: "btn btn-default btn-xs" if member.may_demote? %>
+              <%= link_to "Ban", ban_league_member_path(@league.id,member.id), class: "btn btn-danger btn-xs" if member.may_ban? %>
+              <%= link_to "Unban", unban_league_member_path(@league.id,member.id), class: "btn btn-success btn-xs", confirmation: "Are you sure you want to reinstate this member?" if member.may_unban? %>
+
+              <%= delete_button league_member_path(@league.id,member.id),"membership","Remove","Removing this member will also delete all their unplayed and cancelled games for this league." unless member.approved? %>
+            <% else %>
+              <em>This is you</em>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="3" class="text-center">
+          <em>Nothing to see here</em>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 </div>
-<% if @league.liga_users.banned.any? %>
-  <p><%= link_to "View #{pluralize @league.liga_users.banned.count,"banned user"}", league_banned_members_path(@league.id) %></p>
-<% end %>

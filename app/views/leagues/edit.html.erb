@@ -1,7 +1,7 @@
 <ul class="breadcrumb">
   <li><%= link_to "Leagues", leagues_path %></li>
   <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
-  <li class="active">Edit</li>
+  <li class="active">Manage</li>
 </ul>
 
 <h1><%= @league.display_name %> <small>Edit</small></h1>
@@ -15,19 +15,25 @@
   </div>
 
   <div class="col-md-6">
-    <h3>Seasons</h3>
-    <h4>New Season</h4>
-    <%= render partial: "seasons/form", locals: { season: @season } %>
-
-    <h4>Existing</h4>
-    <%= render partial: "seasons/league_seasons", locals: { league: @league, current_season_id: @current_season_id } %>
-
-
     <h3>Members</h3>
     <%= render partial: "leagues/invite_member", locals: { league: @league } %>
+    <% if @members.any? %>
+      <h4>Pending requests</h4>
+      <%= render partial: "leagues/members", locals: { members: @members } %>
+    <% else %>
+      <p class="text-center"><em>No outstanding membership applications</em></p>
+    <% end %>
+    <p class="text-right">
+    <%= link_to 'View members', league_members_path(@league.id), class: "btn btn-primary btn-xs" %>
+    <%= link_to 'Contact active members', broadcast_league_path(@league.id), class: "btn btn-default btn-xs" if @league.user_is_owner?(current_user) %>
+    </p>
 
-    <%= render partial: "leagues/members", locals: { members: @members } %>
-    <p class="text-right"><%= link_to '<i class="fa fa-envelope"></i> Send a Broadcast'.html_safe, broadcast_league_path(@league.id), class: "btn btn-primary" %></p>
+    <h3>Seasons</h3>
+    <%= render partial: "seasons/form", locals: { season: @season, league: @league } %>
+    <%= render partial: "seasons/league_seasons", locals: { league: @league } %>
+
+    <h3>Games</h3>
+    <p>Coming soon</p>
   </div>
 </div>
 

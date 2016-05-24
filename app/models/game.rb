@@ -54,7 +54,7 @@ class Game < ActiveRecord::Base
   end
 
   def unplayed?
-    self.result.nil?
+    self.result_id.nil?
   end
 
   def cancelled?

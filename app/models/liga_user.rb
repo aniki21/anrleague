@@ -12,6 +12,7 @@ class LigaUser < ActiveRecord::Base
   # Scopes
   scope :officers, ->() { where(officer: true) }
   scope :not_banned, ->() { where.not(aasm_state: "banned") }
+  scope :pending, ->() { where("aasm_state = ? OR aasm_state = ?","requested","invited") }
 
   # States
   include AASM

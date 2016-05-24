@@ -10,7 +10,7 @@ class Liga < ActiveRecord::Base
 
   # Associations
   belongs_to :owner, class_name: "User"
-  has_many :liga_users, ->() { order(officer: :desc, created_at: :asc) }, dependent: :destroy
+  has_many :liga_users, dependent: :destroy
   has_many :users, through: :liga_users
   has_many :seasons, foreign_key: "league_id", dependent: :destroy
   has_many :games, through: :seasons

@@ -32,9 +32,11 @@ class SeasonsController < ApplicationController
     redirect_to edit_league_path(@season.league_id) and return
   end
 
+  # GET /leagues/:league_id/seasons/:id/edit
   def edit
   end
 
+  # POST /leagues/:league_id/seasons/:id
   def update
   end
   
@@ -73,6 +75,7 @@ class SeasonsController < ApplicationController
     redirect_to edit_league_path(params[:league_id])
   end
 
+  # GET /leagues/:league_id/seasons/:id/close
   def close
     if @league.user_is_officer?(current_user)
       season = Season.find_by_id(params[:id])
@@ -90,6 +93,10 @@ class SeasonsController < ApplicationController
       flash[:error] = "You don't have permission to do that"
     end
     redirect_to edit_league_path(@league.id) and return
+  end
+
+  # GET /leagues/:league_id/seasons/:id/export
+  def export
   end
 
   private

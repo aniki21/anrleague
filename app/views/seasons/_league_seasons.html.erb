@@ -10,7 +10,7 @@
     <tbody>
     <% if league.seasons.any? %>
       <% league.seasons.each do |season| %>
-        <tr<% if season.id == current_season_id %> class="success"<% end %>>
+        <tr<% if season.id == league.current_season.id %> class="success"<% end %>>
           <td>
             <%= season.display_name %>
           </td>

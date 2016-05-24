@@ -1,15 +1,10 @@
-<% additional_message ||= "" %>
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header danger">
               Are you sure you want to delete the specified <span id="modal-delete-model-name">item</span>?
             </div>
-            <% unless additional_message.blank? %>
-              <div class="modal-body">
-                <p><%= additional_message %></p>
-              </div>
-            <% end %>
+            <div id="modal-delete-message" class="modal-body" style="display:none"></div>            
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <%= link_to "Confirm deletion", "#", id:"modal-delete-confirmed", class: "btn btn-danger btn-ok", method: :delete %>
@@ -30,6 +25,12 @@ $('[data-action="delete"]').on('click', function(e) {
     $('#modal-delete-model-name').html(modelName);
     $('#modal-delete-confirmed').attr("href",t.attr("data-href"));
     $('#confirm-delete').modal('show');
+    if(t.attr("data-message") !== ""){
+      $('#modal-delete-message').html(t.attr("data-message")).show();
+    }
+    else {
+      $('#modal-delete-message').html("").hide();
+    }
 });
 
 //$('#confirm-delete').on('show.bs.modal', function(e) {

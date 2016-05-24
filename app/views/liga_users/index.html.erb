@@ -1,0 +1,40 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Leagues", leagues_path %></li>
+  <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
+  <li><%= link_to "Manage", edit_league_path(@league.id) %></li>
+  <li class="active">Members</li>
+</ul>
+
+<h1>View league members</h1>
+
+<p>
+<%= link_to "All", league_members_path(filter:"",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter.blank? || @filter == "all"}" %>
+<%= link_to "Officers", league_members_path(filter:"officers",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter == "officers"}" %>
+<%= link_to "Pending", league_members_path(filter:"pending",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter == "pending"}" %>
+<%= link_to "Invited", league_members_path(filter:"invited",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter == "invited"}" %>
+<%= link_to "Approved", league_members_path(filter:"approved",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter == "approved"}" %>
+<%= link_to "Banned", league_members_path(filter:"banned",q:params[:q]), class: "btn btn-default#{" btn-info disabled" if @filter == "banned"}" %>
+</p>
+
+<%= form_tag league_members_path(@league.id), method: :get, class: "form-horizontal" do %>
+  <%= hidden_field_tag :filter, params[:filter] %>
+  <div class="form-group">
+    <div class="col-md-6">
+      <%= label_tag :email, "Search by email address", class: "sr-only" %>
+      <div class="input-group">
+        <%= text_field_tag :q, params[:q], placeholder: "Search by email address", class: "form-control" %>
+        <span class="input-group-btn"><%= submit_tag "Search", class: "btn btn-success" %></span>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<h4><%= page_entries_info(@members,model:"member") %></h4>
+
+<div class="row">
+  <div class="col-md-8">
+    <%= render partial: "leagues/members", locals: { members: @members } %>
+  </div>
+</div>
+<%= paginate(@members) %>
+<%= render partial: "shared/delete_confirmation_modal" %>

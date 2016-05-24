@@ -84,7 +84,10 @@ class LeaguesController < ApplicationController
     @require_maps = true
     @season = Season.new(league_id: @league.id)
     @current_season_id = @league.current_season.id rescue 0
-    @members = @league.liga_users.not_banned
+    # show the last 15 invited/unapproved members
+    @members = @league.liga_users.pending.order(created_at: :desc).paginate(page: page, per_page: 15)
+
+    @page_title = "Manage League"
   end
 
   # POST /leagues/:id

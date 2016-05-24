@@ -34,27 +34,27 @@ Rails.application.routes.draw do
         match "preview", to: "leagues#preview_broadcast", as: :preview_broadcast, via: [:get,:post]
       end
     end
-    resources :join, controller: "liga_users", only: [:create,:destroy] do
+    resources :members, controller: "liga_users", only: [:index,:create,:destroy] do
+      collection do
+        post 'invite', to: 'liga_users#invite'
+        get 'invite/:token', to: 'liga_users#view_invite', as: "view_invite"
+        post 'invite/:token/accept', to: 'liga_users#accept_invite', as: 'accept_invite'
+        post 'invite/:token/dismiss', to: 'liga_users#dismiss_invite', as: 'dismiss_invite'
+      end
       member do
-        # user requests
-        get 'approve'
+        get '/promote', to: 'liga_users#promote'
+        get '/demote', to: 'liga_users#demote'
+        get '/ban', to: 'liga_users#ban'
+        get '/unban', to: 'liga_users#unban'
+        get '/approve', to: 'liga_users#approve'
       end
     end
-    post 'invite', to: 'liga_users#invite'
-    get 'invite/:token', to: 'liga_users#view_invite', as: "view_invite"
-    post 'invite/:token/accept', to: 'liga_users#accept_invite', as: 'accept_invite'
-    post 'invite/:token/dismiss', to: 'liga_users#dismiss_invite', as: 'dismiss_invite'
-
-    get 'members/:id/promote', to: 'liga_users#promote', as: :promote_member
-    get 'members/:id/demote', to: 'liga_users#demote', as: :demote_member
-    get 'members/:id/ban', to: 'liga_users#ban', as: :ban_member
-    get 'members/:id/unban', to: 'liga_users#unban', as: :unban_member
-    get 'members/banned', to: 'liga_users#banned', as: :banned_members
 
     resources :seasons do
       member do
         get '/activate', to: 'seasons#activate'
         get '/close', to: 'seasons#close'
+        get '/export', to: 'seasons#export'
       end
       resources :games do
       end

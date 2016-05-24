@@ -1,7 +1,38 @@
 class LigaUsersController < ApplicationController
   before_filter :require_login
 
-  # POST /leagues/:id/join
+  # GET /leagues/:id/members
+  def index
+    @league = Liga.find_by_id(params[:league_id])
+    @members = @league.liga_users
+
+    @filter = (params[:filter] || "").downcase
+    case @filter
+    when "officers"
+      @members = @members.officers
+    when "pending"
+      @members = @members.requested
+    when "invited"
+      @members = @members.invited
+    when "approved"
+      @members = @members.approved
+    when "banned"
+      @members = @members.banned
+    else
+      @members = @members.not_banned
+      @filter = ""
+    end
+      
+    unless params[:q].blank?
+      users = User.where(id: @members.map(&:user_id), email: params[:q]).map(&:id)
+      @members = @members.where(user_id: users)
+    end
+
+    @members = @members.order(officer: :desc, created_at: :asc).paginate(page:page)
+    @page_title = "All Users | Manage League"
+  end
+
+  # POST /leagues/:id/members
   def create
     league = Liga.find_by_id(params[:league_id])
 
@@ -34,18 +65,22 @@ class LigaUsersController < ApplicationController
     redirect_to league_path(league.id,league.slug) and return
   end
 
-  # POST /leagues/:league_id/join/:id/approve
+  # POST /leagues/:league_id/members/:id/approve
   def approve
     league = Liga.find_by_id(params[:league_id])
     unless league.blank?
       if league.user_is_officer?(current_user)
         membership = fetch_request(params[:league_id],params[:id])
-        if membership.may_approve?
-          # email user and officers
-          membership.approve!
-          flash[:success] = "The request has been approved"
+        unless membership.blank?
+          if membership.may_approve?
+            # email user and officers
+            membership.approve!
+            flash[:success] = "The request has been approved"
+          end
+        else
+          flash[:error] = "The membership request could not be found"
         end
-        redirect_to edit_league_path(membership.liga_id) and return
+        redirect_to edit_league_path(league.id) and return
       else
         flash[:error] = "You don't have permission to do that"
         redirect_to league_path(league.id,league.slug) and return
@@ -56,22 +91,33 @@ class LigaUsersController < ApplicationController
     end
   end
 
-  # DELETE /leagues/:league_id/join/:id
+  # DELETE /leagues/:league_id/members/:id
   def destroy
     membership = fetch_request(params[:league_id],params[:id])
-    league = membership.league
+    unless membership.blank?
+      league = membership.league
 
-    unless membership.user_id == league.owner_id
-      membership.destroy
-      flash[:success] = "The specified membership has been removed"
-    else
-      flash[:error] = "You can't remove the owner from their own league"
-    end
+      unless membership.user_id == league.owner_id
+        # delete unplayed games
+        games = Game.where(league_id: membership.liga_id).where("runner_player_id = ? OR corp_player_id = ?",membership.user_id,membership.user_id)
+        unplayed_games = games.unplayed
+        unplayed_games.destroy_all
+        cancelled_games = games.cancelled
+        cancelled_games.destroy_all
 
-    if membership.league.user_is_officer?(current_user)
-      redirect_to edit_league_path(params[:league_id]) and return
+        membership.destroy
+        flash[:success] = "The specified membership has been removed"
+      else
+        flash[:error] = "You can't remove the owner from their own league"
+      end
+
+      if membership.league.user_is_officer?(current_user)
+        redirect_to edit_league_path(params[:league_id]) and return
+      else
+        redirect_to league_path(league.id,league.slug) and return
+      end
     else
-      redirect_to league_path(league.id,league.slug) and return
+      flash[:error] = "The specified membership could not be found"
     end
   end
 
@@ -172,7 +218,7 @@ class LigaUsersController < ApplicationController
     redirect_to league_path(@league.id,@league.slug) and return
   end
 
-  # GET /leagues/:league_id/member/:id/promote
+  # GET /leagues/:league_id/members/:id/promote
   def promote
     league = Liga.find_by_id(params[:league_id])
     if league.blank?
@@ -197,7 +243,7 @@ class LigaUsersController < ApplicationController
     redirect_to edit_league_path(league.id) and return
   end
 
-  # GET /leagues/:league_id/member/:id/demote
+  # GET /leagues/:league_id/members/:id/demote
   def demote
     league = Liga.find_by_id(params[:league_id])
     if league.blank?
@@ -264,7 +310,7 @@ class LigaUsersController < ApplicationController
     @members = @league.liga_users.banned.paginate(page:page)
   end
 
-  # GET /leagues/:league_id/member/:id/unban
+  # GET /leagues/:league_id/members/:id/unban
   def unban
     league = Liga.find_by_id(params[:league_id])
     if league.blank?
@@ -297,18 +343,9 @@ class LigaUsersController < ApplicationController
       unless membership_request.blank?
         if league.user_is_officer?(current_user) || membership_request.user == current_user
           return membership_request
-        else
-          flash[:error] = "The specified request could not be found"
-          redirect_to edit_league_path(league.id) and return
         end
-      else
-        flash[:error] = "You don't have permission to do that"
-        redirect_to league_path(league.id,league.slug) and return
       end
-    else
-      flash[:error] = "The specified league could not be found"
-      redirect_to leagues_path and return
     end
+    return nil
   end
-
 end

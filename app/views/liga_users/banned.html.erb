@@ -1,8 +1,9 @@
 <ul class="breadcrumb">
   <li><%= link_to "Leagues", leagues_path %></li>
   <li><%= link_to @league.display_name, league_path(@league.id,@league.slug) %></li>
-  <li><%= link_to "Edit", edit_league_path(@league.id) %></li>
-  <li class="active">Banned Users</li>
+  <li><%= link_to "Manage", edit_league_path(@league.id) %></li>
+  <li><%= link_to "Members", league_members_path(@league.id) %></li> 
+  <li class="active">Banned</li>
 </ul>
 
 <h1>Banned users</h1>
@@ -27,8 +28,8 @@
               <tr>
                 <td><%= member.user.display_name %></td>
                 <td class="text-right">
-                  <%= link_to "Unban", league_unban_member_path(@league.id,member.id), class: "btn btn-success btn-xs", confirmation: "Are you sure you want to reinstate this member?" %>
-                  <%= delete_button league_join_path(@league.id,member.id),"membership","Remove" %>
+                  <%= link_to "Unban", unban_league_member_path(@league.id,member.id), class: "btn btn-success btn-xs", confirmation: "Are you sure you want to reinstate this member?" %>
+                  <%= delete_button league_member_path(@league.id,member.id),"membership","Remove" %>
                 </td>
               </tr>
             <% end %>

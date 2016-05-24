@@ -22,6 +22,8 @@
             <% else %>
               <em>Upcoming</em>
             <% end %>
+          <% elsif game.cancelled? %>
+            <em>Cancelled</em>
           <% else %>
             <%= game.result.display_name %>
           <% end %>
