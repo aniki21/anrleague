@@ -87,4 +87,24 @@ module ApplicationHelper
   def delete_button(path_to_delete,model_name="item",button_label="Delete",additional_message="")
     link_to button_label, "javascript:void(0)", class:"btn btn-danger btn-xs", "data-action": "delete", "data-model-name": model_name, "data-href":path_to_delete, "data-message":additional_message
   end
+
+  # obfuscate a player's email address
+  def obfuscate_email(email)
+    return nil if email.blank?
+    parts = email.split("@")
+    
+    local_parts = parts[0].split("+")
+    local_first = local_parts[0][0]
+    local_last = local_parts[0][-1]
+    local_rest = local_parts[0][1..-2]
+    local_rest.gsub!(/[a-zA-Z0-9]/,"*")
+
+    local_part = [local_first,local_rest,local_last].join("")
+    
+    local_part = [local_part,local_parts[1]].join("+") unless local_parts[1].blank?
+
+    domain_part = parts[1]
+
+    return "#{local_part}@#{domain_part}"
+  end
 end

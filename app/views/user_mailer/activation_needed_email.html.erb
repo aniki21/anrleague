@@ -1,0 +1,3 @@
+<h1>Welcome to <%= SITE_NAME %>, <%= @user.display_name %></h1>
+<p>This email address has been used to register an account on <%= SITE_NAME %>, and needs to be confirmed before you can log in.</p>
+<p><%= link_to "Click here", activate_url(@user.activation_token) %> to activate your account!</p>

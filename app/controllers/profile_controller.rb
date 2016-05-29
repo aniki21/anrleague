@@ -1,5 +1,5 @@
 class ProfileController < ApplicationController
-  before_filter :require_login, except: [:new,:create,:show]
+  before_filter :require_login, except: [:new,:create,:confirm,:show]
 
   # GET /register
   def new
@@ -13,8 +13,7 @@ class ProfileController < ApplicationController
     @user = User.new(registration_params)
     if valid_recaptcha?
       if @user.save
-        flash[:success] = "Your account has been created"
-        UserMailer.confirm_register(@user).deliver_now!
+        flash[:success] = "Your account has been created - please check your email for an activation link"
         redirect_to login_path(path:params[:path]) and return
       end
     else
@@ -22,6 +21,18 @@ class ProfileController < ApplicationController
     end
     @page_title = "User registration"
     render action: :new and return
+  end
+
+  # GET /register/confirm/:token
+  def confirm
+    @user = User.load_from_activation_token(params[:token])
+    unless @user.blank?
+      @user.activate!
+      flash[:success] = "Your account has been activated and you can now log in"
+    else
+      flash[:error] = "The token you provided was incorrect"
+    end
+    redirect_to login_path and return
   end
 
   # GET /profile/:id/:username

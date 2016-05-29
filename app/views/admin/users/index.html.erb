@@ -1,0 +1,57 @@
+<ul class="breadcrumb">
+  <li><%= link_to "Admin", admin_path %></li>
+  <li class="active">Users</li>
+</ul>
+
+<h1>Manage users</h1>
+
+<h4><%= page_entries_info(@users,model:"user") %></h4>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Signed up</th>
+        <th>Status</th>
+        <th><!-- actions --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @users.any? %>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.display_name %></td>
+            <td><%= obfuscate_email user.email %></td>
+            <td><%= user.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td>
+              <% if user.banned? %>
+                Banned
+                <% unless user.ban_expires_at.blank? %>
+                  until <%= user.ban_expires_at.strftime("") %>
+                <% end %>
+              <% else %>
+                <% if user.activation_state == "pending" %>
+                  Activation pending
+                <% else %>
+                  Active
+                <% end %>
+              <% end %>
+            </td>
+            <td class="text-right">
+              <%= link_to "Profile", edit_admin_user_path(user.id), class: "btn btn-xs btn-primary" %>
+              <%= link_to "Edit account", edit_admin_user_path(user.id), class: "btn btn-xs btn-warning" %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="5" class="text-center"><em>Nothing to see here</em></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= paginate(@users) %>

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # Register
   get '/register', to: "profile#new", as: :register
   post '/register', to: "profile#create"
+  get '/register/confirm/:token', to: 'profile#confirm', as: :activate
 
   # Password reset
   resources :password_reset, except: [:index,:destroy]

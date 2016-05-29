@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521224623) do
+ActiveRecord::Schema.define(version: 20160529221735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,8 +79,10 @@ ActiveRecord::Schema.define(version: 20160521224623) do
     t.integer  "points_for_loss",      default: 0
     t.string   "privacy",              default: "open"
     t.string   "table_privacy",        default: "public"
+    t.string   "aasm_state",           default: "active"
   end
 
+  add_index "ligas", ["aasm_state"], name: "index_ligas_on_aasm_state", using: :btree
   add_index "ligas", ["location_type"], name: "index_ligas_on_location_type", using: :btree
   add_index "ligas", ["privacy"], name: "index_ligas_on_privacy", using: :btree
   add_index "ligas", ["table_privacy"], name: "index_ligas_on_table_privacy", using: :btree
@@ -143,8 +145,15 @@ ActiveRecord::Schema.define(version: 20160521224623) do
     t.boolean  "notify_officer_league_membership", default: true
     t.text     "about_markdown"
     t.text     "about_html"
+    t.string   "aasm_state"
+    t.datetime "ban_expires_at"
+    t.string   "activation_state"
+    t.string   "activation_token"
+    t.datetime "activation_token_expires_at"
   end
 
+  add_index "users", ["aasm_state"], name: "index_users_on_aasm_state", using: :btree
+  add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree

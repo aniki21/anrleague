@@ -1,0 +1,15 @@
+<h1>Your flag has recieved a response</h1>
+
+<h3>Your flag</h3>
+<p>You submitted the following report regarding <strong><%= @flag.reportee.display_name %></strong>:</p>
+<blockquote>
+  <%= simple_format(@flag.description) %>
+</blockquote>
+
+<h3>Response</h3>
+<% unless @flag.response.blank? %>
+<blockquote>
+  <%= simple_format(@flag.response) %>
+</blockquote>
+<% end %>
+<p><strong><%= @flag.aasm_state.humanize %></strong></p>

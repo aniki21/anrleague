@@ -2,7 +2,7 @@ module AdminHelper
   def reportee_path(reportee)
     case reportee.class.name
     when "Liga"
-      return league_path(reportee.id,reportee.slug)
+      return show_league_path(reportee.id,reportee.slug)
     when "User"
       return show_profile_path(reportee.id,reportee.slug)
     else

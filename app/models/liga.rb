@@ -67,6 +67,25 @@ class Liga < ActiveRecord::Base
   before_validation :render_markdown
   before_validation :set_offline_location, if: :offline?
 
+  include AASM
+  aasm do
+    state :inactive, initial: true
+    state :active
+    state :locked # when an admin needs the 
+
+    event :deactivate do
+      transitions from: [:active], to: :inactive
+    end
+
+    event :lock do
+      transitions from: [:active,:inactive], to: :locked
+    end
+
+    event :unlock do
+      transitions from: [:locked], to: :inactive
+    end
+  end
+
   #
   # Methods
   #

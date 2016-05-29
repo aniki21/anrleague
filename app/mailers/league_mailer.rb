@@ -26,7 +26,7 @@ class LeagueMailer < ApplicationMailer
     @league = liga_user.league
     @token = liga_user.invitation_token
     @subject = "[#{SITE_NAME}] Invitation to join #{@league.display_name}"
-    mail(to: email, subject: @subject)
+    mail(to: DEFAULT_FROM_ADDRESS, bcc: email, subject: @subject)
   end
 
   # Notify officers of a new user joining their league
@@ -46,7 +46,7 @@ class LeagueMailer < ApplicationMailer
     @user = liga_user.user
 
     @subject = "[#{SITE_NAME}] You are now a member of #{@league.display_name}"
-    mail(to: @user.email, subject: @subject)
+    mail(to: DEFAULT_FROM_ADDRESS, bcc: @user.email, subject: @subject)
   end
 
   # Broadcast message to all members

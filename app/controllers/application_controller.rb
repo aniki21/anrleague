@@ -3,9 +3,27 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :my_leagues
+  before_filter :check_account, :my_leagues
 
   private
+  def check_account
+    if logged_in?
+      if current_user.banned?
+        if !current_user.ban_expires_at.blank? && current_user.ban_expires_at <= Time.now
+          # ban expiry date has passed
+          current_user.unban!
+        else
+          # still banned, m*****rfucker
+          message = "Your account has been banned"
+          message += " until #{current_user.ban_expires_at.strftime("%B %d, %Y")}" unless current_user.ban_expires_at.blank?
+          logout
+          flash[:error] = message
+          redirect_to root_path and return
+        end
+      end
+    end
+  end
+
   def require_login
     unless logged_in?
       flash[:warning] = "You need to be logged in to do that"

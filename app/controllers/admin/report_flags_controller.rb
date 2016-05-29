@@ -55,6 +55,8 @@ class Admin::ReportFlagsController < AdminController
         render action: :show and return
       end
       # notify reporter
+      ApplicationMailer.report_response_mailer(@flag).deliver_now!
+
       flash[:success] = "Response submitted"
       redirect_to admin_report_flags_path and return
     else
