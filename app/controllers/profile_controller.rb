@@ -116,7 +116,7 @@ class ProfileController < ApplicationController
   end
 
   def profile_params
-    params.require(:user).permit(:email,:display_name,:jinteki_username)
+    params.require(:user).permit(:email,:display_name,:jinteki_username,:about_markdown)
   end
 
   def password_params
