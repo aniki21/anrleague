@@ -4,7 +4,7 @@
             <%= gravatar(game.corp_player.email,40) %>
           </div>
           <%= link_to game.corp_player.display_name, show_profile_path(game.corp_player.id, game.corp_player.slug) %>
-          <% if game.corp_win? %><strong>Winner</strong><% end %>
+          <% if game.corp_win? %><strong>Winner</strong> <small><%= game.result.display_name %></small><% end %>
           <% unless game.corp_identity_id.blank? %><br /><small><%= player_identity(game.corp_identity,"Corp") %></small><% end %>
         </td>
         <td>
@@ -12,20 +12,14 @@
             <%= gravatar(game.runner_player.email,40) %>
           </div>
           <%= link_to game.runner_player.display_name, show_profile_path(game.runner_player.id, game.runner_player.slug) %>
-          <% if game.runner_win? %><strong>Winner</strong><% end %>
+          <% if game.runner_win? %><strong>Winner</strong> <small><%= game.result.display_name %></small><% end %>
           <% unless game.runner_identity_id.blank? %><br /><small><%= player_identity(game.runner_identity,"Runner") %></small><% end %>
         </td>
         <td class="text-right">
-          <% if game.unplayed? %>
-            <% if logged_in? && game.user_can_update?(current_user) %>
-              <%= link_to 'Update'.html_safe, "javascript:void(0);", class:"btn btn-success btn-xs", "data-action":"gameResult", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
-            <% else %>
-              <em>Upcoming</em>
-            <% end %>
-          <% elsif game.cancelled? %>
-            <em>Cancelled</em>
+          <% if logged_in? && game.user_can_update?(current_user) %>
+            <%= link_to 'Update'.html_safe, "javascript:void(0);", class:"btn btn-success btn-xs", "data-action":"gameResult", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
           <% else %>
-            <%= game.result.display_name %>
+            <%= link_to 'Details', "javascript:void(0);", class:"btn btn-primary btn-xs", "data-action":"gameDetail", "data-game-id":game.id, "data-season-id":game.season_id, "data-league-id":game.league_id %>
           <% end %>
         </td>
       </tr>

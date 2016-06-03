@@ -32,15 +32,25 @@ class LeaguesController < ApplicationController
 
     @member = false
     @officer = false
-    @games = []
      
     if logged_in?
-      unless @season.blank?
-        @games = Game.for_player_season(current_user.id,@season.id).unplayed.paginate(page: params[:page],per_page:5)
-      end
       @member = current_user.member_of?(@league)
       @officer = current_user.liga_users.where(liga_id: @league.id, officer: true).any?
     end
+
+    @games = Game.where(id:0)
+    unless @season.blank?
+      @games = Game.for_season(@season.id)
+
+      if @member
+        member_games = @games.for_player(current_user.id).unplayed
+        if member_games.any?
+          @games = member_games
+        end
+      end
+    end
+
+    @games = @games.paginate(page: params[:page],per_page:5)
 
     @page_title = @league.display_name
   end

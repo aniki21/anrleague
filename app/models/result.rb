@@ -18,4 +18,8 @@ class Result < ActiveRecord::Base
   def draw?
     self.winning_side == "draw"
   end
+
+  def full_display_name
+    "#{self.winning_side.humanize}#{" win" unless self.draw?} - #{self.display_name}"
+  end
 end

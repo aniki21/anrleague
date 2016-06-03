@@ -14,24 +14,16 @@ class GamesController < ApplicationController
       redirect_to league_path(@league.id,@league.slug)
     end
 
-    if logged_in? && current_user.member_of?(@league) && params[:all] != "true"
-      @games = Game.for_player_season(current_user.id,@season.id)
-      @title = "My games"
-    else
-      @games = Game.where(season_id: @season.id)
-      @title = "All games"
-    end
-
-    if params[:filter] == "unplayed"
-      @games = @games.unplayed
-      @title += " (upcoming)"
-    end
+    @games = Game.for_season(@season.id).order(result_id: :asc, created_at: :asc)
+    @title = "All games"
 
     @games = @games.paginate(page: page)
   end
 
   # GET /leagues/:league_id/games/:id
   def show
+    @game = Game.where(id:params[:id], league_id: params[:league_id]).first
+    render layout: "iframe"
   end
 
   # GET /leagues/:league_id/games/:id/edit
@@ -42,7 +34,7 @@ class GamesController < ApplicationController
       if @game.user_can_update?(current_user)
         @runners = Identity.runner.order(display_name: :asc).map{|r| [r.display_name,r.id ] }
         @corps = Identity.corp.order(display_name: :asc).map{|c| [c.display_name,c.id ] }
-        @results = Result.order("lower(display_name) ASC").map{|r| [r.display_name,r.id] }
+        @results = Result.order("lower(display_name) ASC").map{|r| [r.full_display_name,r.id] }
       else
         if @game.result_id == 0
           flash.now[:error] = "You can't update the results for a cancelled game"
@@ -83,7 +75,15 @@ class GamesController < ApplicationController
 
   private
   def game_params
-    params.require(:game).permit(:runner_identity_id, :runner_agenda_points, :corp_identity_id, :corp_agenda_points, :result_id)
+    params.require(:game).permit(
+      :runner_identity_id,
+      :runner_agenda_points,
+      :runner_commentary,
+      :corp_identity_id,
+      :corp_agenda_points,
+      :corp_commentary,
+      :result_id
+    )
   end
 
 end

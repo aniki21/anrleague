@@ -1,7 +1,7 @@
 <%= form_for @game, url: league_season_game_path(@game.league_id,@game.season_id,@game.id), html: {  }  do |f| %>
   <div class="row">
     <div class="col-sm-6 form-horizontal">
-      <h3><%= @game.corp_player.display_name %> <small>Corporation</small></h3>
+      <h3><%= @game.corp_player.display_name %> <small>Corp</small></h3>
       <div class="form-group">
         <div class="col-sm-12">
           <%= f.select :corp_identity_id, options_for_select(@corps, @game.corp_identity_id), { include_blank: true }, { class: "select2 form-control", style:"width:100%;" } %>
@@ -13,6 +13,12 @@
             <%= f.number_field :corp_agenda_points, min:0, max:7, class: "form-control text-right" %>
             <span class="input-group-addon">Agenda Points</span>
           </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-12">
+          <%= f.text_area :corp_commentary, class: "form-control", rows: 3, placeholder: "Corp player commentary (optional, max. 250 characters)", maxlength:250 %>
         </div>
       </div>
     </div>
@@ -32,23 +38,20 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <div class="col-sm-12">
+          <%= f.text_area :runner_commentary, class: "form-control", rows: 3, placeholder: "Runner player commentary (optional, max. 250 characters)", maxlength:250 %>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-sm-8 form-horizontal col-sm-offset-2">
-      <div class="form-group">
-        <%= f.label :result_id, "Result", class: "control-label col-sm-2" %>
-        <div class="col-sm-8">
-          <%= f.select :result_id, options_for_select(@results, @game.result_id), { include_blank: "Select result" }, { class:"form-control" } %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-8 col-sm-offset-2">
-          <%= f.submit "Save game", class: "btn btn-success" %>
-        </div>
-      </div>
+    <div class="col-sm-6">
+      <%= f.select :result_id, options_for_select(@results, @game.result_id), { include_blank: "Select result" }, { class:"form-control" } %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.submit "Save game", class: "btn btn-success" %>
     </div>
   </div>
 

@@ -1,0 +1,24 @@
+<!-- game modal -->
+<div class="modal fade" id="gameDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>
+        View game details
+      </div>
+      <div class="modal-body">
+        <iframe id="gameDetailIframe" style="width:100%; height:300px; border:0;" src="/blank"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$('[data-action="gameDetail"]').on('click',function(e){
+  var t = $(this);
+  e.preventDefault();
+  var iframe_url = "/leagues/"+t.attr('data-league-id')+"/seasons/"+t.attr('data-season-id')+"/games/"+t.attr('data-game-id')+"";
+  $('#gameDetailModal').modal('show');
+  $('#gameDetailIframe').attr("src",iframe_url);
+});
+</script>

@@ -44,15 +44,12 @@
         <%= render partial: "seasons/league_table", locals: { season: @season } %>
       <% end %>
 
-      <% if @member %>
-        <h3>My Games</h3>
-        <% if @games.any? %>
-          <%= render partial: "seasons/user_games", locals: { games: @games } %>
-          <p class="text-right"><%= link_to "All my games", league_season_games_path(@league.id,@season.id) %></p>
-        <% else %>
-          <p><em>You don't have any unplayed games</em></p>
-        <% end %>
+      <h3>Games</h3>
+      <% if @games.any? %>
+        <%= render partial: "seasons/user_games", locals: { games: @games } %>
       <% end %>
+      <p class="text-right"><%= link_to "View games", league_season_games_path(@league.id,@season.id) %></p>
+
     <% else %>
       <h3>We're still getting ready!</h3>
       <p>This league doesn't have an active season at the moment.</p>

@@ -1,0 +1,68 @@
+
+  <div class="row">
+    <div class="col-sm-6">
+      <h3 style="margin-top:0;">Corp</h3>
+      <div>
+        <div class="pull-left" style="padding-right:10px;">
+          <%= gravatar(@game.corp_player.email,40) %>
+        </div>
+        <%= link_to @game.corp_player.display_name, show_profile_path(@game.corp_player.id, @game.corp_player.slug), target:"_parent" %>
+        <% if @game.corp_win? %><strong>Winner</strong><% end %>
+        <br /><small>
+          <% unless @game.corp_identity.blank? %>
+            <%= player_identity(@game.corp_identity,"Corp") %>
+          <% else %>
+            <em>No ID selected</em>
+          <% end %>
+        </small>
+      </div>
+
+      <% unless @game.unplayed? %>
+        <p>
+        <strong>Agenda points scored:</strong>
+        <%= @game.corp_agenda_points %>
+        </p>
+      <% end %>
+
+      <% unless @game.corp_commentary.blank? %>
+        <%= @game.corp_commentary %>
+      <% end %>
+    </div>
+
+    <div class="col-sm-6">
+      <h3 style="margin-top:0;">Runner</h3>
+      <div>
+        <div class="pull-left" style="padding-right:10px;">
+          <%= gravatar(@game.runner_player.email,40) %>
+        </div>
+        <%= link_to @game.runner_player.display_name, show_profile_path(@game.runner_player.id, @game.runner_player.slug), target:"_parent" %>
+        <% if @game.runner_win? %><strong>Winner</strong><% end %>
+        <br /><small>
+          <% unless @game.runner_identity.blank? %>
+            <%= player_identity(@game.runner_identity,"Runner") %>
+          <% else %>
+            <em>No ID selected</em>
+          <% end %>
+        </small>
+      </div>
+
+      <% unless @game.unplayed? %>
+        <p>
+        <strong>Agenda points scored:</strong>
+        <%= @game.runner_agenda_points %>
+        </p>
+      <% end %>
+
+      <% unless @game.runner_commentary.blank? %>
+        <%= @game.runner_commentary %>
+      <% end %>
+    </div>
+  </div>
+
+  <h3 class="text-center">
+    <% unless @game.unplayed? %>
+      <%= @game.result.full_display_name %>
+    <% else %>
+      This game has not been played yet
+    <% end %>
+  </h3>

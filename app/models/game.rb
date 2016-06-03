@@ -81,9 +81,7 @@ class Game < ActiveRecord::Base
 
   def user_can_update?(user)
     return false if user.blank?
-    return self.players.include?(user) if self.result_id.blank?
-    return self.league.officers.include?(user)
-    return false
+    return self.players.include?(user) || self.league.officers.include?(user) || false
   end
 
   private
